@@ -1,0 +1,169 @@
+
+
+> web@0.1.0 dev
+> next dev -p 3000
+
+[1G[0K  [1m[38;2;173;127;168m▲ Next.js 14.2.5[39m[22m
+  - Local:        http://localhost:3000
+
+ [32m[1m✓[22m[39m Starting...
+ [32m[1m✓[22m[39m Ready in 1146ms
+ [32m[1m✓[22m[39m Compiled /api/auth/[...nextauth] in 394ms (269 modules)
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/providers [32m200[39m in 606ms
+ GET /api/auth/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2F [32m200[39m in 5ms
+ POST /api/auth/callback/credentials [34m302[39m in 6ms
+ GET /api/auth/error?error=CredentialsSignin&provider=credentials [34m302[39m in 2ms
+ GET /api/auth/signin?error=CredentialsSignin [32m200[39m in 4ms
+ POST /api/auth/callback/credentials [34m302[39m in 19ms
+ GET /api/auth/error?error=CredentialsSignin&provider=credentials [34m302[39m in 24ms
+ GET /api/auth/signin?error=CredentialsSignin [32m200[39m in 8ms
+ POST /api/auth/callback/credentials [34m302[39m in 30ms
+ GET /api/auth/error?error=CredentialsSignin&provider=credentials [34m302[39m in 21ms
+ GET /api/auth/signin?error=CredentialsSignin [32m200[39m in 14ms
+ POST /api/auth/callback/credentials [34m302[39m in 9ms
+ GET /api/auth/error?error=CredentialsSignin&provider=credentials [34m302[39m in 2ms
+ GET /api/auth/signin?error=CredentialsSignin [32m200[39m in 3ms
+ POST /api/auth/callback/credentials [34m302[39m in 12ms
+ GET /api/auth/error?error=CredentialsSignin&provider=credentials [34m302[39m in 8ms
+ GET /api/auth/signin?error=CredentialsSignin [32m200[39m in 3ms
+ POST /api/auth/callback/credentials [34m302[39m in 26ms
+ GET /api/auth/error?error=CredentialsSignin&provider=credentials [34m302[39m in 4ms
+ GET /api/auth/signin?error=CredentialsSignin [32m200[39m in 3ms
+(node:50319) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ [37m[1m○[22m[39m Compiling / ...
+ [32m[1m✓[22m[39m Compiled / in 2.4s (1448 modules)
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2F [32m200[39m in 830ms
+ POST /api/auth/callback/credentials [34m302[39m in 17ms
+ GET /api/auth/error?error=CredentialsSignin&provider=credentials [34m302[39m in 11ms
+ GET /api/auth/signin?error=CredentialsSignin [32m200[39m in 9ms
+ POST /api/auth/callback/credentials [32m200[39m in 50ms
+ POST /api/auth/callback/credentials [34m302[39m in 389ms
+ GET /api/auth/error?error=CredentialsSignin&provider=credentials [34m302[39m in 78ms
+ GET /api/auth/signin?error=CredentialsSignin [32m200[39m in 7ms
+ GET /api/auth/signin?error=CredentialsSignin [32m200[39m in 29ms
+ GET / [32m200[39m in 39ms
+ GET /api/auth/session [32m200[39m in 15ms
+ GET /api/auth/session [32m200[39m in 12ms
+ GET /api/auth/session [32m200[39m in 16ms
+ GET /api/auth/session [32m200[39m in 5ms
+ GET /api/auth/providers [32m200[39m in 28ms
+ GET /api/auth/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2F [32m200[39m in 8ms
+ GET / [32m200[39m in 40ms
+ GET /api/auth/session [32m200[39m in 7ms
+ GET /api/auth/session [32m200[39m in 4ms
+ GET /api/auth/session [32m200[39m in 4ms
+ [32m[1m✓[22m[39m Compiled /middleware in 282ms (178 modules)
+ GET /api/auth/signin?callbackUrl=%2Fdashboard [32m200[39m in 7ms
+ GET / [32m200[39m in 26ms
+ GET /api/auth/session [32m200[39m in 5ms
+ GET /api/auth/session [32m200[39m in 4ms
+ GET /api/auth/session [32m200[39m in 2ms
+ [37m[1m○[22m[39m Compiling /about ...
+ [32m[1m✓[22m[39m Compiled /about in 657ms (1436 modules)
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/signin?callbackUrl=%2Fdashboard [32m200[39m in 9ms
+ GET / [32m200[39m in 66ms
+ GET /api/auth/session [32m200[39m in 27ms
+ GET /api/auth/signin?callbackUrl=%2Fdashboard [32m200[39m in 11ms
+ GET / [32m200[39m in 61ms
+ GET /api/auth/session [32m200[39m in 6ms
+ GET /api/auth/session [32m200[39m in 4ms
+ GET /api/auth/session [32m200[39m in 3ms
+ GET / [32m200[39m in 198ms
+ GET /api/auth/session [32m200[39m in 8ms
+ GET /api/auth/session [32m200[39m in 3ms
+ GET /api/auth/session [32m200[39m in 7ms
+ GET /api/auth/session [32m200[39m in 7ms
+ GET /api/auth/providers [32m200[39m in 8ms
+ GET /api/auth/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2F [32m200[39m in 9ms
+ GET / [32m200[39m in 29ms
+ GET /api/auth/session [32m200[39m in 6ms
+ GET /api/auth/session [32m200[39m in 5ms
+ GET / [32m200[39m in 19ms
+ GET /api/auth/session [32m200[39m in 9ms
+ GET /api/auth/session [32m200[39m in 4ms
+ GET /api/auth/session [32m200[39m in 4ms
+ GET /api/auth/session [32m200[39m in 4ms
+ GET /api/auth/signin?callbackUrl=%2Fdashboard [32m200[39m in 8ms
+ POST /api/auth/callback/credentials [34m302[39m in 6ms
+ GET /api/auth/error?error=CredentialsSignin&provider=credentials [34m302[39m in 3ms
+ GET /api/auth/signin?error=CredentialsSignin [32m200[39m in 3ms
+ POST /api/auth/callback/credentials [34m302[39m in 24ms
+ GET /api/auth/error?error=CredentialsSignin&provider=credentials [34m302[39m in 11ms
+ GET /api/auth/signin?error=CredentialsSignin [32m200[39m in 17ms
+ POST /api/auth/callback/credentials [34m302[39m in 17ms
+ [32m[1m✓[22m[39m Compiled /dashboard in 289ms (1428 modules)
+ GET /dashboard [32m200[39m in 364ms
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session [32m200[39m in 28ms
+ GET /api/auth/session [32m200[39m in 12ms
+ GET /api/auth/session [32m200[39m in 18ms
+ GET /api/auth/session [32m200[39m in 16ms
+ GET /dashboard [32m200[39m in 32ms
+ GET /api/auth/session [32m200[39m in 9ms
+ GET /api/auth/session [32m200[39m in 9ms
+ GET /api/auth/session [32m200[39m in 102ms
+ GET /api/auth/session [32m200[39m in 46ms
+ GET /api/auth/session [32m200[39m in 36ms
+ GET /api/auth/session [32m200[39m in 109ms
+ GET /api/auth/session [32m200[39m in 4ms
+ GET /api/auth/session [32m200[39m in 5ms
+ GET /api/auth/session [32m200[39m in 4ms
+ GET /api/auth/session [32m200[39m in 17ms
+ GET /api/auth/session [32m200[39m in 31ms
+ GET /api/auth/session [32m200[39m in 8ms
+ GET /api/auth/session [32m200[39m in 6ms
+ GET /api/auth/session [32m200[39m in 81ms
+ GET /api/auth/session [32m200[39m in 3ms
+ GET /api/auth/session [32m200[39m in 3ms
+ GET /dashboard [32m200[39m in 17ms
+ GET /api/auth/session [32m200[39m in 13ms
+ GET /api/auth/session [32m200[39m in 4ms
+ GET /api/auth/session [32m200[39m in 4ms
+ GET /api/auth/session [32m200[39m in 3ms
+ GET / [32m200[39m in 102ms
+ GET /api/auth/session [32m200[39m in 33ms
+ GET /api/auth/session [32m200[39m in 15ms
+ GET /api/auth/session [32m200[39m in 21ms
+ GET /api/auth/session [32m200[39m in 10ms
+ GET /api/auth/csrf [32m200[39m in 13ms
+ POST /api/auth/signout [32m200[39m in 7ms
+ GET /api/auth/signin?callbackUrl=%2Fdashboard [32m200[39m in 5ms
+ GET /api/auth/session [32m200[39m in 6ms
+ GET /api/auth/session [32m200[39m in 6ms
+ GET / [32m200[39m in 30ms
+ GET /api/auth/session [32m200[39m in 4ms
+ GET /api/auth/session [32m200[39m in 6ms
+ GET /api/auth/providers [32m200[39m in 44ms
+ GET /api/auth/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2Fabout [32m200[39m in 20ms
+ GET /api/auth/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2Fabout [32m200[39m in 410ms
+ GET / [32m200[39m in 78ms
+ GET /api/auth/session [32m200[39m in 33ms
+ GET /api/auth/session [32m200[39m in 6ms
+ GET /api/auth/providers [32m200[39m in 10ms
+ GET /api/auth/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2F [32m200[39m in 3ms
+ POST /api/auth/callback/credentials [34m302[39m in 12ms
+ GET /api/auth/error?error=CredentialsSignin&provider=credentials [34m302[39m in 6ms
+ GET /api/auth/signin?error=CredentialsSignin [32m200[39m in 4ms
+ POST /api/auth/callback/credentials [34m302[39m in 13ms
+ GET / [32m200[39m in 20ms
+ GET /api/auth/session [32m200[39m in 5ms
+ GET /api/auth/session [32m200[39m in 4ms
+ GET /api/auth/session [32m200[39m in 7ms
+ GET /api/auth/session [32m200[39m in 45ms
+ GET /api/auth/session [32m200[39m in 45ms
+ GET /api/auth/session [32m200[39m in 62ms
+ GET / [32m200[39m in 34ms
+ GET /api/auth/session [32m200[39m in 64ms
+ GET /api/auth/session [32m200[39m in 22ms
+ GET /api/auth/session [32m200[39m in 33ms
+ GET /api/auth/session [32m200[39m in 27ms
+ GET /api/auth/session [32m200[39m in 13ms
+ GET /api/auth/session [32m200[39m in 25ms

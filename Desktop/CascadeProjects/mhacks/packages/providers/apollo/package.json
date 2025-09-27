@@ -1,0 +1,17 @@
+{
+  "name": "@linkedin-messager/providers-apollo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "node-fetch": "3.3.2"
+  },
+  "devDependencies": {
+    "typescript": "5.4.5"
+  }
+}

@@ -1,0 +1,14 @@
+node_modules
+.next
+build
+dist
+.DS_Store
+coverage
+.env
+.env.local
+.env.*.local
+apps/**/node_modules
+apps/**/.next
+packages/**/node_modules
+packages/**/dist
+infra/**/.terraform

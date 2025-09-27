@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  Profile   Profile?
+}
+
+model Profile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  summary     String?
+  schools     Json?
+  companies   Json?
+  skills      Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CandidateContact {
+  id          String   @id @default(cuid())
+  name        String
+  title       String?
+  company     String?
+  email       String?
+  linkedinUrl String?
+  location    String?
+  summary     String?
+  source      String   @default("mock")
+  createdAt   DateTime @default(now())
+}
+
+model Campaign {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  goal      String?
+  status    String   @default("draft")
+  createdAt DateTime @default(now())
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  campaignId String?
+  candidateId String
+  channel    String
+  direction  String   @default("outbound")
+  subject    String?
+  body       String
+  state      String   @default("draft")
+  providerMessageId String?
+  createdAt  DateTime @default(now())
+}
+
+model Event {
+  id        String   @id @default(cuid())
+  provider  String
+  type      String
+  messageId String?
+  payload   Json?
+  createdAt DateTime @default(now())
+}
