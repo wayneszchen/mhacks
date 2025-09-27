@@ -1,10 +1,13 @@
 from staffspy import LinkedInAccount, SolverType, DriverType, BrowserType
 
+
+#CREATES A LINKEDIN ACCOUNT INSTANCE
 account = LinkedInAccount(
     driver_type=DriverType( # if issues with webdriver, specify its exact location, download link in the FAQ
          browser_type=BrowserType.CHROME,
-        executable_path="/Users/pc/chromedriver-mac-arm64/chromedriver"
+        executable_path="/home/linusaw/mhacks/chromedriver"
      ),
+     #SAVES TO COOKIES
     session_file="session.pkl", # save login cookies to only log in once (lasts a week or so)
     log_level=1, # 0 for no logs
 )
@@ -13,7 +16,7 @@ account = LinkedInAccount(
 staff = account.scrape_staff(
     company_name="openai",
     search_term="software engineer",
-    location="london",
+    location="USA",
     extra_profile_data=True, # fetch all past experiences, schools, & skills
     max_results=20, # can go up to 1000
     # block=True # if you want to block the user after scraping, to exclude from future search results
