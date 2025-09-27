@@ -3,16 +3,16 @@
 > api@0.1.0 dev
 > ts-node-dev --respawn --transpile-only src/main.ts
 
-[1G[0K[[36mINFO[0m] [30;1m17:11:59[0m ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.4.5)
+[1G[0K[[36mINFO[0m] [30;1m17:29:13[0m ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.4.5)
 Error: @prisma/client did not initialize yet. Please run "prisma generate" and try to import it again.
     at new PrismaClient (/home/linusaw/mhacks/node_modules/.prisma/client/default.js:43:11)
     at Object.<anonymous> (/home/linusaw/mhacks/apps/api/src/main.ts:13:16)
     at Module.<anonymous> (node:internal/modules/cjs/loader:1730:14)
     at Module._compile (/home/linusaw/mhacks/node_modules/source-map-support/source-map-support.js:568:25)
-    at Module.m._compile (/tmp/ts-node-dev-hook-7862910792364881.js:69:33)
+    at Module.m._compile (/tmp/ts-node-dev-hook-5661249015913066.js:69:33)
     at node:internal/modules/cjs/loader:1895:10
-    at require.extensions..jsx.require.extensions..js (/tmp/ts-node-dev-hook-7862910792364881.js:114:20)
-    at require.extensions.<computed> (/tmp/ts-node-dev-hook-7862910792364881.js:71:20)
+    at require.extensions..jsx.require.extensions..js (/tmp/ts-node-dev-hook-5661249015913066.js:114:20)
+    at require.extensions.<computed> (/tmp/ts-node-dev-hook-5661249015913066.js:71:20)
     at Object.nodeDevHook [as .ts] (/home/linusaw/mhacks/node_modules/ts-node-dev/lib/hook.js:63:13)
     at Module.load (node:internal/modules/cjs/loader:1465:32)
-[[31;1mERROR[0m] [30;1m17:11:59[0m Error: @prisma/client did not initialize yet. Please run "prisma generate" and try to import it again.
+[[31;1mERROR[0m] [30;1m17:29:14[0m Error: @prisma/client did not initialize yet. Please run "prisma generate" and try to import it again.

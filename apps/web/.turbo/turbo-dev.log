@@ -7,39 +7,17 @@
   - Local:        http://localhost:3000
 
  [32m[1m✓[22m[39m Starting...
-[35m[1mAttention[22m[39m: Next.js now collects completely anonymous telemetry regarding usage.
-This information is used to shape Next.js' roadmap and prioritize features.
-You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-[36mhttps://nextjs.org/telemetry[39m
-
- [32m[1m✓[22m[39m Ready in 1166ms
+ [32m[1m✓[22m[39m Ready in 1812ms
  [37m[1m○[22m[39m Compiling / ...
- [32m[1m✓[22m[39m Compiled / in 3.2s (1206 modules)
- GET / [32m200[39m in 3433ms
+ [32m[1m✓[22m[39m Compiled / in 3.3s (1206 modules)
+ GET / [32m200[39m in 3472ms
  [37m[1m○[22m[39m Compiling /api/auth/[...nextauth] ...
- [32m[1m✓[22m[39m Compiled /about in 3.7s (829 modules)
- [32m[1m✓[22m[39m Compiled in 387ms (603 modules)
+ [32m[1m✓[22m[39m Compiled /api/auth/[...nextauth] in 4.4s (829 modules)
 [next-auth][warn][NEXTAUTH_URL] 
 https://next-auth.js.org/warnings#nextauth_url
- GET /api/auth/session [32m200[39m in 4560ms
- GET /api/auth/session [32m200[39m in 13ms
- GET /api/auth/providers [32m200[39m in 14ms
- GET /api/auth/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2F [32m200[39m in 10ms
- GET / [32m200[39m in 83ms
- [32m[1m✓[22m[39m Compiled /middleware in 498ms (178 modules)
- GET /api/auth/signin?callbackUrl=%2Fdashboard [32m200[39m in 8ms
- POST /api/auth/callback/credentials [34m302[39m in 18ms
- [32m[1m✓[22m[39m Compiled /dashboard in 421ms (1424 modules)
- GET /dashboard [32m200[39m in 516ms
-[next-auth][warn][NEXTAUTH_URL] 
-https://next-auth.js.org/warnings#nextauth_url
- GET /api/auth/session [32m200[39m in 88ms
- GET /api/auth/session [32m200[39m in 15ms
- GET /api/auth/session [32m200[39m in 26ms
- GET /api/auth/session [32m200[39m in 18ms
- GET /api/auth/session [32m200[39m in 18ms
- GET /api/auth/session [32m200[39m in 21ms
- GET /api/auth/csrf [32m200[39m in 16ms
- POST /api/auth/signout [32m200[39m in 10ms
- GET /api/auth/signin?callbackUrl=%2Fdashboard [32m200[39m in 9ms
+ GET /api/auth/session [32m200[39m in 4847ms
+ GET /api/auth/session [32m200[39m in 16ms
+ GET /api/auth/session [32m200[39m in 14ms
+ GET /api/auth/session [32m200[39m in 8ms
+ GET /api/auth/session [32m200[39m in 9ms
 [?25h
