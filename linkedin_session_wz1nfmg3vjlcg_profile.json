@@ -1,0 +1,17 @@
+{
+  "name": "Linus Wang",
+  "first_name": "Linus",
+  "last_name": "Wang",
+  "headline": "Student at University of Michigan",
+  "location": "",
+  "public_identifier": "linus-wang",
+  "profile_url": "https://linkedin.com/in/linus-wang",
+  "student": true,
+  "university": "University of Michigan",
+  "academic_year": "Freshman",
+  "major": "N/A",
+  "education": [],
+  "academic_roles": [],
+  "current_position": "Artificial Intelligence Software Developer",
+  "current_company": "CLAWS UM"
+}

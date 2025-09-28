@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Container from '../../components/Container';
 import Button from '../../components/Button';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useToast, ToastContainer } from '../../components/Toast';
 // Import Candidate type locally since the shared package isn't properly linked
 type Candidate = {
   id: string;
@@ -51,6 +52,9 @@ export default function DashboardPage() {
   // LinkedIn Authentication State
   const [auth, setAuth] = useState<AuthState>({ isAuthenticated: false });
   const [authLoading, setAuthLoading] = useState(false);
+
+  // Toast notifications
+  const { toasts, removeToast, showSuccess, showError } = useToast();
 
   // Store timeout IDs for cleanup
   const timeoutIds = React.useRef<NodeJS.Timeout[]>([]);
@@ -155,7 +159,7 @@ export default function DashboardPage() {
 
   const runSearch = async () => {
     if (!auth.isAuthenticated || !auth.sessionId) {
-      alert('Please connect your LinkedIn account first.');
+      showError('Authentication required', 'Please connect your LinkedIn account first.');
       return;
     }
 
@@ -191,7 +195,7 @@ export default function DashboardPage() {
         console.log(`📊 Found ${data.results?.length || 0} profiles from source: ${data.source}`);
         
         if (data.results?.length === 0) {
-          alert('No profiles found. This might be due to LinkedIn authentication issues or no matching profiles.');
+          showError('No profiles found', 'This might be due to LinkedIn authentication issues or no matching profiles.');
         } else {
           // Start gradual population after API call completes
           populateResultsGradually(data.results || []);
@@ -202,14 +206,14 @@ export default function DashboardPage() {
         
         // Show user-friendly error message
         if (res.status === 500) {
-          alert(`LinkedIn extraction failed. This could be due to:\n• LinkedIn rate limiting\n• Network issues\n• Invalid search parameters\n\nPlease try again in a few minutes.`);
+          showError('LinkedIn extraction failed', `This could be due to:\n• LinkedIn rate limiting\n• Network issues\n• Invalid search parameters\n\nPlease try again in a few minutes.`);
         } else {
-          alert(`Search failed: ${errorData.error || 'Unknown error'}`);
+          showError('Search failed', errorData.error || 'Unknown error');
         }
       }
     } catch (error) {
       console.error('Search error:', error);
-      alert('Network error. Please try again.');
+      showError('Network error', 'Please try again.');
     } finally {
       setLoading(false);
     }
@@ -236,6 +240,7 @@ export default function DashboardPage() {
       const data = await res.json();
       setDraft(data.body);
       setSenderProfile(data.senderProfile);
+      showSuccess('Message generated successfully!', `Personalized LinkedIn message for ${candidate.name} is ready.`);
     } catch (error) {
       console.error('Error generating message:', error);
       setDraft('Sorry, there was an error generating your personalized message. Please try again.');
@@ -265,6 +270,7 @@ export default function DashboardPage() {
       const data = await res.json();
       setDraft(data.body);
       setSenderProfile(data.senderProfile);
+      showSuccess('Email draft generated successfully!', `Personalized email for ${candidate.name} is ready to send.`);
     } catch (error) {
       console.error('Error generating email:', error);
       setDraft('Sorry, there was an error generating your personalized email. Please try again.');
@@ -275,7 +281,7 @@ export default function DashboardPage() {
 
   const sendEmailWithAgentMail = async (candidate: Candidate) => {
     if (!draft.trim()) {
-      alert('Please generate a message first');
+      showError('Message required', 'Please generate a message first');
       return;
     }
 
@@ -300,14 +306,22 @@ export default function DashboardPage() {
       const data = await res.json();
 
       if (res.ok && data.success) {
-        alert(`✅ Email sent successfully via AgentMail!\n\nEmail routed to: linusaw@umich.edu\nOriginal recipient: ${candidate.name} (${candidate.email})\nMessage ID: ${data.messageId}`);
+        showSuccess(
+          'Email sent successfully!',
+          `Email routed to: linusaw@umich.edu\nOriginal recipient: ${candidate.name} (${candidate.email || 'test@example.com'})\nMessage ID: ${data.messageId}`,
+          8000
+        );
         setShowEmailPopup(false);
       } else {
-        alert(`❌ Failed to send email: ${data.error || 'Unknown error'}`);
+        showError(
+          'Failed to send email',
+          data.error || 'Unknown error occurred',
+          6000
+        );
       }
     } catch (error) {
       console.error('Error sending email:', error);
-      alert('Network error. Please try again.');
+      showError('Network error', 'Please try again.');
     } finally {
       setEmailSending(false);
     }
@@ -1048,6 +1062,7 @@ export default function DashboardPage() {
           )}
         </AnimatePresence>
       </Container>
+      <ToastContainer toasts={toasts} onClose={removeToast} />
     </section>
   );
 }

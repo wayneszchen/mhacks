@@ -1837,44 +1837,11 @@ app.post('/email/send', async (req, reply) => {
       app.log.info(`✅ Created AgentMail inbox: ${inbox.inbox_id}`);
     }
 
-    // 2. Generate personalized email content
+    // 2. Use the provided email content (already personalized from frontend)
     let emailHtml = message;
-    let emailSubject = subject || 'Quick Connect';
+    let emailSubject = subject || `Quick connect - ${candidateName}`;
 
-    // Try to generate personalized content if we have session data
-    if (sessionId && candidateName) {
-      try {
-        const personalizedMessage = await generatePersonalizedMessage({
-          senderProfile: {
-            name: 'Demo User', // TODO: Get from user profile
-            headline: 'Looking to connect',
-            current_company: '',
-            university: '',
-            summary: '',
-            skills: [],
-            experiences: [],
-            schools: []
-          },
-          receiverProfile: {
-            name: candidateName,
-            title: '',
-            company: '',
-            location: '',
-            summary: '',
-            skills: '',
-            schools: '',
-            experience: ''
-          },
-          tone: tone as any,
-          channel: 'email'
-        });
-
-        emailHtml = personalizedMessage;
-        emailSubject = subject || `Quick connect - ${candidateName}`;
-      } catch (error) {
-        app.log.warn('Failed to generate personalized message, using provided message');
-      }
-    }
+    app.log.info(`📝 Using provided message content (${emailHtml.length} chars): ${emailHtml.substring(0, 100)}...`);
 
     // 3. Enhance email content to show original recipient information (dev mode only)
     let enhancedEmailHtml = emailHtml;

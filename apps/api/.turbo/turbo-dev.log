@@ -3,394 +3,79 @@
 > api@0.1.0 dev
 > ts-node-dev --respawn --transpile-only src/main.ts
 
-[1G[0K[[36mINFO[0m] [30;1m10:20:15[0m ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.4.5)
-{"level":50,"time":1759069215722,"pid":585610,"hostname":"DESKTOP-PMK73LQ","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 127.0.0.1:4000","stack":"Error: listen EADDRINUSE: address already in use 127.0.0.1:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1939:16)\n    at listenInCluster (node:net:1996:12)\n    at GetAddrInfoReqWrap.callback (node:net:2205:7)\n    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:134:8)","code":"EADDRINUSE","errno":-98,"syscall":"listen","address":"127.0.0.1","port":4000},"msg":"listen EADDRINUSE: address already in use 127.0.0.1:4000"}
-[[36mINFO[0m] [30;1m10:28:58[0m Restarting: /home/linusaw/mhacks/apps/api/src/services/drafting.ts has been modified
-{"level":30,"time":1759069739104,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"Server listening at http://127.0.0.1:4000"}
-{"level":30,"time":1759069739105,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"API listening on http://127.0.0.1:4000"}
-{"level":30,"time":1759069744785,"pid":591899,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","req":{"method":"POST","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":54814},"msg":"incoming request"}
-{"level":30,"time":1759069744788,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"📁 Loaded and cached sender profile: Linus Wang from linkedin_session_oo95djmg3rsyj8_profile.json"}
-🚀 generatePersonalizedMessage called for: Sarah Chen
-🔑 API Key check: AIzaSyDrRT...
-🔥 Gemini raw output: {
-  "message": "Hi Sarah, I'm Linus Wang, a student at University of Michigan. \nI'm reaching out because I'm very impressed by your experience as a Senior Software Engineer at Google. As a student interested in software engineering, I'd love to learn more about your career path and insights into the industry.\nWould you be open to a brief chat sometime in the coming weeks?\n\nThank you,\nLinus Wang",
-  "connection_note": "Hi Sarah, I'm Linus Wang, a student at UMich. I'm very impressed by your work as a Senior Software Engineer at Google and would love to connect and learn from your experience.",
-  "total_personalization_score": 0.0
-}
-✅ Generated personalized message with Gemini
-{"level":30,"time":1759069756072,"pid":591899,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","res":{"statusCode":200},"responseTime":11287.247317001224,"msg":"request completed"}
-{"level":30,"time":1759069762825,"pid":591899,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","req":{"method":"POST","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":54114},"msg":"incoming request"}
-🚀 generatePersonalizedMessage called for: Alex
-🔑 API Key check: AIzaSyDrRT...
-{"level":30,"time":1759069762826,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"✅ Using cached profile for session oo95djmg3rsyj8"}
-🔥 Gemini raw output: {
-  "message": "Hi Alex, I'm Linus Wang, a student at University of Michigan. I'm reaching out because I'm very interested in product management, especially at a company like Meta. Your role as a Product Manager caught my attention, and I'm keen to learn more about your experiences. Would you be open to a brief chat sometime to share insights, or perhaps answer a quick question about your career path? Thank you,\nLinus Wang",
-  "connection_note": "Hi Alex, I'm Linus Wang, a student at UMich. I'm very interested in Product Management at Meta and would love to connect and learn from your experience. Thanks!",
-  "total_personalization_score": 0.0
-}
-✅ Generated personalized message with Gemini
-{"level":30,"time":1759069770020,"pid":591899,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","res":{"statusCode":200},"responseTime":7195.395984992385,"msg":"request completed"}
-{"level":30,"time":1759069801308,"pid":591899,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","req":{"method":"POST","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":55772},"msg":"incoming request"}
-🚀 generatePersonalizedMessage called for: Test User
-🔑 API Key check: AIzaSyDrRT...
-{"level":30,"time":1759069801309,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"✅ Using cached profile for session oo95djmg3rsyj8"}
-🔥 Gemini raw output: {
-  "message": "Hi Test User, I'm Linus Wang, a student at the University of Michigan.\n\nI came across your profile and was interested to learn more about your experience as an Engineer at TestCorp. As I explore career paths, I'm keen to understand different roles in the industry.\n\nWould you be open to a brief chat sometime to share insights about your work? I'd appreciate any guidance you could offer.\n\nThank you,\nLinus Wang",
-  "connection_note": "Hi Test User, I'm Linus Wang, a student at UMich. I'm interested in your role as an Engineer at TestCorp and would love to connect to learn more about your career path. Thanks!",
-  "total_personalization_score": 0.0
-}
-✅ Generated personalized message with Gemini
-{"level":30,"time":1759069812575,"pid":591899,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","res":{"statusCode":200},"responseTime":11267.002326011658,"msg":"request completed"}
-{"level":30,"time":1759069970295,"pid":591899,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":34394},"msg":"incoming request"}
-{"level":30,"time":1759069970296,"pid":591899,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","res":{"statusCode":204},"responseTime":0.6170980036258698,"msg":"request completed"}
-{"level":30,"time":1759069970298,"pid":591899,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":34394},"msg":"incoming request"}
-{"level":30,"time":1759069970299,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"Recovered session from file: linkedin_session_oo95djmg3rsyj8.pkl"}
-{"level":30,"time":1759069970300,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"Parsed prompt \"Find Software Engineers at Google\" -> Company: \"Google\", Role: \"Find Software Engineers\", Location: \"USA\""}
-{"level":30,"time":1759069970301,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"Deleted old CSV file: google_find_software_engineers_staff.csv"}
-{"level":30,"time":1759069970301,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"Running StaffSpy for: Find Software Engineers at Google using session oo95djmg3rsyj8"}
-{"level":30,"time":1759069970301,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"Running LinkedIn scrape: Find Software Engineers at Google"}
-{"level":30,"time":1759069993436,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"Scrape stdout: 🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"csv_file\": \"google_find_software_engineers_staff.csv\", \"message\": \"Scraping completed successfully\"}"}
-{"level":30,"time":1759069993560,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"CSV parsing: Found 25 records with 45 fields each"}
-{"level":30,"time":1759069993561,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"Successfully parsed 20 candidates from CSV"}
-{"level":30,"time":1759069993563,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"Using user profile for scoring: Linus Wang (University of Michigan)"}
+[1G[0K[[36mINFO[0m] [30;1m11:46:58[0m ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.4.5)
+{"level":30,"time":1759074419556,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1759074419557,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"API listening on http://127.0.0.1:4000"}
+{"level":30,"time":1759074508239,"pid":620344,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","req":{"method":"POST","url":"/linkedin/auth","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":58706},"msg":"incoming request"}
+{"level":30,"time":1759074508240,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"🔐 Creating new LinkedIn authentication session: linkedin_session_wz1nfmg3vjlcg.pkl"}
+{"level":30,"time":1759074508240,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"Starting LinkedIn browser authentication..."}
+{"level":30,"time":1759074508240,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"Initializing LinkedIn account with session file: linkedin_session_wz1nfmg3vjlcg.pkl"}
+{"level":30,"time":1759074575974,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn auth stdout: 🔄 Waiting for LinkedIn login completion (including any captcha)...\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgGv-4LHzwW_1QAAAZmRA3lzZCHdaMY6SRUDNMHNccsr9xgir_opYUfAduLew5BV2NJ70tM7jDVenaauOa4SmvC2EWAgZw?ut=1ArQcaLQUlmXY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgGv-4LHzwW_1QAAAZmRA3lzZCHdaMY6SRUDNMHNccsr9xgir_opYUfAduLew5BV2NJ70tM7jDVenaauOa4SmvC2EWAgZw?ut=1ArQcaLQUlmXY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgGv-4LHzwW_1QAAAZmRA3lzZCHdaMY6SRUDNMHNccsr9xgir_opYUfAduLew5BV2NJ70tM7jDVenaauOa4SmvC2EWAgZw?ut=1ArQcaLQUlmXY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgGv-4LHzwW_1QAAAZmRA3lzZCHdaMY6SRUDNMHNccsr9xgir_opYUfAduLew5BV2NJ70tM7jDVenaauOa4SmvC2EWAgZw?ut=1ArQcaLQUlmXY1\n✅ LinkedIn login and captcha completed successfully!\n🍪 Extracting LinkedIn session cookies...\n🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"message\": \"LinkedIn authentication completed successfully\", \"session_file\": \"linkedin_session_wz1nfmg3vjlcg.pkl\"}"}
+{"level":30,"time":1759074576128,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication process finished with code: 0"}
+{"level":30,"time":1759074576128,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication result: success"}
+{"level":30,"time":1759074576130,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"✅ Loaded user profile: Linus Wang (University of Michigan)"}
+{"level":30,"time":1759074576130,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication successful"}
+{"level":30,"time":1759074576136,"pid":620344,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","res":{"statusCode":200},"responseTime":67896.38217699528,"msg":"request completed"}
+{"level":30,"time":1759074585771,"pid":620344,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":58706},"msg":"incoming request"}
+{"level":30,"time":1759074585773,"pid":620344,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","res":{"statusCode":204},"responseTime":1.6238030046224594,"msg":"request completed"}
+{"level":30,"time":1759074585777,"pid":620344,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":58706},"msg":"incoming request"}
+{"level":30,"time":1759074585781,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"Parsed prompt \"SWE at Amazon\" -> Company: \"Amazon\", Role: \"SWE\", Location: \"USA\""}
+{"level":30,"time":1759074585782,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"Deleted old CSV file: google_find_software_engineers_staff.csv"}
+{"level":30,"time":1759074585782,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"Running StaffSpy for: SWE at Amazon using session wz1nfmg3vjlcg"}
+{"level":30,"time":1759074585782,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"Running LinkedIn scrape: SWE at Amazon"}
+{"level":30,"time":1759074611648,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"Scrape stdout: 🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"csv_file\": \"amazon_swe_staff.csv\", \"message\": \"Scraping completed successfully\"}"}
+{"level":30,"time":1759074611810,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"CSV parsing: Found 25 records with 45 fields each"}
+{"level":30,"time":1759074611813,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"Successfully parsed 20 candidates from CSV"}
+{"level":30,"time":1759074611814,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"Using user profile for scoring: Linus Wang (University of Michigan)"}
 ✅ UPDATED: Using enhanced fallback scoring (LLM completely disabled)
-{"level":30,"time":1759069993564,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"Found 20 candidates needing email enrichment"}
-Apollo bulk enrichment error: Error: Apollo bulk enrich error: 401
-    at Object.bulkEnrichEmails [90m(/home/linusaw/mhacks/apps/api/[39msrc/providers/apollo.ts:311:15[90m)[39m
-[90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
-    at Object.<anonymous> [90m(/home/linusaw/mhacks/apps/api/[39msrc/main.ts:1312:39[90m)[39m
-Apollo bulk error for Moustafa A., generating mock email as fallback
-Apollo bulk error for Aman Shaikh, generating mock email as fallback
-Apollo bulk error for Devendra Dahiphale, generating mock email as fallback
-Apollo bulk error for Agrim Bharat, generating mock email as fallback
-Apollo bulk error for Mehrdad Khani, generating mock email as fallback
-Apollo bulk error for Aman Singh, generating mock email as fallback
-Apollo bulk error for Maitri Mangal, generating mock email as fallback
-Apollo bulk error for Ziyang Wang, generating mock email as fallback
-Apollo bulk error for Chun Wang, generating mock email as fallback
-Apollo bulk error for Karn Vadaliya, generating mock email as fallback
-Apollo bulk error for Peng Cao, generating mock email as fallback
-Apollo bulk error for Usama Bin Shafqat, generating mock email as fallback
-Apollo bulk error for Samriddhi Srivastava, generating mock email as fallback
-Apollo bulk error for David Ulloa, generating mock email as fallback
-Apollo bulk error for Megan Dass, generating mock email as fallback
-Apollo bulk error for Cindy Sun, generating mock email as fallback
-Apollo bulk error for Tae Woo Kim, generating mock email as fallback
-Apollo bulk error for Jacob Abramowitz, generating mock email as fallback
-Apollo bulk error for Jeffrey Rosas, generating mock email as fallback
-Apollo bulk error for Abhinav Kolli, generating mock email as fallback
-{"level":30,"time":1759069993804,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"Email enrichment complete: 0 emails found"}
-{"level":30,"time":1759069993807,"pid":591899,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","res":{"statusCode":200},"responseTime":23508.699730992317,"msg":"request completed"}
-{"level":30,"time":1759069998280,"pid":591899,"hostname":"DESKTOP-PMK73LQ","reqId":"req-6","req":{"method":"OPTIONS","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":34394},"msg":"incoming request"}
-{"level":30,"time":1759069998280,"pid":591899,"hostname":"DESKTOP-PMK73LQ","reqId":"req-6","res":{"statusCode":204},"responseTime":0.3081999868154526,"msg":"request completed"}
-{"level":30,"time":1759069998283,"pid":591899,"hostname":"DESKTOP-PMK73LQ","reqId":"req-7","req":{"method":"POST","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":34394},"msg":"incoming request"}
-{"level":30,"time":1759069998323,"pid":591899,"hostname":"DESKTOP-PMK73LQ","msg":"✅ Using cached profile for session oo95djmg3rsyj8"}
-🚀 generatePersonalizedMessage called for: Moustafa A.
-🔑 API Key check: AIzaSyDrRT...
-🔥 Gemini raw output: {
-  "message": "Hi Moustafa, I'm Linus Wang, a student at the University of Michigan.\nI'm reaching out because I'm very impressed by your work as a Senior Software Engineer at Google Research, particularly your focus on conversational recommendations and the security of machine learning models from your UCLA Ph.D.\nI'd be grateful for a brief chat to learn more about your career path and insights into applying AI to real-world problems.\nThank you,\nLinus Wang",
-  "connection_note": "Hi Moustafa, I'm Linus Wang, a UMich student. Impressed by your AI work at Google Research and your UCLA Ph.D. research. Would love to connect and learn from your experience!",
-  "total_personalization_score": 0.5
-}
-✅ Generated personalized message with Gemini
-{"level":30,"time":1759070017107,"pid":591899,"hostname":"DESKTOP-PMK73LQ","reqId":"req-7","res":{"statusCode":200},"responseTime":18824.82820300758,"msg":"request completed"}
-[[36mINFO[0m] [30;1m10:33:59[0m Restarting: /home/linusaw/mhacks/apps/api/src/main.ts has been modified
-{"level":30,"time":1759070041122,"pid":595834,"hostname":"DESKTOP-PMK73LQ","msg":"Server listening at http://127.0.0.1:4000"}
-{"level":30,"time":1759070041125,"pid":595834,"hostname":"DESKTOP-PMK73LQ","msg":"API listening on http://127.0.0.1:4000"}
-{"level":30,"time":1759070050825,"pid":595834,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","req":{"method":"OPTIONS","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":37550},"msg":"incoming request"}
-{"level":30,"time":1759070050829,"pid":595834,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","res":{"statusCode":204},"responseTime":2.9774999916553497,"msg":"request completed"}
-{"level":30,"time":1759070050830,"pid":595834,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","req":{"method":"POST","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":37550},"msg":"incoming request"}
-{"level":40,"time":1759070050873,"pid":595834,"hostname":"DESKTOP-PMK73LQ","msg":"Could not load profile file: linkedin_session_oo95djmg3rsyj8_profile.json"}
-🚀 generatePersonalizedMessage called for: Moustafa A.
-🔑 API Key check: AIzaSyDrRT...
-{"level":30,"time":1759070057927,"pid":595834,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","req":{"method":"OPTIONS","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":37566},"msg":"incoming request"}
-{"level":30,"time":1759070057928,"pid":595834,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","res":{"statusCode":204},"responseTime":0.6087969988584518,"msg":"request completed"}
-{"level":30,"time":1759070057931,"pid":595834,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","req":{"method":"POST","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":37566},"msg":"incoming request"}
-{"level":40,"time":1759070057972,"pid":595834,"hostname":"DESKTOP-PMK73LQ","msg":"Could not load profile file: linkedin_session_oo95djmg3rsyj8_profile.json"}
-🚀 generatePersonalizedMessage called for: Moustafa A.
-🔑 API Key check: AIzaSyDrRT...
-🔥 Gemini raw output: {
-  "message": "Hi Moustafa, I'm Demo User, a software engineer exploring opportunities. \nI noticed your role as a Senior Software Engineer at Google Research, which resonated with my own background in software engineering. I'm currently exploring opportunities in cloud and was hoping to connect with experienced professionals like yourself. \nWould you be open to a brief chat sometime to share insights on your work at Google?\n\nThank you,\nDemo User",
-  "connection_note": "Hi Moustafa, I'm Demo User, a software engineer. I noticed your Senior Software Engineer role at Google Research and my own software engineering background. Exploring cloud opportunities and hoping to connect for insights. Thanks!",
-  "total_personalization_score": 1.0
-}
-✅ Generated personalized message with Gemini
-{"level":30,"time":1759070062038,"pid":595834,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","res":{"statusCode":200},"responseTime":11207.690750986338,"msg":"request completed"}
-🔥 Gemini raw output: {
-  "message": "Hi Moustafa, I'm Demo User, a software engineer exploring opportunities. I noticed your role as a Senior Software Engineer at Google Research. As a fellow software engineer, I'm particularly interested in your work with AI/ML and conversational recommendations. I'm currently exploring opportunities in cloud and would appreciate a brief chat to learn more about your experience at Google. Would you be open to connecting for a quick virtual coffee?\nThank you,\nDemo User",
-  "connection_note": "Hi Moustafa, I'm Demo User, a software engineer. I'm impressed by your work at Google Research and exploring cloud opportunities. Would love to connect and learn from your experience.",
-  "total_personalization_score": 1.0
-}
-✅ Generated personalized message with Gemini
-{"level":30,"time":1759070067492,"pid":595834,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","res":{"statusCode":200},"responseTime":9561.212163999677,"msg":"request completed"}
-{"level":30,"time":1759070068214,"pid":595834,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","req":{"method":"OPTIONS","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":37566},"msg":"incoming request"}
-{"level":30,"time":1759070068215,"pid":595834,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","res":{"statusCode":204},"responseTime":1.1785989999771118,"msg":"request completed"}
-{"level":30,"time":1759070068218,"pid":595834,"hostname":"DESKTOP-PMK73LQ","reqId":"req-6","req":{"method":"POST","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":37566},"msg":"incoming request"}
-{"level":40,"time":1759070068260,"pid":595834,"hostname":"DESKTOP-PMK73LQ","msg":"Could not load profile file: linkedin_session_oo95djmg3rsyj8_profile.json"}
-🚀 generatePersonalizedMessage called for: Moustafa A.
-🔑 API Key check: AIzaSyDrRT...
-🔥 Gemini raw output: {
-  "message": "Hi Moustafa, I'm Demo User, a software engineer exploring opportunities. I noticed your role as a Senior Software Engineer at Google Research, and as a fellow software engineer, I'm very impressed by your work, especially your background in AI and machine learning. I'm currently exploring opportunities in cloud and would love to learn more about your career path at Google. Would you be open to a brief chat sometime next week?\nThank you,\nDemo User",
-  "connection_note": "Hi Moustafa, I'm Demo User, a software engineer exploring opportunities. As a fellow software engineer, I'm impressed by your work at Google Research. Would love to connect and learn from your experience.",
-  "total_personalization_score": 1.0
-}
-✅ Generated personalized message with Gemini
-{"level":30,"time":1759070077406,"pid":595834,"hostname":"DESKTOP-PMK73LQ","reqId":"req-6","res":{"statusCode":200},"responseTime":9187.879433989525,"msg":"request completed"}
-{"level":30,"time":1759070084539,"pid":595834,"hostname":"DESKTOP-PMK73LQ","reqId":"req-7","req":{"method":"OPTIONS","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":37566},"msg":"incoming request"}
-{"level":30,"time":1759070084540,"pid":595834,"hostname":"DESKTOP-PMK73LQ","reqId":"req-7","res":{"statusCode":204},"responseTime":0.45309899747371674,"msg":"request completed"}
-{"level":30,"time":1759070084542,"pid":595834,"hostname":"DESKTOP-PMK73LQ","reqId":"req-8","req":{"method":"POST","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":37566},"msg":"incoming request"}
-🚀 generatePersonalizedMessage called for: Aman Shaikh
-{"level":40,"time":1759070084584,"pid":595834,"hostname":"DESKTOP-PMK73LQ","msg":"Could not load profile file: linkedin_session_oo95djmg3rsyj8_profile.json"}
-🔑 API Key check: AIzaSyDrRT...
-[[36mINFO[0m] [30;1m10:34:50[0m Restarting: /home/linusaw/mhacks/apps/api/src/main.ts has been modified
-{"level":30,"time":1759070091528,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Server listening at http://127.0.0.1:4000"}
-{"level":30,"time":1759070091529,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"API listening on http://127.0.0.1:4000"}
-{"level":30,"time":1759070157410,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","req":{"method":"GET","url":"/linkedin/status","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":42134},"msg":"incoming request"}
-{"level":30,"time":1759070157411,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","msg":"Route GET:/linkedin/status not found"}
-{"level":30,"time":1759070157414,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","res":{"statusCode":404},"responseTime":3.6173020005226135,"msg":"request completed"}
-{"level":30,"time":1759070162697,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","req":{"method":"POST","url":"/linkedin/auth","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":48626},"msg":"incoming request"}
-{"level":30,"time":1759070162697,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"🔐 Creating new LinkedIn authentication session: linkedin_session_bd1yqbmg3sygax.pkl"}
-{"level":30,"time":1759070162698,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Starting LinkedIn browser authentication..."}
-{"level":30,"time":1759070162698,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Initializing LinkedIn account with session file: linkedin_session_bd1yqbmg3sygax.pkl"}
-{"level":30,"time":1759070187239,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn auth stdout: 🔄 Waiting for LinkedIn login completion (including any captcha)...\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n{\"success\": false, \"error\": \"Failed to initialize LinkedIn account: Message: invalid session id: session deleted as the browser has closed the connection\\nfrom disconnected: not connected to DevTools\\n  (Session info: chrome=140.0.7339.207); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception\\nStacktrace:\\n#0 0x5a995b700fba <unknown>\\n#1 0x5a995b1856d0 <unknown>\\n#2 0x5a995b16c44e <unknown>\\n#3 0x5a995b194259 <unknown>\\n#4 0x5a995b2052bf <unknown>\\n#5 0x5a995b222502 <unknown>\\n#6 0x5a995b1fcc03 <unknown>\\n#7 0x5a995b1c97a8 <unknown>\\n#8 0x5a995b1ca421 <unknown>\\n#9 0x5a995b6c5b28 <unknown>\\n#10 0x5a995b6c987f <unknown>\\n#11 0x5a995b6adc49 <unknown>\\n#12 0x5a995b6ca405 <unknown>\\n#13 0x5a995b6934ff <unknown>\\n#14 0x5a995b6ee258 <unknown>\\n#15 0x5a995b6ee432 <unknown>\\n#16 0x5a995b6fffa3 <unknown>\\n#17 0x752b3249caa4 <unknown>\\n#18 0x752b32529c6c <unknown>\\n\"}"}
-{"level":30,"time":1759070187393,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication process finished with code: 0"}
-{"level":30,"time":1759070187393,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication result: failed"}
-{"level":40,"time":1759070187393,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication failed: Failed to initialize LinkedIn account: Message: invalid session id: session deleted as the browser has closed the connection\nfrom disconnected: not connected to DevTools\n  (Session info: chrome=140.0.7339.207); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception\nStacktrace:\n#0 0x5a995b700fba <unknown>\n#1 0x5a995b1856d0 <unknown>\n#2 0x5a995b16c44e <unknown>\n#3 0x5a995b194259 <unknown>\n#4 0x5a995b2052bf <unknown>\n#5 0x5a995b222502 <unknown>\n#6 0x5a995b1fcc03 <unknown>\n#7 0x5a995b1c97a8 <unknown>\n#8 0x5a995b1ca421 <unknown>\n#9 0x5a995b6c5b28 <unknown>\n#10 0x5a995b6c987f <unknown>\n#11 0x5a995b6adc49 <unknown>\n#12 0x5a995b6ca405 <unknown>\n#13 0x5a995b6934ff <unknown>\n#14 0x5a995b6ee258 <unknown>\n#15 0x5a995b6ee432 <unknown>\n#16 0x5a995b6fffa3 <unknown>\n#17 0x752b3249caa4 <unknown>\n#18 0x752b32529c6c <unknown>\n"}
-{"level":30,"time":1759070187394,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","res":{"statusCode":401},"responseTime":24696.997507989407,"msg":"request completed"}
-{"level":30,"time":1759070205687,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","req":{"method":"POST","url":"/linkedin/auth","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":47272},"msg":"incoming request"}
-{"level":30,"time":1759070205688,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"🔐 Creating new LinkedIn authentication session: linkedin_session_oc29btmg3szdh4.pkl"}
-{"level":30,"time":1759070205688,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Starting LinkedIn browser authentication..."}
-{"level":30,"time":1759070205688,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Initializing LinkedIn account with session file: linkedin_session_oc29btmg3szdh4.pkl"}
-{"level":30,"time":1759070247449,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn auth stdout: 🔄 Waiting for LinkedIn login completion (including any captcha)...\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgG-POrsHNREFAAAAZmQwW2zsEawKFiUjR4E5IBUgOJgjf4_XXrnXVob09c43JVT4dNWP1h2DYUbuCFhfjs_v9pJ2R0d5Q?ut=2ZDdUj13fcmHY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgG-POrsHNREFAAAAZmQwW2zsEawKFiUjR4E5IBUgOJgjf4_XXrnXVob09c43JVT4dNWP1h2DYUbuCFhfjs_v9pJ2R0d5Q?ut=2ZDdUj13fcmHY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgG-POrsHNREFAAAAZmQwW2zsEawKFiUjR4E5IBUgOJgjf4_XXrnXVob09c43JVT4dNWP1h2DYUbuCFhfjs_v9pJ2R0d5Q?ut=2ZDdUj13fcmHY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgG-POrsHNREFAAAAZmQwW2zsEawKFiUjR4E5IBUgOJgjf4_XXrnXVob09c43JVT4dNWP1h2DYUbuCFhfjs_v9pJ2R0d5Q?ut=2ZDdUj13fcmHY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgG-POrsHNREFAAAAZmQwW2zsEawKFiUjR4E5IBUgOJgjf4_XXrnXVob09c43JVT4dNWP1h2DYUbuCFhfjs_v9pJ2R0d5Q?ut=2ZDdUj13fcmHY1\n✅ LinkedIn login and captcha completed successfully!\n🍪 Extracting LinkedIn session cookies...\n🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"message\": \"LinkedIn authentication completed successfully\", \"session_file\": \"linkedin_session_oc29btmg3szdh4.pkl\"}"}
-{"level":30,"time":1759070247604,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication process finished with code: 0"}
-{"level":30,"time":1759070247604,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication result: success"}
-{"level":30,"time":1759070247605,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"✅ Loaded user profile: Linus Wang (University of Michigan)"}
-{"level":30,"time":1759070247605,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication successful"}
-{"level":30,"time":1759070247606,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","res":{"statusCode":200},"responseTime":41918.47893598676,"msg":"request completed"}
-{"level":30,"time":1759070293884,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","req":{"method":"POST","url":"/linkedin/auth","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":42910},"msg":"incoming request"}
-{"level":30,"time":1759070293884,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"🔐 Creating new LinkedIn authentication session: linkedin_session_e6q2pmg3t19j0.pkl"}
-{"level":30,"time":1759070293884,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Starting LinkedIn browser authentication..."}
-{"level":30,"time":1759070293884,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Initializing LinkedIn account with session file: linkedin_session_e6q2pmg3t19j0.pkl"}
-{"level":30,"time":1759070323984,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn auth stdout: 🔄 Waiting for LinkedIn login completion (including any captcha)...\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgFywF5Uv0O2twAAAZmQwrJ1ksm0tb1aOqvEvQ82oxEySacBhZs4JJH4eC12jxgbRNDoBA9Y3bFkz9VxAO3-F8PWXrqXAg?ut=1DLNGo0nPemHY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgFywF5Uv0O2twAAAZmQwrJ1ksm0tb1aOqvEvQ82oxEySacBhZs4JJH4eC12jxgbRNDoBA9Y3bFkz9VxAO3-F8PWXrqXAg?ut=1DLNGo0nPemHY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgFywF5Uv0O2twAAAZmQwrJ1ksm0tb1aOqvEvQ82oxEySacBhZs4JJH4eC12jxgbRNDoBA9Y3bFkz9VxAO3-F8PWXrqXAg?ut=1DLNGo0nPemHY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgFywF5Uv0O2twAAAZmQwrJ1ksm0tb1aOqvEvQ82oxEySacBhZs4JJH4eC12jxgbRNDoBA9Y3bFkz9VxAO3-F8PWXrqXAg?ut=1DLNGo0nPemHY1\n✅ LinkedIn login and captcha completed successfully!\n🍪 Extracting LinkedIn session cookies...\n🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"message\": \"LinkedIn authentication completed successfully\", \"session_file\": \"linkedin_session_e6q2pmg3t19j0.pkl\"}"}
-{"level":30,"time":1759070324101,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication process finished with code: 0"}
-{"level":30,"time":1759070324101,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication result: success"}
-{"level":30,"time":1759070324102,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"✅ Loaded user profile: Linus Wang (University of Michigan)"}
-{"level":30,"time":1759070324102,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication successful"}
-{"level":30,"time":1759070324103,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","res":{"statusCode":200},"responseTime":30218.885182991624,"msg":"request completed"}
-{"level":30,"time":1759070336681,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":42910},"msg":"incoming request"}
-{"level":30,"time":1759070336683,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","res":{"statusCode":204},"responseTime":1.2621999979019165,"msg":"request completed"}
-{"level":30,"time":1759070336685,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-6","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":42910},"msg":"incoming request"}
-{"level":30,"time":1759070336687,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Parsed prompt \"Find SWE at Meta\" -> Company: \"Meta\", Role: \"SWE\", Location: \"USA\""}
-{"level":30,"time":1759070336688,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Deleted old CSV file: google_find_software_engineers_staff.csv"}
-{"level":30,"time":1759070336688,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Running StaffSpy for: SWE at Meta using session e6q2pmg3t19j0"}
-{"level":30,"time":1759070336689,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Running LinkedIn scrape: SWE at Meta"}
-{"level":30,"time":1759070357949,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Scrape stdout: 🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"csv_file\": \"meta_swe_staff.csv\", \"message\": \"Scraping completed successfully\"}"}
-{"level":30,"time":1759070358077,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"CSV parsing: Found 25 records with 45 fields each"}
-{"level":30,"time":1759070358080,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Successfully parsed 20 candidates from CSV"}
-{"level":30,"time":1759070358081,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Using user profile for scoring: Linus Wang (University of Michigan)"}
-✅ UPDATED: Using enhanced fallback scoring (LLM completely disabled)
-🎓 MICHIGAN ALUMNI: Tiffany T. - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Anika Satapathy - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Oliver Wu - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Peiduo Liu - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Samantha Au - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Yinghui Hong - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Alexandra Mei Tan - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Lydia Kim - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Zhengwei Wang - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Ethan Tai - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Nikhil Patel - Score boost: +0.8
-{"level":30,"time":1759070358085,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Found 20 candidates needing email enrichment"}
-Apollo bulk enrichment error: Error: Apollo bulk enrich error: 401
-    at Object.bulkEnrichEmails [90m(/home/linusaw/mhacks/apps/api/[39msrc/providers/apollo.ts:311:15[90m)[39m
-[90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
-    at Object.<anonymous> [90m(/home/linusaw/mhacks/apps/api/[39msrc/main.ts:1286:39[90m)[39m
-Apollo bulk error for Tiffany T., generating mock email as fallback
-Apollo bulk error for Anika Satapathy, generating mock email as fallback
-Apollo bulk error for Oliver Wu, generating mock email as fallback
-Apollo bulk error for Peiduo Liu, generating mock email as fallback
-Apollo bulk error for Samantha Au, generating mock email as fallback
-Apollo bulk error for Yinghui Hong, generating mock email as fallback
-Apollo bulk error for Alexandra Mei Tan, generating mock email as fallback
-Apollo bulk error for Lydia Kim, generating mock email as fallback
-Apollo bulk error for Zhengwei Wang, generating mock email as fallback
-Apollo bulk error for Ethan Tai, generating mock email as fallback
-Apollo bulk error for Nikhil Patel, generating mock email as fallback
-Apollo bulk error for Loria Sun, generating mock email as fallback
-Apollo bulk error for Aarham Wasit Khan, generating mock email as fallback
-Apollo bulk error for Aneesha Kodati, generating mock email as fallback
-Apollo bulk error for Quan Le, generating mock email as fallback
-Apollo bulk error for Pranav Tiwari, generating mock email as fallback
-Apollo bulk error for Muhammad Mazhar, generating mock email as fallback
-Apollo bulk error for Anil Thapa, generating mock email as fallback
-Apollo bulk error for Ajay GC, generating mock email as fallback
-Apollo bulk error for Marmik Patel, generating mock email as fallback
-{"level":30,"time":1759070358401,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Email enrichment complete: 0 emails found"}
-{"level":30,"time":1759070358403,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-6","res":{"statusCode":200},"responseTime":21717.495407998562,"msg":"request completed"}
-{"level":30,"time":1759070415822,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-7","req":{"method":"OPTIONS","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":42910},"msg":"incoming request"}
-{"level":30,"time":1759070415823,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-7","res":{"statusCode":204},"responseTime":0.585999995470047,"msg":"request completed"}
-{"level":30,"time":1759070415826,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-8","req":{"method":"POST","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":42910},"msg":"incoming request"}
-{"level":30,"time":1759070415868,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"🚀 Using in-memory profile for session e6q2pmg3t19j0: Linus Wang"}
-🚀 generatePersonalizedMessage called for: Tiffany T.
-🔑 API Key check: AIzaSyDrRT...
-🔥 Gemini raw output: {
-  "message": "Hi Tiffany, I'm Linus Wang, a student at the University of Michigan.\n\nI'm reaching out as a fellow Wolverine, currently studying at UMich. Your career path as a Software Engineer at Meta is truly inspiring, and I'd love to learn more about your experiences.\n\nWould you be open to a brief virtual chat sometime to share insights on your journey?\n\nThank you,\nLinus Wang",
-  "connection_note": "Hi Tiffany, I'm Linus Wang, a fellow UMich student. Your SWE role at Meta is inspiring, and I'd love to connect and learn from your journey. Thanks!",
-  "total_personalization_score": 1.0
-}
-✅ Generated personalized message with Gemini
-{"level":30,"time":1759070424582,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-8","res":{"statusCode":200},"responseTime":8756.454309001565,"msg":"request completed"}
-{"level":30,"time":1759070452845,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-9","req":{"method":"OPTIONS","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":42910},"msg":"incoming request"}
-{"level":30,"time":1759070452846,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-9","res":{"statusCode":204},"responseTime":1.0259000062942505,"msg":"request completed"}
-{"level":30,"time":1759070452848,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-a","req":{"method":"POST","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":42910},"msg":"incoming request"}
-{"level":30,"time":1759070452891,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"🚀 Using in-memory profile for session e6q2pmg3t19j0: Linus Wang"}
-🚀 generatePersonalizedMessage called for: Tiffany T.
-🔑 API Key check: AIzaSyDrRT...
-🔥 Gemini raw output: {
-  "message": "Hi Tiffany, I'm Linus Wang, a student at the University of Michigan.\n\nI noticed we both share a connection to the University of Michigan, and I'm currently exploring career paths in software engineering. Your experience as a SWE at Meta is truly inspiring.\n\nI'd love to briefly connect and learn more about your journey from UMich to Meta, and perhaps gain some insights into the industry. Would you be open to a brief virtual chat sometime next week?\n\nThank you,\nLinus Wang",
-  "connection_note": "Hi Tiffany, I'm Linus Wang, a UMich student. I admire your journey from UMich to SWE at Meta and would love to connect and learn from your experience. Go Blue!",
-  "total_personalization_score": 1.0
-}
-✅ Generated personalized message with Gemini
-{"level":30,"time":1759070460798,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-a","res":{"statusCode":200},"responseTime":7949.429319009185,"msg":"request completed"}
-{"level":30,"time":1759070496869,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-b","req":{"method":"OPTIONS","url":"/email/send","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":42910},"msg":"incoming request"}
-{"level":30,"time":1759070496870,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-b","res":{"statusCode":204},"responseTime":0.5253999978303909,"msg":"request completed"}
-{"level":30,"time":1759070496873,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-c","req":{"method":"POST","url":"/email/send","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":42910},"msg":"incoming request"}
-{"level":30,"time":1759070496874,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"📧 Starting email send to linusaw@umich.edu (originally for tiffany.t.@meta.com) for user e6q2pmg3t19j0"}
-{"level":30,"time":1759070496882,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"Creating new AgentMail inbox for user"}
-Creating AgentMail inbox: user-e6q2pmg3
-✅ Created AgentMail inbox: user-e6q2pmg3@agentmail.to {
-  organization_id: [32m'c56c2527-aae6-5ea5-b4fb-bc376d277202'[39m,
-  pod_id: [32m'c56c2527-aae6-5ea5-b4fb-bc376d277202'[39m,
-  inbox_id: [32m'user-e6q2pmg3@agentmail.to'[39m,
-  display_name: [32m'Automated Outreach Agent'[39m,
-  updated_at: [32m'2025-09-28T14:41:37.179Z'[39m,
-  created_at: [32m'2025-09-28T14:41:37.179Z'[39m
-}
-{"level":30,"time":1759070497263,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"✅ Created AgentMail inbox: user-e6q2pmg3@agentmail.to"}
-🚀 generatePersonalizedMessage called for: Tiffany T.
-🔑 API Key check: AIzaSyDrRT...
-{"level":30,"time":1759070502459,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-d","req":{"method":"POST","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":50408},"msg":"incoming request"}
-🚀 generatePersonalizedMessage called for: Tiffany
-🔑 API Key check: AIzaSyDrRT...
-{"level":30,"time":1759070502459,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"🚀 Using in-memory profile for session oc29btmg3szdh4: Linus Wang"}
-🔥 Gemini raw output: ```json
-{
-  "message": "Hi Tiffany, I'm Demo User, looking to connect. \nI'm expanding my professional network and came across your profile. I'm always interested in learning about different career paths and experiences. \nI'd appreciate the opportunity for a brief chat if you're open to it. \n\nThank you,\nDemo User",
-  "connection_note": "Hi Tiffany, I'm Demo User, looking to connect. I'm expanding my network and would appreciate the opportunity to learn about your professional journey. Hope to connect!",
-  "total_personalization_score": 0.0
-}
-```
-✅ Generated personalized message with Gemini
-📧 Sending email from inbox user-e6q2pmg3@agentmail.to to linusaw@umich.edu
-✅ Email sent successfully: <0100019990c5c415-1f402621-7c2f-49cb-9f08-0eae1f3ffcd0-000000@email.amazonses.com>
-{"level":30,"time":1759070504282,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"📧 Email sent successfully to linusaw@umich.edu via AgentMail thread: afd6335c-b4ad-4ecc-9fca-b98e7cb30be5"}
-{"level":30,"time":1759070504282,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"✅ Email sent successfully: <0100019990c5c415-1f402621-7c2f-49cb-9f08-0eae1f3ffcd0-000000@email.amazonses.com>"}
-{"level":30,"time":1759070504282,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-c","res":{"statusCode":200},"responseTime":7409.62543900311,"msg":"request completed"}
-🔥 Gemini raw output: {
-  "message": "Hi Tiffany, I'm Linus Wang, Student at University of Michigan. I'm reaching out because I'm very impressed by your work as a Software Engineer at Meta. As a student interested in software development, I'd love to learn more about your experience and career path.\n\nWould you be open to a brief virtual coffee chat sometime in the coming weeks? I'm keen to hear any insights you might have.\n\nThank you,\nLinus Wang",
-  "connection_note": "Hi Tiffany, I'm Linus Wang, a student at UMich. I'm very impressed by your work as a Software Engineer at Meta and would love to connect to learn more about your career path. Thanks!",
-  "total_personalization_score": 0.0
-}
-✅ Generated personalized message with Gemini
-{"level":30,"time":1759070512786,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-d","res":{"statusCode":200},"responseTime":10326.801367998123,"msg":"request completed"}
-{"level":30,"time":1759070526831,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-e","req":{"method":"POST","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":35830},"msg":"incoming request"}
-🚀 generatePersonalizedMessage called for: Tiffany
-🔑 API Key check: AIzaSyDrRT...
-{"level":30,"time":1759070526831,"pid":596478,"hostname":"DESKTOP-PMK73LQ","msg":"🚀 Using in-memory profile for session oc29btmg3szdh4: Linus Wang"}
-🔥 Gemini raw output: {
-  "message": "Hi Tiffany, I'm Linus Wang, a student at the University of Michigan.\n\nI'm reaching out because I'm very interested in software engineering roles, particularly at companies like Meta. Your experience as a Software Engineer there is inspiring.\n\nI'd appreciate a brief chat to learn more about your career path and insights into the industry. Would you be open to connecting for a quick virtual coffee?\n\nThank you,\nLinus Wang",
-  "connection_note": "Hi Tiffany, I'm Linus Wang, a student at UMich. I'm very interested in software engineering at Meta and would love to learn from your experience. Hope to connect!",
-  "total_personalization_score": 0.0
-}
-✅ Generated personalized message with Gemini
-{"level":30,"time":1759070533159,"pid":596478,"hostname":"DESKTOP-PMK73LQ","reqId":"req-e","res":{"statusCode":200},"responseTime":6327.961987003684,"msg":"request completed"}
-[[36mINFO[0m] [30;1m10:42:52[0m Restarting: /home/linusaw/mhacks/apps/api/src/services/drafting.ts has been modified
-{"level":30,"time":1759070573075,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"Server listening at http://127.0.0.1:4000"}
-{"level":30,"time":1759070573078,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"API listening on http://127.0.0.1:4000"}
-{"level":30,"time":1759070937500,"pid":602567,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","req":{"method":"POST","url":"/linkedin/auth","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":60356},"msg":"incoming request"}
-{"level":30,"time":1759070937501,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"🔐 Creating new LinkedIn authentication session: linkedin_session_babfksmg3tf259.pkl"}
-{"level":30,"time":1759070937501,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"Starting LinkedIn browser authentication..."}
-{"level":30,"time":1759070937501,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"Initializing LinkedIn account with session file: linkedin_session_babfksmg3tf259.pkl"}
-{"level":30,"time":1759070963371,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn auth stdout: 🔄 Waiting for LinkedIn login completion (including any captcha)...\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgFcvDIL-12XoQAAAZmQzILUlW33WfQoNUe9rQkUkFNaAj2lhZYrRuT_2Nbuz47E7fBTRctZkqtTGRoub0g624NDy3LU0A?ut=00uhDufQbpmHY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgFcvDIL-12XoQAAAZmQzILUlW33WfQoNUe9rQkUkFNaAj2lhZYrRuT_2Nbuz47E7fBTRctZkqtTGRoub0g624NDy3LU0A?ut=00uhDufQbpmHY1\n✅ LinkedIn login and captcha completed successfully!\n🍪 Extracting LinkedIn session cookies...\n🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"message\": \"LinkedIn authentication completed successfully\", \"session_file\": \"linkedin_session_babfksmg3tf259.pkl\"}"}
-{"level":30,"time":1759070963493,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication process finished with code: 0"}
-{"level":30,"time":1759070963494,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication result: success"}
-{"level":30,"time":1759070963495,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"✅ Loaded user profile: Linus Wang (University of Michigan)"}
-{"level":30,"time":1759070963495,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication successful"}
-{"level":30,"time":1759070963500,"pid":602567,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","res":{"statusCode":200},"responseTime":26000.092073991895,"msg":"request completed"}
-{"level":30,"time":1759070969465,"pid":602567,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":60356},"msg":"incoming request"}
-{"level":30,"time":1759070969467,"pid":602567,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","res":{"statusCode":204},"responseTime":1.318000003695488,"msg":"request completed"}
-{"level":30,"time":1759070969470,"pid":602567,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":60356},"msg":"incoming request"}
-{"level":30,"time":1759070969474,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"Parsed prompt \"Swe at Meta\" -> Company: \"Meta\", Role: \"Swe\", Location: \"USA\""}
-{"level":30,"time":1759070969475,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"Deleted old CSV file: meta_swe_staff.csv"}
-{"level":30,"time":1759070969475,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"Running StaffSpy for: Swe at Meta using session babfksmg3tf259"}
-{"level":30,"time":1759070969475,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"Running LinkedIn scrape: Swe at Meta"}
-{"level":30,"time":1759070991021,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"Scrape stdout: 🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"csv_file\": \"meta_swe_staff.csv\", \"message\": \"Scraping completed successfully\"}"}
-{"level":30,"time":1759070991136,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"CSV parsing: Found 25 records with 45 fields each"}
-{"level":30,"time":1759070991138,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"Successfully parsed 20 candidates from CSV"}
-{"level":30,"time":1759070991139,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"Using user profile for scoring: Linus Wang (University of Michigan)"}
-✅ UPDATED: Using enhanced fallback scoring (LLM completely disabled)
-🎓 MICHIGAN ALUMNI: Tiffany T. - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Anika Satapathy - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Oliver Wu - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Peiduo Liu - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Samantha Au - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Yinghui Hong - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Alexandra Mei Tan - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Lydia Kim - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Zhengwei Wang - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Ethan Tai - Score boost: +0.8
-🎓 MICHIGAN ALUMNI: Nikhil Patel - Score boost: +0.8
-{"level":30,"time":1759070991143,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"Found 20 candidates needing email enrichment"}
+🎓 MICHIGAN ALUMNI: Heqing Wang - Score boost: +0.8
+🎓 MICHIGAN ALUMNI: Marcin Ugolnik - Score boost: +0.8
+🎓 MICHIGAN ALUMNI: Arjun Bharadwaj - Score boost: +0.8
+🎓 MICHIGAN ALUMNI: Divya Singhal - Score boost: +0.8
+🎓 MICHIGAN ALUMNI: Jack Liu - Score boost: +0.8
+🎓 MICHIGAN ALUMNI: Sanjit Vijay - Score boost: +0.8
+🎓 MICHIGAN ALUMNI: Joshua V. - Score boost: +0.8
+🎓 MICHIGAN ALUMNI: Kevin Yan - Score boost: +0.8
+🎓 MICHIGAN ALUMNI: Andrew Kang - Score boost: +0.8
+🎓 MICHIGAN ALUMNI: Rithvik Garimella - Score boost: +0.8
+🎓 MICHIGAN ALUMNI: Christopher Wagner - Score boost: +0.8
+{"level":30,"time":1759074611817,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"Found 20 candidates needing email enrichment"}
 Apollo bulk enrichment error: Error: Apollo bulk enrich error: 401
     at Object.bulkEnrichEmails [90m(/home/linusaw/mhacks/apps/api/[39msrc/providers/apollo.ts:311:15[90m)[39m
 [90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
     at Object.<anonymous> [90m(/home/linusaw/mhacks/apps/api/[39msrc/main.ts:1349:39[90m)[39m
-Apollo bulk error for Tiffany T., generating mock email as fallback
-Apollo bulk error for Anika Satapathy, generating mock email as fallback
-Apollo bulk error for Oliver Wu, generating mock email as fallback
-Apollo bulk error for Peiduo Liu, generating mock email as fallback
-Apollo bulk error for Samantha Au, generating mock email as fallback
-Apollo bulk error for Yinghui Hong, generating mock email as fallback
-Apollo bulk error for Alexandra Mei Tan, generating mock email as fallback
-Apollo bulk error for Lydia Kim, generating mock email as fallback
-Apollo bulk error for Zhengwei Wang, generating mock email as fallback
-Apollo bulk error for Ethan Tai, generating mock email as fallback
-Apollo bulk error for Nikhil Patel, generating mock email as fallback
-Apollo bulk error for Loria Sun, generating mock email as fallback
-Apollo bulk error for Aarham Wasit Khan, generating mock email as fallback
-Apollo bulk error for Aneesha Kodati, generating mock email as fallback
-Apollo bulk error for Quan Le, generating mock email as fallback
-Apollo bulk error for Pranav Tiwari, generating mock email as fallback
-Apollo bulk error for Muhammad Mazhar, generating mock email as fallback
-Apollo bulk error for Anil Thapa, generating mock email as fallback
-Apollo bulk error for Ajay GC, generating mock email as fallback
-Apollo bulk error for Marmik Patel, generating mock email as fallback
-{"level":30,"time":1759070991461,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"Email enrichment complete: 0 emails found"}
-{"level":30,"time":1759070991462,"pid":602567,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","res":{"statusCode":200},"responseTime":21992.067222997546,"msg":"request completed"}
-{"level":30,"time":1759071003841,"pid":602567,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","req":{"method":"OPTIONS","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":60356},"msg":"incoming request"}
-{"level":30,"time":1759071003842,"pid":602567,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","res":{"statusCode":204},"responseTime":0.6061999946832657,"msg":"request completed"}
-{"level":30,"time":1759071003846,"pid":602567,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","req":{"method":"POST","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":60356},"msg":"incoming request"}
-{"level":30,"time":1759071003888,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"🚀 Using in-memory profile for session babfksmg3tf259: Linus Wang"}
-🚀 generatePersonalizedMessage called for: Loria Sun
+Apollo bulk error for Heqing Wang, generating mock email as fallback
+Apollo bulk error for Marcin Ugolnik, generating mock email as fallback
+Apollo bulk error for Arjun Bharadwaj, generating mock email as fallback
+Apollo bulk error for Divya Singhal, generating mock email as fallback
+Apollo bulk error for Jack Liu, generating mock email as fallback
+Apollo bulk error for Sanjit Vijay, generating mock email as fallback
+Apollo bulk error for Joshua V., generating mock email as fallback
+Apollo bulk error for Kevin Yan, generating mock email as fallback
+Apollo bulk error for Andrew Kang, generating mock email as fallback
+Apollo bulk error for Rithvik Garimella, generating mock email as fallback
+Apollo bulk error for Christopher Wagner, generating mock email as fallback
+Apollo bulk error for Jereme Yang, generating mock email as fallback
+Apollo bulk error for Ziyi (Zoe) Yang, generating mock email as fallback
+Apollo bulk error for Allen Tran, generating mock email as fallback
+Apollo bulk error for Mingyuan Chen, generating mock email as fallback
+Apollo bulk error for Jake Wang, generating mock email as fallback
+Apollo bulk error for Tony Ou, generating mock email as fallback
+Apollo bulk error for Chikaosolu Nnadozie, generating mock email as fallback
+Apollo bulk error for Shalmal Sheth, generating mock email as fallback
+Apollo bulk error for Alexander Zhang, generating mock email as fallback
+{"level":30,"time":1759074612212,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"Email enrichment complete: 0 emails found"}
+{"level":30,"time":1759074612215,"pid":620344,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","res":{"statusCode":200},"responseTime":26436.780609995127,"msg":"request completed"}
+{"level":30,"time":1759074652505,"pid":620344,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","req":{"method":"OPTIONS","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":58706},"msg":"incoming request"}
+{"level":30,"time":1759074652505,"pid":620344,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","res":{"statusCode":204},"responseTime":0.5868010073900223,"msg":"request completed"}
+{"level":30,"time":1759074652509,"pid":620344,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","req":{"method":"POST","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":58706},"msg":"incoming request"}
+{"level":30,"time":1759074652552,"pid":620344,"hostname":"DESKTOP-PMK73LQ","msg":"🚀 Using in-memory profile for session wz1nfmg3vjlcg: Linus Wang"}
+🚀 generatePersonalizedMessage called for: Heqing Wang
 🔑 API Key check: AIzaSyDrRT...
 🔥 Gemini raw output: {
-  "message": "Hi Loria,\nI'm Linus Wang, a student at the University of Michigan. I noticed your background includes studying CS at UMich, and I'm currently pursuing my studies here as well.\nI'd be grateful for a brief chat to learn more about your career path and experiences since graduating. Your journey is inspiring, and I'd appreciate any insights you might share.\nThank you,\nLinus Wang",
-  "connection_note": "Hi Loria, I'm Linus Wang, a fellow UMich student. I'd love to connect and learn about your career path since studying CS at Michigan. Your experience is inspiring!",
+  "message": "Hi Heqing,\n\nI'm Linus Wang, a student at the University of Michigan. I noticed we both share a connection to UMich, and I've been following your career path as a Software Engineer at Amazon with great interest.\n\nAs a fellow Wolverine currently pursuing software engineering, I'd love to briefly connect and learn more about your experiences transitioning from UMich into a role at Amazon. Would you be open to a quick virtual coffee chat sometime in the coming weeks?\n\nThank you,\nLinus Wang",
+  "connection_note": "Hi Heqing, I'm Linus Wang, a fellow UMich student. I'm impressed by your SWE role at Amazon and would love to connect and learn from your experience. Go Blue!",
   "total_personalization_score": 1.0
 }
 ✅ Generated personalized message with Gemini
-{"level":30,"time":1759071012424,"pid":602567,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","res":{"statusCode":200},"responseTime":8577.868372991681,"msg":"request completed"}
-{"level":30,"time":1759071021782,"pid":602567,"hostname":"DESKTOP-PMK73LQ","reqId":"req-6","req":{"method":"OPTIONS","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":60356},"msg":"incoming request"}
-{"level":30,"time":1759071021783,"pid":602567,"hostname":"DESKTOP-PMK73LQ","reqId":"req-6","res":{"statusCode":204},"responseTime":0.6583990007638931,"msg":"request completed"}
-{"level":30,"time":1759071021785,"pid":602567,"hostname":"DESKTOP-PMK73LQ","reqId":"req-7","req":{"method":"POST","url":"/messages/draft","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":60356},"msg":"incoming request"}
-{"level":30,"time":1759071021827,"pid":602567,"hostname":"DESKTOP-PMK73LQ","msg":"🚀 Using in-memory profile for session babfksmg3tf259: Linus Wang"}
-🚀 generatePersonalizedMessage called for: Aneesha Kodati
-🔑 API Key check: AIzaSyDrRT...
-🔥 Gemini raw output: {
-  "message": "Hi Aneesha, I'm Linus Wang, a Student at University of Michigan at CLAWS UM.\n\nI'm reaching out because I'm very interested in software engineering, and your role as an SWE at Meta caught my attention. As a student exploring career paths, I'd love to learn more about your experience.\n\nWould you be open to a brief 15-minute virtual chat sometime next week to share some insights?\n\nThank you,\nLinus Wang",
-  "connection_note": "Hi Aneesha, I'm Linus Wang, a student at U of Michigan. I'm very interested in software engineering at Meta and would love to connect and learn from your experience as an SWE. Thanks!",
-  "total_personalization_score": 0.0
-}
-✅ Generated personalized message with Gemini
-{"level":30,"time":1759071031671,"pid":602567,"hostname":"DESKTOP-PMK73LQ","reqId":"req-7","res":{"statusCode":200},"responseTime":9885.321495011449,"msg":"request completed"}
+{"level":30,"time":1759074661334,"pid":620344,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","res":{"statusCode":200},"responseTime":8824.71202300489,"msg":"request completed"}
