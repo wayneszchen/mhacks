@@ -19,7 +19,7 @@ const app = Fastify({ logger: true });
 app.register(cors, { origin: true });
 app.register(formbody);
 
-const apollo = createApolloProvider({ apiKey: process.env.APOLLO_API_KEY });
+// const apollo = createApolloProvider({ apiKey: process.env.APOLLO_API_KEY });
 const agentMail = createAgentMailProvider({ apiKey: process.env.AGENTMAIL_API_KEY });
 
 app.get('/health', async () => ({ ok: true }));
@@ -31,7 +31,7 @@ const userSessions = new Map<string, { sessionFile: string; authenticated: boole
 // Function to initialize LinkedIn account using StaffSpy (browser-based auth)
 async function initLinkedInAccount(sessionFile: string): Promise<{ success: boolean; error?: string; email?: string }> {
   return new Promise((resolve) => {
-    const scriptPath = path.join(process.cwd(), '../../', 'staff_functions.py');
+    // const scriptPath = path.join(process.cwd(), '../../', 'staff_functions.py');
     app.log.info(`Initializing LinkedIn account with session file: ${sessionFile}`);
 
     // Simple Python script that calls init_account()
@@ -338,7 +338,7 @@ try:
         company_name='${searchParams.company}',
         search_term='${searchParams.role}',
         location='${searchParams.location}',
-        max_results=20
+        max_results=25
     )
 
     print(json.dumps({
@@ -883,9 +883,32 @@ app.post('/search/run', async (req, reply) => {
           : path.join(process.cwd(), '../../', result.csv_file);
         const candidates = await loadCandidatesFromCSV(csvPath, searchParams);
         
-        // Score the candidates
-        const scored = scoreCandidates({
-          user: { schools: [], companies: [], skills: [], summary: '' },
+        // Extract user profile for better scoring
+        let userProfile = { schools: [] as string[], companies: [] as string[], skills: [] as string[], summary: '' };
+
+        // Try to load user profile from session file
+        try {
+          const profileFile = userSession.sessionFile.replace('.pkl', '_profile.json');
+          const profilePath = path.join(process.cwd(), '../../', profileFile);
+          const profileData = await fs.readFile(profilePath, 'utf-8');
+          const parsedProfile = JSON.parse(profileData);
+
+          // Extract relevant data for scoring
+          userProfile = {
+            schools: parsedProfile.university ? [parsedProfile.university] : [],
+            companies: parsedProfile.current_company ? [parsedProfile.current_company] : [],
+            skills: [] as string[], // Could be extracted from detailed_data if available
+            summary: parsedProfile.headline || ''
+          };
+
+          app.log.info(`Using user profile for scoring: ${parsedProfile.name} (${parsedProfile.university || 'N/A'})`);
+        } catch (error) {
+          app.log.warn('Could not load user profile for scoring, using defaults');
+        }
+
+        // Score the candidates using enhanced scoring
+        const scored = await scoreCandidates({
+          user: userProfile,
           intent: prompt || '',
           candidates
         });

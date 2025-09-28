@@ -13,6 +13,7 @@ type Candidate = {
   company?: string;
   email?: string;
   linkedinUrl?: string;
+  location?: string;
   summary?: string;
   score?: number;
   schools?: string;
@@ -493,6 +494,11 @@ export default function DashboardPage() {
                           <div className="text-sm font-bold text-green-400">
                             {Math.round((r.score || 0) * 100)}%
                           </div>
+                          {(r.schools && (r.schools.toLowerCase().includes('michigan') || r.schools.toLowerCase().includes('university of michigan'))) && (
+                            <div className="text-xs text-blue-400 mt-1">
+                              🎓 Alumni
+                            </div>
+                          )}
                         </div>
                       </div>
                       
