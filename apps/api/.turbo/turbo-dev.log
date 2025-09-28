@@ -3,93 +3,71 @@
 > api@0.1.0 dev
 > ts-node-dev --respawn --transpile-only src/main.ts
 
-[1G[0K[[36mINFO[0m] [30;1m03:14:35[0m ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.4.5)
-{"level":30,"time":1759043675871,"pid":326683,"hostname":"DESKTOP-PMK73LQ","msg":"Server listening at http://127.0.0.1:4000"}
-{"level":30,"time":1759043675876,"pid":326683,"hostname":"DESKTOP-PMK73LQ","msg":"API listening on http://127.0.0.1:4000"}
-{"level":30,"time":1759043685769,"pid":326683,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":42102},"msg":"incoming request"}
-{"level":30,"time":1759043685772,"pid":326683,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","res":{"statusCode":204},"responseTime":3.2605670019984245,"msg":"request completed"}
-{"level":30,"time":1759043685775,"pid":326683,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":42102},"msg":"incoming request"}
-{"level":30,"time":1759043685778,"pid":326683,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","res":{"statusCode":401},"responseTime":2.70414300262928,"msg":"request completed"}
-{"level":30,"time":1759043688447,"pid":326683,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":42102},"msg":"incoming request"}
-{"level":30,"time":1759043688449,"pid":326683,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","res":{"statusCode":401},"responseTime":1.5394830033183098,"msg":"request completed"}
-{"level":30,"time":1759043695927,"pid":326683,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":42102},"msg":"incoming request"}
-{"level":30,"time":1759043695927,"pid":326683,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","res":{"statusCode":204},"responseTime":0.44538700580596924,"msg":"request completed"}
-{"level":30,"time":1759043695932,"pid":326683,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":42102},"msg":"incoming request"}
-{"level":30,"time":1759043695934,"pid":326683,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","res":{"statusCode":401},"responseTime":1.7736800014972687,"msg":"request completed"}
-[[36mINFO[0m] [30;1m03:15:20[0m Restarting: /home/linusaw/mhacks/apps/api/src/main.ts has been modified
-{"level":30,"time":1759043720713,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Server listening at http://127.0.0.1:4000"}
-{"level":30,"time":1759043720714,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"API listening on http://127.0.0.1:4000"}
-{"level":30,"time":1759043751403,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41430},"msg":"incoming request"}
-{"level":30,"time":1759043751406,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","res":{"statusCode":204},"responseTime":2.86175599694252,"msg":"request completed"}
-{"level":30,"time":1759043751408,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41430},"msg":"incoming request"}
-{"level":30,"time":1759043751412,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","res":{"statusCode":401},"responseTime":4.1761509999632835,"msg":"request completed"}
-{"level":30,"time":1759043756485,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","req":{"method":"POST","url":"/linkedin/auth","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41430},"msg":"incoming request"}
-{"level":30,"time":1759043756486,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Starting LinkedIn browser authentication..."}
-{"level":30,"time":1759043756486,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Initializing LinkedIn account with session file: linkedin_session_xj4ehmg3d8h52.pkl"}
-{"level":40,"time":1759043792266,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn auth stderr: 2025-09-28 03:16:32,265 - StaffSpy - INFO - Testing if logged in by checking arbitrary LinkedIn company page"}
-{"level":40,"time":1759043792847,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn auth stderr: 2025-09-28 03:16:32,847 - StaffSpy - INFO - Account successfully logged in - res code 200"}
-{"level":40,"time":1759043793244,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn auth stderr: 2025-09-28 03:16:33,244 - StaffSpy - INFO - Fetching data for account ACoAAFN2poEBlQI-NEQITwIVTPjOqRtZGBK4jlg    1 / 1 - https://www.linkedin.com/in/linus-wang"}
-{"level":40,"time":1759043793846,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn auth stderr: 2025-09-28 03:16:33,846 - StaffSpy - INFO - Scraped 1 users"}
-{"level":30,"time":1759043793852,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn auth stdout: 🔄 Waiting for LinkedIn login completion (including any captcha)...\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgE-lfN1l-eYrwAAAZmPLc42sBRwSjg0EImx8oPASWXlGTqC8FYkF87dlFBuFJK1SnsscN_XcoOx2hcKlwXzxoJhkk7pBg?ut=1cLcr7HPUkmrY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgE-lfN1l-eYrwAAAZmPLc42sBRwSjg0EImx8oPASWXlGTqC8FYkF87dlFBuFJK1SnsscN_XcoOx2hcKlwXzxoJhkk7pBg?ut=1cLcr7HPUkmrY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgE-lfN1l-eYrwAAAZmPLc42sBRwSjg0EImx8oPASWXlGTqC8FYkF87dlFBuFJK1SnsscN_XcoOx2hcKlwXzxoJhkk7pBg?ut=1cLcr7HPUkmrY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgE-lfN1l-eYrwAAAZmPLc42sBRwSjg0EImx8oPASWXlGTqC8FYkF87dlFBuFJK1SnsscN_XcoOx2hcKlwXzxoJhkk7pBg?ut=1cLcr7HPUkmrY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgE-lfN1l-eYrwAAAZmPLc42sBRwSjg0EImx8oPASWXlGTqC8FYkF87dlFBuFJK1SnsscN_XcoOx2hcKlwXzxoJhkk7pBg?ut=1cLcr7HPUkmrY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgE-lfN1l-eYrwAAAZmPLc42sBRwSjg0EImx8oPASWXlGTqC8FYkF87dlFBuFJK1SnsscN_XcoOx2hcKlwXzxoJhkk7pBg?ut=1cLcr7HPUkmrY1\n✅ LinkedIn login and captcha completed successfully!\n🍪 Extracting LinkedIn session cookies...\n🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"message\": \"LinkedIn authentication completed successfully\", \"session_file\": \"linkedin_session_xj4ehmg3d8h52.pkl\"}"}
-{"level":30,"time":1759043793968,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication process finished with code: 0"}
-{"level":30,"time":1759043793968,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication result: success"}
-{"level":30,"time":1759043793968,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication successful"}
-{"level":30,"time":1759043793968,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","res":{"statusCode":200},"responseTime":37482.78979099542,"msg":"request completed"}
-{"level":30,"time":1759043795153,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41430},"msg":"incoming request"}
-{"level":30,"time":1759043795154,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","res":{"statusCode":204},"responseTime":0.6465630009770393,"msg":"request completed"}
-{"level":30,"time":1759043795158,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41430},"msg":"incoming request"}
-{"level":30,"time":1759043795160,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Parsed prompt \"Find SWE contacts at Amazon in Seattle\" -> Company: \"Amazon\", Role: \"SWE\", Location: \"Seattle\""}
-{"level":30,"time":1759043795163,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Deleted old CSV file: amazon_swe_staff.csv"}
-{"level":30,"time":1759043795163,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Running StaffSpy for: SWE at Amazon using session xj4ehmg3d8h52"}
-{"level":30,"time":1759043795164,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Running LinkedIn scrape: SWE at Amazon"}
-{"level":30,"time":1759043806478,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Scrape stdout: 🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"csv_file\": \"amazon_swe_staff.csv\", \"message\": \"Scraping completed successfully\"}"}
-{"level":30,"time":1759043806603,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Successfully parsed 14 candidates from CSV"}
-{"level":30,"time":1759043806604,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","res":{"statusCode":200},"responseTime":11446.571044005454,"msg":"request completed"}
-{"level":30,"time":1759043827289,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-6","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41430},"msg":"incoming request"}
-{"level":30,"time":1759043827290,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-6","res":{"statusCode":204},"responseTime":0.5404030010104179,"msg":"request completed"}
-{"level":30,"time":1759043827292,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-7","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41430},"msg":"incoming request"}
-{"level":30,"time":1759043827293,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Parsed prompt \"Find swe at microsoft\" -> Company: \"microsoft\", Role: \"swe\", Location: \"USA\""}
-{"level":30,"time":1759043827295,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Deleted old CSV file: amazon_swe_staff.csv"}
-{"level":30,"time":1759043827295,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Running StaffSpy for: swe at microsoft using session xj4ehmg3d8h52"}
-{"level":30,"time":1759043827295,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Running LinkedIn scrape: swe at microsoft"}
-{"level":30,"time":1759043838063,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Scrape stdout: 🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"csv_file\": \"microsoft_swe_staff.csv\", \"message\": \"Scraping completed successfully\"}"}
-{"level":30,"time":1759043838192,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Successfully parsed 10 candidates from CSV"}
-{"level":30,"time":1759043838194,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-7","res":{"statusCode":200},"responseTime":10901.251314997673,"msg":"request completed"}
-{"level":30,"time":1759043865913,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-8","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41430},"msg":"incoming request"}
-{"level":30,"time":1759043865913,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-8","res":{"statusCode":204},"responseTime":0.46230000257492065,"msg":"request completed"}
-{"level":30,"time":1759043865917,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-9","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41430},"msg":"incoming request"}
-{"level":30,"time":1759043865918,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Parsed prompt \"Find software engineers at meta\" -> Company: \"meta\", Role: \"Find software engineers\", Location: \"USA\""}
-{"level":30,"time":1759043865920,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Deleted old CSV file: microsoft_swe_staff.csv"}
-{"level":30,"time":1759043865920,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Running StaffSpy for: Find software engineers at meta using session xj4ehmg3d8h52"}
-{"level":30,"time":1759043865920,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Running LinkedIn scrape: Find software engineers at meta"}
-{"level":30,"time":1759043878122,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Scrape stdout: 🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"csv_file\": \"meta_find_software_engineers_staff.csv\", \"message\": \"Scraping completed successfully\"}"}
-{"level":30,"time":1759043878230,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Successfully parsed 18 candidates from CSV"}
-{"level":30,"time":1759043878231,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-9","res":{"statusCode":200},"responseTime":12313.447229996324,"msg":"request completed"}
-{"level":30,"time":1759043949049,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-a","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41430},"msg":"incoming request"}
-{"level":30,"time":1759043949050,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-a","res":{"statusCode":204},"responseTime":0.42329199612140656,"msg":"request completed"}
-{"level":30,"time":1759043949053,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-b","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41430},"msg":"incoming request"}
-{"level":30,"time":1759043949053,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Parsed prompt \"Find product managers at Duolingo\" -> Company: \"Duolingo\", Role: \"product\", Location: \"USA\""}
-{"level":30,"time":1759043949054,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Deleted old CSV file: meta_find_software_engineers_staff.csv"}
-{"level":30,"time":1759043949055,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Running StaffSpy for: product at Duolingo using session xj4ehmg3d8h52"}
-{"level":30,"time":1759043949055,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Running LinkedIn scrape: product at Duolingo"}
-{"level":30,"time":1759043960479,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Scrape stdout: 🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"csv_file\": \"duolingo_product_staff.csv\", \"message\": \"Scraping completed successfully\"}"}
-{"level":30,"time":1759043960614,"pid":329119,"hostname":"DESKTOP-PMK73LQ","msg":"Successfully parsed 14 candidates from CSV"}
-{"level":30,"time":1759043960616,"pid":329119,"hostname":"DESKTOP-PMK73LQ","reqId":"req-b","res":{"statusCode":200},"responseTime":11562.693970002234,"msg":"request completed"}
-[[36mINFO[0m] [30;1m03:20:24[0m Restarting: /home/linusaw/mhacks/apps/api/src/main.ts has been modified
-{"level":30,"time":1759044024890,"pid":333165,"hostname":"DESKTOP-PMK73LQ","msg":"Server listening at http://127.0.0.1:4000"}
-{"level":30,"time":1759044024892,"pid":333165,"hostname":"DESKTOP-PMK73LQ","msg":"API listening on http://127.0.0.1:4000"}
-[[36mINFO[0m] [30;1m03:20:26[0m Restarting: /home/linusaw/mhacks/apps/api/src/main.ts has been modified
-[[36mINFO[0m] [30;1m03:20:26[0m Restarting: /home/linusaw/mhacks/apps/api/src/main.ts has been modified
-Error: write EPIPE
-    at process.target._send (node:internal/child_process:877:20)
-    at process.target.send (node:internal/child_process:751:19)
-    at Object.exports.send (/home/linusaw/mhacks/node_modules/ts-node-dev/lib/ipc.js:17:14)
-    at /home/linusaw/mhacks/node_modules/ts-node-dev/lib/wrap.js:88:9
-    at Object.nodeDevHook [as .js] (/home/linusaw/mhacks/node_modules/ts-node-dev/lib/hook.js:61:17)
-    at Module.load (node:internal/modules/cjs/loader:1465:32)
-    at Function._load (node:internal/modules/cjs/loader:1282:12)
-    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
-    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
-    at Module.require (node:internal/modules/cjs/loader:1487:12)
-{"level":30,"time":1759044026722,"pid":333352,"hostname":"DESKTOP-PMK73LQ","msg":"Server listening at http://127.0.0.1:4000"}
-{"level":30,"time":1759044026724,"pid":333352,"hostname":"DESKTOP-PMK73LQ","msg":"API listening on http://127.0.0.1:4000"}
+[1G[0K[[36mINFO[0m] [30;1m03:29:14[0m ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.4.5)
+{"level":30,"time":1759044555117,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1759044555118,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"API listening on http://127.0.0.1:4000"}
+{"level":30,"time":1759044590143,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41628},"msg":"incoming request"}
+{"level":30,"time":1759044590147,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","res":{"statusCode":204},"responseTime":4.138405993580818,"msg":"request completed"}
+{"level":30,"time":1759044590148,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41628},"msg":"incoming request"}
+{"level":30,"time":1759044590151,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","res":{"statusCode":401},"responseTime":2.109138995409012,"msg":"request completed"}
+{"level":30,"time":1759044594935,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41628},"msg":"incoming request"}
+{"level":30,"time":1759044594937,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","res":{"statusCode":401},"responseTime":1.0703299939632416,"msg":"request completed"}
+{"level":30,"time":1759044607363,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41628},"msg":"incoming request"}
+{"level":30,"time":1759044607364,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","res":{"statusCode":204},"responseTime":0.24893900007009506,"msg":"request completed"}
+{"level":30,"time":1759044607366,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41628},"msg":"incoming request"}
+{"level":30,"time":1759044607366,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","res":{"statusCode":401},"responseTime":0.5106149986386299,"msg":"request completed"}
+{"level":30,"time":1759044614785,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-6","req":{"method":"POST","url":"/linkedin/auth","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":41628},"msg":"incoming request"}
+{"level":30,"time":1759044614785,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Starting LinkedIn browser authentication..."}
+{"level":30,"time":1759044614785,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Initializing LinkedIn account with session file: linkedin_session_2qzg8rmg3dqvep.pkl"}
+{"level":40,"time":1759044650992,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn auth stderr: 2025-09-28 03:30:50,991 - StaffSpy - INFO - Testing if logged in by checking arbitrary LinkedIn company page"}
+{"level":40,"time":1759044651577,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn auth stderr: 2025-09-28 03:30:51,577 - StaffSpy - INFO - Account successfully logged in - res code 200"}
+{"level":40,"time":1759044651967,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn auth stderr: 2025-09-28 03:30:51,966 - StaffSpy - INFO - Fetching data for account ACoAAFN2poEBlQI-NEQITwIVTPjOqRtZGBK4jlg    1 / 1 - https://www.linkedin.com/in/linus-wang"}
+{"level":40,"time":1759044652477,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn auth stderr: 2025-09-28 03:30:52,477 - StaffSpy - INFO - Scraped 1 users"}
+{"level":30,"time":1759044652482,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn auth stdout: 🔄 Waiting for LinkedIn login completion (including any captcha)...\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/login\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgEeUwtbca-69wAAAZmPOtbs6YkasFc15ViGJAoIYuQc0JPl4J9S355Dy69m32YCnq60HWD3JZnu6q7UzQHYT2ELi3gT-w?ut=0nfPoBphgymrY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgEeUwtbca-69wAAAZmPOtbs6YkasFc15ViGJAoIYuQc0JPl4J9S355Dy69m32YCnq60HWD3JZnu6q7UzQHYT2ELi3gT-w?ut=0nfPoBphgymrY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgEeUwtbca-69wAAAZmPOtbs6YkasFc15ViGJAoIYuQc0JPl4J9S355Dy69m32YCnq60HWD3JZnu6q7UzQHYT2ELi3gT-w?ut=0nfPoBphgymrY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgEeUwtbca-69wAAAZmPOtbs6YkasFc15ViGJAoIYuQc0JPl4J9S355Dy69m32YCnq60HWD3JZnu6q7UzQHYT2ELi3gT-w?ut=0nfPoBphgymrY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgEeUwtbca-69wAAAZmPOtbs6YkasFc15ViGJAoIYuQc0JPl4J9S355Dy69m32YCnq60HWD3JZnu6q7UzQHYT2ELi3gT-w?ut=0nfPoBphgymrY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgEeUwtbca-69wAAAZmPOtbs6YkasFc15ViGJAoIYuQc0JPl4J9S355Dy69m32YCnq60HWD3JZnu6q7UzQHYT2ELi3gT-w?ut=0nfPoBphgymrY1\n🔄 Still on login/captcha page: https://www.linkedin.com/checkpoint/challenge/AgEeUwtbca-69wAAAZmPOtbs6YkasFc15ViGJAoIYuQc0JPl4J9S355Dy69m32YCnq60HWD3JZnu6q7UzQHYT2ELi3gT-w?ut=0nfPoBphgymrY1\n✅ LinkedIn login and captcha completed successfully!\n🍪 Extracting LinkedIn session cookies...\n🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"message\": \"LinkedIn authentication completed successfully\", \"session_file\": \"linkedin_session_2qzg8rmg3dqvep.pkl\"}"}
+{"level":30,"time":1759044652577,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication process finished with code: 0"}
+{"level":30,"time":1759044652577,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication result: success"}
+{"level":30,"time":1759044652577,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"LinkedIn authentication successful"}
+{"level":30,"time":1759044652577,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-6","res":{"statusCode":200},"responseTime":37792.40932700038,"msg":"request completed"}
+{"level":30,"time":1759044654646,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-7","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":38666},"msg":"incoming request"}
+{"level":30,"time":1759044654648,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-7","res":{"statusCode":204},"responseTime":0.4960310012102127,"msg":"request completed"}
+{"level":30,"time":1759044654650,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-8","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":38666},"msg":"incoming request"}
+{"level":30,"time":1759044654651,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Parsed prompt \"Find SWE at apple\" -> Company: \"apple\", Role: \"SWE\", Location: \"USA\""}
+{"level":30,"time":1759044654652,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Deleted old CSV file: duolingo_product_staff.csv"}
+{"level":30,"time":1759044654652,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Running StaffSpy for: SWE at apple using session 2qzg8rmg3dqvep"}
+{"level":30,"time":1759044654652,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Running LinkedIn scrape: SWE at apple"}
+{"level":30,"time":1759044688701,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Scrape stdout: 🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"csv_file\": \"apple_swe_staff.csv\", \"message\": \"Scraping completed successfully\"}"}
+{"level":30,"time":1759044688817,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Successfully parsed 20 candidates from CSV"}
+{"level":30,"time":1759044688818,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-8","res":{"statusCode":200},"responseTime":34167.98918699473,"msg":"request completed"}
+{"level":30,"time":1759044710082,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-9","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":38666},"msg":"incoming request"}
+{"level":30,"time":1759044710083,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-9","res":{"statusCode":204},"responseTime":1.0872830003499985,"msg":"request completed"}
+{"level":30,"time":1759044710085,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-a","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":38666},"msg":"incoming request"}
+{"level":30,"time":1759044710085,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Parsed prompt \"Find SWE at meta\" -> Company: \"meta\", Role: \"SWE\", Location: \"USA\""}
+{"level":30,"time":1759044710086,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Deleted old CSV file: apple_swe_staff.csv"}
+{"level":30,"time":1759044710086,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Running StaffSpy for: SWE at meta using session 2qzg8rmg3dqvep"}
+{"level":30,"time":1759044710086,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Running LinkedIn scrape: SWE at meta"}
+{"level":30,"time":1759044747381,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Scrape stdout: 🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"csv_file\": \"meta_swe_staff.csv\", \"message\": \"Scraping completed successfully\"}"}
+{"level":30,"time":1759044747473,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Successfully parsed 20 candidates from CSV"}
+{"level":30,"time":1759044747474,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-a","res":{"statusCode":200},"responseTime":37388.59553000331,"msg":"request completed"}
+{"level":30,"time":1759044799139,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-b","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":38666},"msg":"incoming request"}
+{"level":30,"time":1759044799140,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-b","res":{"statusCode":204},"responseTime":0.41861800104379654,"msg":"request completed"}
+{"level":30,"time":1759044799142,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-c","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":38666},"msg":"incoming request"}
+{"level":30,"time":1759044799143,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Parsed prompt \"Find SWE contacts at Amazon in Seattle\" -> Company: \"Amazon\", Role: \"SWE\", Location: \"Seattle\""}
+{"level":30,"time":1759044799143,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Deleted old CSV file: meta_swe_staff.csv"}
+{"level":30,"time":1759044799143,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Running StaffSpy for: SWE at Amazon using session 2qzg8rmg3dqvep"}
+{"level":30,"time":1759044799143,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Running LinkedIn scrape: SWE at Amazon"}
+{"level":30,"time":1759044834385,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Scrape stdout: 🔍 Auto-loading your profile...\n✅ Profile loaded: Linus Wang (University of Michigan)\n{\"success\": true, \"csv_file\": \"amazon_swe_staff.csv\", \"message\": \"Scraping completed successfully\"}"}
+{"level":30,"time":1759044834500,"pid":339067,"hostname":"DESKTOP-PMK73LQ","msg":"Successfully parsed 20 candidates from CSV"}
+{"level":30,"time":1759044834501,"pid":339067,"hostname":"DESKTOP-PMK73LQ","reqId":"req-c","res":{"statusCode":200},"responseTime":35358.08792499453,"msg":"request completed"}
+[[36mINFO[0m] [30;1m03:34:18[0m Restarting: /home/linusaw/mhacks/apps/api/src/main.ts has been modified
+{"level":30,"time":1759044859227,"pid":343679,"hostname":"DESKTOP-PMK73LQ","msg":"Server listening at http://127.0.0.1:4000"}
+{"level":30,"time":1759044859228,"pid":343679,"hostname":"DESKTOP-PMK73LQ","msg":"API listening on http://127.0.0.1:4000"}
+{"level":30,"time":1759044864268,"pid":343679,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":33558},"msg":"incoming request"}
+{"level":30,"time":1759044864272,"pid":343679,"hostname":"DESKTOP-PMK73LQ","reqId":"req-1","res":{"statusCode":204},"responseTime":3.278038002550602,"msg":"request completed"}
+{"level":30,"time":1759044864272,"pid":343679,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":33558},"msg":"incoming request"}
+{"level":30,"time":1759044864274,"pid":343679,"hostname":"DESKTOP-PMK73LQ","reqId":"req-2","res":{"statusCode":401},"responseTime":1.9226029962301254,"msg":"request completed"}
+{"level":30,"time":1759044870314,"pid":343679,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","req":{"method":"OPTIONS","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":33558},"msg":"incoming request"}
+{"level":30,"time":1759044870314,"pid":343679,"hostname":"DESKTOP-PMK73LQ","reqId":"req-3","res":{"statusCode":204},"responseTime":0.32262200117111206,"msg":"request completed"}
+{"level":30,"time":1759044870317,"pid":343679,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":33558},"msg":"incoming request"}
+{"level":30,"time":1759044870318,"pid":343679,"hostname":"DESKTOP-PMK73LQ","reqId":"req-4","res":{"statusCode":401},"responseTime":0.7030290067195892,"msg":"request completed"}
+{"level":30,"time":1759044872168,"pid":343679,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","req":{"method":"POST","url":"/search/run","hostname":"localhost:4000","remoteAddress":"127.0.0.1","remotePort":33558},"msg":"incoming request"}
+{"level":30,"time":1759044872169,"pid":343679,"hostname":"DESKTOP-PMK73LQ","reqId":"req-5","res":{"statusCode":401},"responseTime":0.6957560032606125,"msg":"request completed"}

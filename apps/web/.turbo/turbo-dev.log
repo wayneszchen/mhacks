@@ -7,67 +7,51 @@
   - Local:        http://localhost:3000
 
  [32m[1m✓[22m[39m Starting...
- [32m[1m✓[22m[39m Ready in 1609ms
- [32m[1m✓[22m[39m Compiled /middleware in 182ms (178 modules)
+ [32m[1m✓[22m[39m Ready in 2.5s
+ [32m[1m✓[22m[39m Compiled /middleware in 186ms (178 modules)
  [37m[1m○[22m[39m Compiling /dashboard ...
-request to https://fonts.gstatic.com/s/plusjakartasans/v12/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko70yygg_vbd-E.woff2 failed, reason: 
-
-Retrying 1/3...
- [32m[1m✓[22m[39m Compiled /dashboard in 3.3s (1188 modules)
- GET /dashboard [32m200[39m in 3439ms
- [37m[1m○[22m[39m Compiling /api/auth/[...nextauth] ...
- [32m[1m✓[22m[39m Compiled /api/auth/[...nextauth] in 3.7s (829 modules)
+ [32m[1m✓[22m[39m Compiled /dashboard in 1612ms (1188 modules)
+ GET /dashboard [32m200[39m in 1804ms
+ [32m[1m✓[22m[39m Compiled /api/auth/[...nextauth] in 490ms (829 modules)
 [next-auth][warn][NEXTAUTH_URL] 
 https://next-auth.js.org/warnings#nextauth_url
- GET /api/auth/session [32m200[39m in 4117ms
- GET /api/auth/session [32m200[39m in 21ms
- GET /api/auth/session [32m200[39m in 12ms
- GET /api/auth/session [32m200[39m in 32ms
- GET /api/auth/session [32m200[39m in 24ms
- GET /api/auth/session [32m200[39m in 24ms
+ GET /api/auth/session [32m200[39m in 850ms
  GET /api/auth/session [32m200[39m in 19ms
- GET /api/auth/session [32m200[39m in 24ms
- GET /api/auth/session [32m200[39m in 23ms
- GET /api/auth/session [32m200[39m in 23ms
- GET /api/auth/session [32m200[39m in 16ms
- GET /api/auth/session [32m200[39m in 24ms
- GET /api/auth/session [32m200[39m in 19ms
- GET /api/auth/session [32m200[39m in 37ms
- GET /api/auth/session [32m200[39m in 19ms
- GET /dashboard [32m200[39m in 100ms
- GET /api/auth/session [32m200[39m in 34ms
- GET /api/auth/session [32m200[39m in 13ms
- GET /api/auth/session [32m200[39m in 17ms
- [37m[1m○[22m[39m Compiling /_not-found ...
- [32m[1m✓[22m[39m Compiled /_not-found in 530ms (1191 modules)
- GET /'endorsements':%200 [33m404[39m in 664ms
- GET /'duration':%20'2%20yrs%201%20mo' [33m404[39m in 25ms
- [32m[1m✓[22m[39m Compiled in 224ms (603 modules)
- [32m[1m✓[22m[39m Compiled /api/auth/[...nextauth] in 227ms (830 modules)
-[next-auth][warn][NEXTAUTH_URL] 
-https://next-auth.js.org/warnings#nextauth_url
- GET /api/auth/session [32m200[39m in 361ms
+ GET /api/auth/session [32m200[39m in 11ms
+ GET /dashboard [32m200[39m in 80ms
+ GET /api/auth/session [32m200[39m in 22ms
+ GET /api/auth/session [32m200[39m in 15ms
  GET /api/auth/session [32m200[39m in 14ms
+ GET /api/auth/session [32m200[39m in 32ms
+ GET /api/auth/session [32m200[39m in 17ms
+ GET /api/auth/session [32m200[39m in 24ms
+ GET /api/auth/session [32m200[39m in 15ms
+ [32m[1m✓[22m[39m Compiled /_not-found in 426ms (1433 modules)
+ GET /'end_date':%20'2024-04-28' [33m404[39m in 508ms
+ GET /'end_date':%20'2023-09-28' [33m404[39m in 22ms
+ GET /'title':%20'IT%20Intern%20-%20Developer%20in%20IT%20Business%20Intelligence%20&%20Data%20Management' [33m404[39m in 20ms
+ GET /%7B'start_date':%20'2023-05-28' [33m404[39m in 20ms
+ GET /'end_date':%20'2023-09-28' [33m404[39m in 16ms
+ GET /%7B'start_date':%20'2022-08-28' [33m404[39m in 41ms
+ GET /%7B'name':%20'Python%20(Programming%20Language)' [33m404[39m in 21ms
+ GET /United%20States%20%C2%B7%20Hybrid' [33m404[39m in 20ms
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session [32m200[39m in 85ms
+ GET /api/auth/session [32m200[39m in 11ms
  GET /api/auth/session [32m200[39m in 35ms
+ GET /api/auth/session [32m200[39m in 15ms
+ GET /'endorsements':%200 [33m404[39m in 17ms
+ GET /'duration':%20'2%20yrs%201%20mo' [33m404[39m in 19ms
+ GET /United%20States' [33m404[39m in 18ms
+ GET /api/auth/session [32m200[39m in 33ms
+ GET /api/auth/session [32m200[39m in 28ms
  GET /api/auth/session [32m200[39m in 20ms
+ GET /api/auth/session [32m200[39m in 14ms
+ GET /dashboard [32m200[39m in 54ms
  GET /api/auth/session [32m200[39m in 25ms
- GET /api/auth/session [32m200[39m in 18ms
- GET /api/auth/session [32m200[39m in 26ms
- GET /api/auth/session [32m200[39m in 18ms
- GET /%7B'start_date':%20'2022-08-28' [33m404[39m in 75ms
- GET /%7B'start_date':%20'2023-05-28' [33m404[39m in 25ms
- GET /'end_date':%20'2020-07-28' [33m404[39m in 24ms
- GET /'end_date':%20'2013-02-28' [33m404[39m in 25ms
- GET /api/auth/session [32m200[39m in 30ms
- GET /api/auth/session [32m200[39m in 18ms
- GET /api/auth/session [32m200[39m in 26ms
- GET /api/auth/session [32m200[39m in 19ms
- GET /api/auth/session [32m200[39m in 30ms
- GET /api/auth/session [32m200[39m in 20ms
- GET /'duration':%20'1%20yr%205%20mos' [33m404[39m in 33ms
- GET /'end_date':%20'2023-08-28' [33m404[39m in 24ms
- GET /'emp_type':%20'full-time'%7D [33m404[39m in 23ms
- GET /'location':%20None [33m404[39m in 31ms
+ GET /api/auth/session [32m200[39m in 15ms
+ GET /api/auth/session [32m200[39m in 17ms
  GET /api/auth/session [32m200[39m in 23ms
- GET /api/auth/session [32m200[39m in 31ms
+ GET /api/auth/session [32m200[39m in 13ms
 [?25h
