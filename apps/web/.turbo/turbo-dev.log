@@ -11,3 +11,6 @@
  [37m[1m○[22m[39m Compiling /dashboard ...
  [32m[1m✓[22m[39m Compiled /dashboard in 4.5s (1098 modules)
  GET /dashboard [32m200[39m in 5121ms
+ [37m[1m○[22m[39m Compiling / ...
+ [32m[1m✓[22m[39m Compiled / in 871ms (1104 modules)
+ GET / [32m200[39m in 1205ms
