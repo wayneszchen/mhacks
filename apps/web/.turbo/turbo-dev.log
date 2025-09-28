@@ -1,5 +1,5 @@
 
-
+
 > web@0.1.0 dev
 > next dev -p 3000
 
@@ -7,100 +7,338 @@
   - Local:        http://localhost:3000
 
  [32m[1m✓[22m[39m Starting...
- [32m[1m✓[22m[39m Ready in 1050ms
- [32m[1m✓[22m[39m Compiled /middleware in 120ms (178 modules)
+ [32m[1m✓[22m[39m Ready in 1732ms
+ [32m[1m✓[22m[39m Compiled /middleware in 171ms (178 modules)
  [37m[1m○[22m[39m Compiling /dashboard ...
- [32m[1m✓[22m[39m Compiled /dashboard in 857ms (1188 modules)
- GET /dashboard [32m200[39m in 958ms
- [32m[1m✓[22m[39m Compiled /api/auth/[...nextauth] in 123ms (829 modules)
+ [32m[1m✓[22m[39m Compiled /dashboard in 3s (1174 modules)
+ GET /dashboard [32m200[39m in 3253ms
+ [37m[1m○[22m[39m Compiling /api/auth/[...nextauth] ...
+ [32m[1m✓[22m[39m Compiled /api/auth/[...nextauth] in 3.3s (829 modules)
 [next-auth][warn][NEXTAUTH_URL] 
 https://next-auth.js.org/warnings#nextauth_url
- GET /api/auth/session [32m200[39m in 322ms
- GET /api/auth/session [32m200[39m in 4ms
- [32m[1m✓[22m[39m Compiled /_not-found in 235ms (1433 modules)
- GET /%7B'start_date':%20'2022-06-27' [33m404[39m in 292ms
- GET /United%20States%20%C2%B7%20On-site' [33m404[39m in 297ms
- GET /'endorsements':%200 [33m404[39m in 294ms
+ GET /api/auth/session [32m200[39m in 3722ms
+ GET /api/auth/session [32m200[39m in 18ms
+ GET /api/auth/session [32m200[39m in 11ms
+ GET /api/auth/session [32m200[39m in 17ms
+ [32m[1m✓[22m[39m Compiled /_not-found in 402ms (1419 modules)
+ GET /'endorsements':%200 [33m404[39m in 520ms
+ GET /'duration':%20'2%20yrs%201%20mo' [33m404[39m in 523ms
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session [32m200[39m in 80ms
+ GET /api/auth/session [32m200[39m in 15ms
+ GET /api/auth/session [32m200[39m in 14ms
+ GET /api/auth/session [32m200[39m in 28ms
+ GET /api/auth/session [32m200[39m in 20ms
+ GET /api/auth/session [32m200[39m in 15ms
+ GET /api/auth/session [32m200[39m in 31ms
+ GET /api/auth/session [32m200[39m in 20ms
+ GET /api/auth/session [32m200[39m in 16ms
+ GET /api/auth/session [32m200[39m in 30ms
+ GET /api/auth/session [32m200[39m in 20ms
+ GET /api/auth/session [32m200[39m in 16ms
+ GET /api/auth/session [32m200[39m in 23ms
+ GET /api/auth/session [32m200[39m in 22ms
+ GET /api/auth/session [32m200[39m in 16ms
+ GET /api/auth/session [32m200[39m in 27ms
+ GET /api/auth/session [32m200[39m in 19ms
+ GET /api/auth/session [32m200[39m in 15ms
+ GET /api/auth/session [32m200[39m in 23ms
+ GET /api/auth/session [32m200[39m in 16ms
+ GET /api/auth/session [32m200[39m in 15ms
+ GET /api/auth/session [32m200[39m in 24ms
+ GET /api/auth/session [32m200[39m in 17ms
+ GET /api/auth/session [32m200[39m in 14ms
+ GET /api/auth/session [32m200[39m in 25ms
+ GET /api/auth/session [32m200[39m in 19ms
+ GET /api/auth/session [32m200[39m in 16ms
+ GET /api/auth/session [32m200[39m in 29ms
+ GET /api/auth/session [32m200[39m in 19ms
+ GET /api/auth/session [32m200[39m in 22ms
+ GET /api/auth/session [32m200[39m in 26ms
+ GET /api/auth/session [32m200[39m in 20ms
+ GET /api/auth/session [32m200[39m in 21ms
+ GET /dashboard [32m200[39m in 64ms
+ GET /api/auth/session [32m200[39m in 23ms
+ GET /api/auth/session [32m200[39m in 24ms
+ GET /api/auth/session [32m200[39m in 24ms
+ GET /api/auth/session [32m200[39m in 15ms
+ GET /'endorsements':%200 [33m404[39m in 29ms
+ GET /'duration':%20'2%20yrs%201%20mo' [33m404[39m in 28ms
+ GET /api/auth/session [32m200[39m in 33ms
+ GET /api/auth/session [32m200[39m in 18ms
+ GET /api/auth/session [32m200[39m in 17ms
+ GET /api/auth/session [32m200[39m in 36ms
+ GET /api/auth/session [32m200[39m in 20ms
+ GET /api/auth/session [32m200[39m in 20ms
+ GET /api/auth/session [32m200[39m in 29ms
+ GET /api/auth/session [32m200[39m in 18ms
+ GET /api/auth/session [32m200[39m in 18ms
+ GET /dashboard [32m200[39m in 24ms
+ GET /api/auth/session [32m200[39m in 33ms
+ GET /api/auth/session [32m200[39m in 15ms
+ GET /api/auth/session [32m200[39m in 14ms
+ GET /api/auth/session [32m200[39m in 13ms
+ GET /'endorsements':%200 [33m404[39m in 32ms
+ GET /'duration':%20'2%20yrs%201%20mo' [33m404[39m in 34ms
+ GET /'end_date':%20'2024-04-28' [33m404[39m in 46ms
+ GET /'end_date':%20'2023-09-28' [33m404[39m in 56ms
+ GET /%7B'start_date':%20'2023-05-28' [33m404[39m in 59ms
+ GET /'title':%20'IT%20Intern%20-%20Developer%20in%20IT%20Business%20Intelligence%20&%20Data%20Management' [33m404[39m in 55ms
+ GET /'title':%20'Software%20Engineer' [33m404[39m in 33ms
+ GET /api/auth/session [32m200[39m in 35ms
+ GET /api/auth/session [32m200[39m in 16ms
+ GET /api/auth/session [32m200[39m in 13ms
+ GET /api/auth/session [32m200[39m in 11ms
+ GET /api/auth/session [32m200[39m in 14ms
+ GET /api/auth/session [32m200[39m in 30ms
+ GET /api/auth/session [32m200[39m in 18ms
+ GET /api/auth/session [32m200[39m in 19ms
+ GET /api/auth/session [32m200[39m in 33ms
+ GET /api/auth/session [32m200[39m in 17ms
+ GET /api/auth/session [32m200[39m in 19ms
+ GET /api/auth/session [32m200[39m in 26ms
+ GET /api/auth/session [32m200[39m in 17ms
+ GET /api/auth/session [32m200[39m in 17ms
+ [32m[1m✓[22m[39m Compiled in 865ms (1188 modules)
+ [32m[1m✓[22m[39m Compiled in 479ms (1188 modules)
+ [32m[1m✓[22m[39m Compiled in 238ms (1188 modules)
+ [32m[1m✓[22m[39m Compiled in 451ms (1188 modules)
+ [32m[1m✓[22m[39m Compiled in 523ms (1188 modules)
+ [32m[1m✓[22m[39m Compiled in 378ms (1188 modules)
+ [32m[1m✓[22m[39m Compiled in 225ms (1188 modules)
+ [32m[1m✓[22m[39m Compiled in 145ms (601 modules)
+ [32m[1m✓[22m[39m Compiled in 155ms (601 modules)
+ [32m[1m✓[22m[39m Compiled in 330ms (1188 modules)
+ [32m[1m✓[22m[39m Compiled in 516ms (1188 modules)
+ [32m[1m✓[22m[39m Compiled in 144ms (601 modules)
+ [32m[1m✓[22m[39m Compiled in 246ms (1188 modules)
+ [32m[1m✓[22m[39m Compiled in 338ms (1188 modules)
+ [32m[1m✓[22m[39m Compiled in 138ms (601 modules)
+ [32m[1m✓[22m[39m Compiled in 222ms (1188 modules)
+ [37m[1m○[22m[39m Compiling /api/auth/[...nextauth] ...
+ [32m[1m✓[22m[39m Compiled /api/auth/[...nextauth] in 530ms (829 modules)
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session [32m200[39m in 646ms
+ [37m[1m○[22m[39m Compiling / ...
+ [32m[1m✓[22m[39m Compiled / in 757ms (1422 modules)
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session [32m200[39m in 756ms
+ GET / [32m200[39m in 973ms
+ GET /api/auth/session [32m200[39m in 25ms
+ GET /api/auth/session [32m200[39m in 44ms
+ GET /api/auth/session [32m200[39m in 18ms
+ GET /api/auth/session [32m200[39m in 20ms
+ GET /api/auth/session [32m200[39m in 16ms
+ GET /api/auth/session [32m200[39m in 28ms
+ GET /api/auth/session [32m200[39m in 23ms
+ GET /api/auth/session [32m200[39m in 18ms
+ GET /api/auth/session [32m200[39m in 15ms
+ [37m[1m○[22m[39m Compiling /_not-found ...
+ [32m[1m✓[22m[39m Compiled /_not-found in 1228ms (1425 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json [33m404[39m in 1344ms
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session [32m200[39m in 82ms
+ GET /api/auth/session [32m200[39m in 21ms
+ GET /api/auth/session [32m200[39m in 20ms
+ [32m[1m✓[22m[39m Compiled in 761ms (1432 modules)
+ [32m[1m✓[22m[39m Compiled in 365ms (1432 modules)
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session [32m200[39m in 73ms
+ GET /api/auth/session [32m200[39m in 17ms
+ GET /api/auth/session [32m200[39m in 15ms
+ [32m[1m✓[22m[39m Compiled in 676ms (1190 modules)
+ [32m[1m✓[22m[39m Compiled in 160ms (603 modules)
+ [32m[1m✓[22m[39m Compiled in 169ms (603 modules)
+ [32m[1m✓[22m[39m Compiled /api/auth/[...nextauth] in 112ms (829 modules)
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session [32m200[39m in 268ms
+ GET /api/auth/session [32m200[39m in 25ms
+ GET /api/auth/session [32m200[39m in 25ms
+ [32m[1m✓[22m[39m Compiled in 529ms (1432 modules)
+ [32m[1m✓[22m[39m Compiled in 495ms (1190 modules)
+ [32m[1m✓[22m[39m Compiled in 489ms (1190 modules)
+ [31m[1m⨯[22m[39m ./app/dashboard/page.tsx
+Error: 
+  [38;2;255;30;30m×[0m Expected ',', got ';'
+     ╭─[[38;2;92;157;255;1;4m/home/linusaw/mhacks/apps/web/app/dashboard/page.tsx[0m:142:1]
+ [2m142[0m │ 
+ [2m143[0m │     setLoading(true);
+ [2m144[0m │     populateResultsGradually(// Clear previous results
+ [2m145[0m │     setDataSource(null); // Clear previous data source
+     · [38;2;246;87;248m                       ─[0m
+ [2m146[0m │     console.log(`🔍 Searching for: "${prompt}"`);
+ [2m147[0m │ 
+ [2m148[0m │     try {
+     ╰────
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/dashboard/page.tsx
+ [31m[1m⨯[22m[39m ./app/dashboard/page.tsx
+Error: 
+  [38;2;255;30;30m×[0m Expected ',', got ';'
+     ╭─[[38;2;92;157;255;1;4m/home/linusaw/mhacks/apps/web/app/dashboard/page.tsx[0m:142:1]
+ [2m142[0m │ 
+ [2m143[0m │     setLoading(true);
+ [2m144[0m │     populateResultsGradually(// Clear previous results
+ [2m145[0m │     setDataSource(null); // Clear previous data source
+     · [38;2;246;87;248m                       ─[0m
+ [2m146[0m │     console.log(`🔍 Searching for: "${prompt}"`);
+ [2m147[0m │ 
+ [2m148[0m │     try {
+     ╰────
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/dashboard/page.tsx
+ [37m[1m○[22m[39m Compiling /_error ...
+ GET /dashboard [31m500[39m in 31ms
+ GET /dashboard [31m500[39m in 40ms
+ GET /dashboard [31m500[39m in 21ms
+ [31m[1m⨯[22m[39m ./app/dashboard/page.tsx
+Error: 
+  [38;2;255;30;30m×[0m Expected ',', got ';'
+     ╭─[[38;2;92;157;255;1;4m/home/linusaw/mhacks/apps/web/app/dashboard/page.tsx[0m:142:1]
+ [2m142[0m │ 
+ [2m143[0m │     setLoading(true);
+ [2m144[0m │     populateResultsGradually(// Clear previous results
+ [2m145[0m │     setDataSource(null); // Clear previous data source
+     · [38;2;246;87;248m                       ─[0m
+ [2m146[0m │     console.log(`🔍 Searching for: "${prompt}"`);
+ [2m147[0m │ 
+ [2m148[0m │     try {
+     ╰────
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/dashboard/page.tsx
+ GET /.well-known/appspecific/com.chrome.devtools.json [31m500[39m in 698ms
+ [32m[1m✓[22m[39m Compiled /_not-found in 1424ms (1417 modules)
+ [33m[1m⚠[22m[39m Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /_next/static/webpack/963e56782e9a4808.webpack.hot-update.json [33m404[39m in 1615ms
+ [33m[1m⚠[22m[39m Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /_next/static/webpack/963e56782e9a4808.webpack.hot-update.json [33m404[39m in 124ms
+ [33m[1m⚠[22m[39m Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /_next/static/webpack/963e56782e9a4808.webpack.hot-update.json [33m404[39m in 195ms
+ GET /dashboard [32m200[39m in 142ms
+ GET /dashboard [32m200[39m in 82ms
+ GET /dashboard [32m200[39m in 335ms
+ GET /.well-known/appspecific/com.chrome.devtools.json [33m404[39m in 64ms
+ [37m[1m○[22m[39m Compiling /api/auth/[...nextauth] ...
+ [32m[1m✓[22m[39m Compiled /api/auth/[...nextauth] in 621ms (871 modules)
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session [32m200[39m in 751ms
+ GET /api/auth/session [32m200[39m in 20ms
+ GET /api/auth/session [32m200[39m in 16ms
+ GET /api/auth/session [32m200[39m in 18ms
+ GET /api/auth/session [32m200[39m in 24ms
+ GET /api/auth/session [32m200[39m in 21ms
+ GET /api/auth/session [32m200[39m in 17ms
+ GET /api/auth/session [32m200[39m in 15ms
+ [32m[1m✓[22m[39m Compiled in 331ms (1659 modules)
+ [32m[1m✓[22m[39m Compiled in 389ms (1659 modules)
+ [32m[1m✓[22m[39m Compiled in 405ms (1659 modules)
+ [31m[1m⨯[22m[39m ./app/dashboard/page.tsx
+Error: 
+  [38;2;255;30;30m×[0m Expected ';', '}' or <eof>
+     ╭─[[38;2;92;157;255;1;4m/home/linusaw/mhacks/apps/web/app/dashboard/page.tsx[0m:155:1]
+ [2m155[0m │       const data = await res.json();
+ [2m156[0m │       
+ [2m157[0m │       if (res.ok) {
+ [2m158[0m │         populateResultsGradually(data.results || 'mock')l
+     · [38;2;246;87;248m        ────────────────────────┬───────────────────────[0m[38;2;30;201;212m─[0m
+     ·                                 [38;2;246;87;248m╰── [38;2;246;87;248mThis is the expression part of an expression statement[0m[0m
+ [2m159[0m │         setDataSource(data.source || 'mock');
+ [2m160[0m │         
+ [2m161[0m │         // Show success message for generated CSV
+     ╰────
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/dashboard/page.tsx
+ GET /dashboard [31m500[39m in 28ms
+ GET /dashboard [31m500[39m in 23ms
+ GET /dashboard [31m500[39m in 17ms
+ GET /.well-known/appspecific/com.chrome.devtools.json [31m500[39m in 13ms
+ [32m[1m✓[22m[39m Compiled in 860ms (1645 modules)
+ GET /_next/static/webpack/963e56782e9a4808.webpack.hot-update.json [33m404[39m in 789ms
+ GET /_next/static/webpack/963e56782e9a4808.webpack.hot-update.json [33m404[39m in 61ms
+ [33m[1m⚠[22m[39m Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ [33m[1m⚠[22m[39m Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /dashboard [32m200[39m in 128ms
+ GET /_next/static/webpack/963e56782e9a4808.webpack.hot-update.json [33m404[39m in 90ms
+ [33m[1m⚠[22m[39m Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /dashboard [32m200[39m in 88ms
+ GET /dashboard [32m200[39m in 44ms
+ GET /dashboard [32m200[39m in 44ms
+ GET /.well-known/appspecific/com.chrome.devtools.json [33m404[39m in 34ms
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session [32m200[39m in 118ms
+ GET /api/auth/session [32m200[39m in 19ms
+ GET /api/auth/session [32m200[39m in 22ms
+ GET /api/auth/session [32m200[39m in 22ms
+ GET /api/auth/session [32m200[39m in 33ms
+ GET /api/auth/session [32m200[39m in 15ms
+ GET /api/auth/session [32m200[39m in 21ms
+ GET /api/auth/session [32m200[39m in 12ms
+ GET /api/auth/session [32m200[39m in 22ms
+ [32m[1m✓[22m[39m Compiled in 390ms (1659 modules)
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session [32m200[39m in 54ms
+ GET /api/auth/session [32m200[39m in 23ms
+ GET /api/auth/session [32m200[39m in 19ms
+ GET /api/auth/session [32m200[39m in 31ms
+ GET /api/auth/session [32m200[39m in 18ms
+ GET /api/auth/session [32m200[39m in 18ms
+ GET /api/auth/session [32m200[39m in 35ms
+ GET /api/auth/session [32m200[39m in 26ms
+ GET /api/auth/session [32m200[39m in 17ms
+ [32m[1m✓[22m[39m Compiled in 596ms (1412 modules)
+ [32m[1m✓[22m[39m Compiled /api/auth/[...nextauth] in 120ms (869 modules)
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session [32m200[39m in 218ms
+ GET /api/auth/session [32m200[39m in 20ms
+ GET /api/auth/session [32m200[39m in 25ms
+ GET /dashboard [32m200[39m in 136ms
+ [32m[1m✓[22m[39m Compiled /_not-found in 334ms (1643 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json [33m404[39m in 417ms
 [next-auth][warn][NEXTAUTH_URL] 
 https://next-auth.js.org/warnings#nextauth_url
  GET /api/auth/session [32m200[39m in 89ms
- GET /api/auth/session [32m200[39m in 11ms
- GET /api/auth/session [32m200[39m in 39ms
- GET /api/auth/session [32m200[39m in 18ms
+ GET /api/auth/session [32m200[39m in 17ms
+ GET /api/auth/session [32m200[39m in 20ms
  GET /api/auth/session [32m200[39m in 15ms
- [32m[1m✓[22m[39m Compiled / in 234ms (1422 modules)
- [32m[1m✓[22m[39m Compiled /about in 152ms (1428 modules)
- [32m[1m✓[22m[39m Compiled /_not-found in 113ms (1431 modules)
- GET /United%20States%20%C2%B7%20On-site' [33m404[39m in 182ms
- GET /%7B'start_date':%20'2022-06-27' [33m404[39m in 182ms
- GET /'endorsements':%200 [33m404[39m in 181ms
-[next-auth][warn][NEXTAUTH_URL] 
-https://next-auth.js.org/warnings#nextauth_url
- GET /api/auth/session [32m200[39m in 44ms
- GET /api/auth/session [32m200[39m in 14ms
- GET /api/auth/session [32m200[39m in 7ms
- GET /api/auth/session [32m200[39m in 5ms
- GET /api/auth/session [32m200[39m in 57ms
- [32m[1m✓[22m[39m Compiled in 407ms (1445 modules)
- [32m[1m✓[22m[39m Compiled in 276ms (1434 modules)
- [32m[1m✓[22m[39m Compiled in 215ms (1434 modules)
-[next-auth][warn][NEXTAUTH_URL] 
-https://next-auth.js.org/warnings#nextauth_url
- GET /api/auth/session [32m200[39m in 153ms
- GET /dashboard [32m200[39m in 81ms
- GET /api/auth/session [32m200[39m in 5ms
- GET /api/auth/session [32m200[39m in 4ms
- GET /api/auth/session [32m200[39m in 23ms
- GET /api/auth/session [32m200[39m in 14ms
- GET /api/auth/session [32m200[39m in 52ms
- [32m[1m✓[22m[39m Compiled in 349ms (1192 modules)
- [32m[1m✓[22m[39m Compiled /api/auth/[...nextauth] in 109ms (829 modules)
-[next-auth][warn][NEXTAUTH_URL] 
-https://next-auth.js.org/warnings#nextauth_url
- GET /api/auth/session [32m200[39m in 182ms
- GET /dashboard [32m200[39m in 67ms
- GET /api/auth/session [32m200[39m in 6ms
- GET /api/auth/session [32m200[39m in 5ms
- GET /api/auth/session [32m200[39m in 12ms
- GET /api/auth/session [32m200[39m in 77ms
- GET /api/auth/session [32m200[39m in 21ms
- GET /dashboard [32m200[39m in 22ms
- GET /api/auth/session [32m200[39m in 7ms
- GET /api/auth/session [32m200[39m in 4ms
+ GET /api/auth/session [32m200[39m in 31ms
  GET /api/auth/session [32m200[39m in 19ms
- GET /api/auth/session [32m200[39m in 29ms
- GET /api/auth/session [32m200[39m in 26ms
- GET /api/auth/session [32m200[39m in 13ms
- GET /api/auth/session [32m200[39m in 14ms
- GET /api/auth/session [32m200[39m in 32ms
- GET /api/auth/session [32m200[39m in 13ms
- GET /api/auth/session [32m200[39m in 4ms
- GET /api/auth/session [32m200[39m in 7ms
- GET /api/auth/session [32m200[39m in 4ms
- GET /api/auth/session [32m200[39m in 2ms
- GET /api/auth/session [32m200[39m in 4ms
- [32m[1m✓[22m[39m Compiled /about in 163ms (833 modules)
- [32m[1m✓[22m[39m Compiled / in 71ms (837 modules)
+ GET /dashboard [32m200[39m in 56ms
+ GET /api/auth/session [32m200[39m in 47ms
+ GET /api/auth/session [32m200[39m in 20ms
+ GET /api/auth/session [32m200[39m in 21ms
+ [32m[1m✓[22m[39m Compiled in 396ms (1657 modules)
 [next-auth][warn][NEXTAUTH_URL] 
 https://next-auth.js.org/warnings#nextauth_url
  GET /api/auth/session [32m200[39m in 51ms
- GET /api/auth/session [32m200[39m in 12ms
- GET /api/auth/session [32m200[39m in 73ms
- GET /api/auth/session [32m200[39m in 42ms
- GET / [32m200[39m in 124ms
- GET /api/auth/session [32m200[39m in 12ms
- GET /api/auth/session [32m200[39m in 9ms
- GET /api/auth/session [32m200[39m in 74ms
- GET /api/auth/session [32m200[39m in 11ms
- [32m[1m✓[22m[39m Compiled /_not-found in 438ms (1427 modules)
- GET /'duration':%20'2%20yrs%201%20mo' [33m404[39m in 474ms
- GET /'endorsements':%200 [33m404[39m in 476ms
-[next-auth][warn][NEXTAUTH_URL] 
-https://next-auth.js.org/warnings#nextauth_url
- GET /api/auth/session [32m200[39m in 210ms
- GET /api/auth/session [32m200[39m in 15ms
- GET /api/auth/session [32m200[39m in 21ms
+ GET /api/auth/session [32m200[39m in 26ms
+ GET /api/auth/session [32m200[39m in 32ms
+ GET /api/auth/session [32m200[39m in 28ms
+ GET /api/auth/session [32m200[39m in 36ms
  GET /api/auth/session [32m200[39m in 27ms
- GET /api/auth/session [32m200[39m in 16ms
 [?25h
-[1G[0K⠙[1G[0K

@@ -24,24 +24,163 @@ const agentMail = createAgentMailProvider({ apiKey: process.env.AGENTMAIL_API_KE
 
 app.get('/health', async () => ({ ok: true }));
 
-// LinkedIn OAuth Authentication
-app.get('/linkedin/auth', async (req, reply) => {
-  // LinkedIn OAuth configuration
-  const clientId = process.env.LINKEDIN_CLIENT_ID || 'demo-client-id';
-  const redirectUri = encodeURIComponent(process.env.LINKEDIN_REDIRECT_URI || 'http://localhost:4000/linkedin/callback');
-  const scope = encodeURIComponent('r_liteprofile r_emailaddress');
-  const state = Math.random().toString(36).substring(7); // Generate random state
-  
-  // Store state in session/cache for validation (in production, use proper session management)
-  // For now, we'll simulate the OAuth flow
-  
-  const linkedinAuthUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&state=${state}`;
-  
-  reply.send({ 
-    authUrl: linkedinAuthUrl,
-    state 
+// LinkedIn Authentication using StaffSpy init_account (browser-based)
+// Session storage for authenticated users
+const userSessions = new Map<string, { sessionFile: string; authenticated: boolean; email?: string }>();
+
+// Function to initialize LinkedIn account using StaffSpy (browser-based auth)
+async function initLinkedInAccount(sessionFile: string): Promise<{ success: boolean; error?: string; email?: string }> {
+  return new Promise((resolve) => {
+    const scriptPath = path.join(process.cwd(), '../../', 'staff_functions.py');
+    app.log.info(`Initializing LinkedIn account with session file: ${sessionFile}`);
+
+    // Simple Python script that calls init_account()
+    const authScript = `
+import sys
+import json
+sys.path.append('${path.join(process.cwd(), '../../')}')
+
+try:
+    from staff_functions import init_account
+
+    # Call init_account with default session file
+    account = init_account(session_file='${sessionFile}')
+
+    print(json.dumps({
+        "success": True,
+        "message": "LinkedIn authentication completed successfully",
+        "session_file": "${sessionFile}"
+    }))
+
+except Exception as e:
+    print(json.dumps({"success": False, "error": str(e)}))
+`;
+
+    const python = spawn('python3', ['-c', authScript], {
+      cwd: path.join(process.cwd(), '../../'),
+      stdio: ['inherit', 'pipe', 'pipe'] // Allow user interaction
+    });
+
+    let stdout = '';
+    let stderr = '';
+
+    python.stdout.on('data', (data) => {
+      const output = data.toString();
+      stdout += output;
+      // Log non-JSON output for debugging
+      if (!output.trim().startsWith('{')) {
+        app.log.info(`LinkedIn auth stdout: ${output.trim()}`);
+      }
+    });
+
+    python.stderr.on('data', (data) => {
+      const error = data.toString();
+      stderr += error;
+      app.log.warn(`LinkedIn auth stderr: ${error.trim()}`);
+
+      // Check for specific StaffSpy errors
+      if (error.includes('500 status code returned from linkeind')) {
+        app.log.error('LinkedIn returned 500 error - likely rate limiting or authentication issue');
+      }
+      if (error.includes('StaffSpy - ERROR')) {
+        app.log.error('StaffSpy encountered an error during authentication');
+      }
+    });
+
+    python.on('close', (code) => {
+      app.log.info(`LinkedIn authentication process finished with code: ${code}`);
+
+      if (code === 0) {
+        try {
+          // Parse the JSON output
+          const lines = stdout.trim().split('\n');
+          const jsonLine = lines.find(line => line.trim().startsWith('{'));
+
+          if (jsonLine) {
+            const result = JSON.parse(jsonLine);
+            app.log.info(`LinkedIn authentication result: ${result.success ? 'success' : 'failed'}`);
+            resolve(result);
+          } else {
+            app.log.warn('No JSON found in LinkedIn auth output');
+            resolve({ success: false, error: 'Authentication process completed but no result found' });
+          }
+        } catch (e) {
+          app.log.warn(`Failed to parse LinkedIn auth output: ${e instanceof Error ? e.message : String(e)}`);
+          resolve({ success: false, error: 'Failed to parse authentication result' });
+        }
+      } else {
+        app.log.error(`LinkedIn authentication failed with code ${code}: ${stderr}`);
+
+        // Provide specific error messages based on stderr content
+        let errorMessage = 'Authentication process failed';
+        if (stderr.includes('500 status code returned from linkeind')) {
+          errorMessage = 'LinkedIn is currently blocking requests (500 error). This may be due to rate limiting or LinkedIn detecting automated access. Please try again later or use a different approach.';
+        } else if (stderr.includes('StaffSpy - ERROR')) {
+          errorMessage = 'StaffSpy encountered an error during authentication. Please check your LinkedIn login and try again.';
+        }
+
+        resolve({ success: false, error: errorMessage });
+      }
+    });
+
+    python.on('error', (error) => {
+      app.log.error(`LinkedIn authentication error: ${error.message}`);
+      resolve({ success: false, error: 'Failed to start authentication process' });
+    });
   });
-});
+}
+
+app.post('/linkedin/auth', async (req, reply) => {
+  try {
+    // Generate unique session ID and file path for this user
+    const sessionId = Math.random().toString(36).substring(7) + Date.now().toString(36);
+    const sessionFile = `linkedin_session_${sessionId}.pkl`;
+
+    app.log.info('Starting LinkedIn browser authentication...');
+
+    // Call init_account without credentials to trigger browser auth
+    const result = await initLinkedInAccount(sessionFile);
+
+    if (result.success) {
+      // Store session info
+      userSessions.set(sessionId, {
+        sessionFile,
+        authenticated: true,
+        email: result.email
+      });
+
+      // Store user in database if we have email
+      if (result.email) {
+        await prisma.user.upsert({
+          where: { email: result.email },
+          update: { name: 'LinkedIn User' },
+          create: { email: result.email, name: 'LinkedIn User' }
+        });
+      }
+
+      app.log.info('LinkedIn authentication successful');
+
+      reply.send({
+        success: true,
+        sessionId,
+        message: 'LinkedIn authentication successful',
+        user: { email: result.email || 'linkedin@user.com', name: 'LinkedIn User' }
+      });
+    } else {
+      app.log.warn(`LinkedIn authentication failed: ${result.error}`);
+      reply.code(401).send({
+        success: false,
+        error: result.error || 'LinkedIn authentication failed'
+      });
+    }
+  } catch (error) {
+    app.log.error('LinkedIn authentication error:', error);
+    reply.code(500).send({
+      success: false,
+      error: 'Authentication service unavailable'
+    });
+  }
+1});
 
 app.get('/linkedin/callback', async (req, reply) => {
   const { code, state } = req.query as any;
@@ -177,6 +316,200 @@ app.post('/linkedin/scrape', async (req, reply) => {
 });
 
 // Helper functions
+async function runSimpleLinkedInScrape(sessionFile: string, searchParams: { company: string; role: string; location: string }): Promise<any> {
+  return new Promise((resolve) => {
+    app.log.info(`Running LinkedIn scrape: ${searchParams.role} at ${searchParams.company}`);
+
+    // Simple Python script that uses our working staff_functions
+    const scrapeScript = `
+import sys
+import json
+sys.path.append('${path.join(process.cwd(), '../../')}')
+
+try:
+    from staff_functions import init_account, scrape_company_staff
+
+    # Initialize account with existing session
+    account = init_account(session_file='${sessionFile}')
+
+    # Scrape company staff
+    csv_file = scrape_company_staff(
+        account=account,
+        company_name='${searchParams.company}',
+        search_term='${searchParams.role}',
+        location='${searchParams.location}',
+        max_results=10
+    )
+
+    print(json.dumps({
+        "success": True,
+        "csv_file": csv_file,
+        "message": "Scraping completed successfully"
+    }))
+
+except Exception as e:
+    print(json.dumps({"success": False, "error": str(e)}))
+`;
+
+    const python = spawn('python3', ['-c', scrapeScript], {
+      cwd: path.join(process.cwd(), '../../')
+    });
+
+    let stdout = '';
+    let stderr = '';
+
+    python.stdout.on('data', (data) => {
+      const output = data.toString();
+      stdout += output;
+      if (!output.trim().startsWith('{')) {
+        app.log.info(`Scrape stdout: ${output.trim()}`);
+      }
+    });
+
+    python.stderr.on('data', (data) => {
+      stderr += data.toString();
+    });
+
+    python.on('close', (code) => {
+      if (code === 0) {
+        try {
+          const lines = stdout.trim().split('\n');
+          const jsonLine = lines.find(line => line.trim().startsWith('{'));
+          if (jsonLine) {
+            const result = JSON.parse(jsonLine);
+            resolve(result);
+          } else {
+            resolve({ success: false, error: 'No JSON output from scrape' });
+          }
+        } catch (e) {
+          resolve({ success: false, error: 'Failed to parse scrape output' });
+        }
+      } else {
+        resolve({ success: false, error: stderr || `Scrape failed with code ${code}` });
+      }
+    });
+
+    python.on('error', (error) => {
+      resolve({ success: false, error: error.message });
+    });
+  });
+}
+
+async function runPythonScriptWithSession(scriptName: string, sessionFile: string, args: string[]): Promise<any> {
+  return new Promise((resolve) => {
+    const scriptPath = path.join(process.cwd(), '../../', scriptName);
+    app.log.info(`Executing: python3 ${scriptPath} with session ${sessionFile} and args: ${args.slice(0, 2).join(' ')} [company and role hidden]`);
+
+    // Create a Python script that uses the session file for authentication
+    const sessionScript = `
+import sys
+import json
+import os
+sys.path.append('${path.join(process.cwd(), '../../')}')
+
+try:
+    from staff_functions import init_account, scrape_company_staff
+
+    # Use existing session file for authentication
+    session_path = os.path.join('${path.join(process.cwd(), '../../')}', '${sessionFile}')
+
+    # Initialize account with existing session
+    account = init_account('', '', session_file=session_path)
+
+    # Scrape staff data
+    csv_file = scrape_company_staff(
+        account=account,
+        company_name='${args[0]}',
+        search_term='${args[1]}',
+        location='${args[2] || 'USA'}',
+        max_results=${args[3] || 10}
+    )
+
+    # Read CSV to get metadata
+    import pandas as pd
+    df = pd.read_csv(csv_file)
+
+    print(json.dumps({
+        "success": True,
+        "csv_file": csv_file,
+        "total_profiles": len(df),
+        "columns": df.columns.tolist()
+    }))
+
+except Exception as e:
+    print(json.dumps({"success": False, "error": str(e)}))
+`;
+
+    const python = spawn('python3', ['-c', sessionScript], {
+      cwd: path.join(process.cwd(), '../../')
+    });
+
+    let stdout = '';
+    let stderr = '';
+
+    python.stdout.on('data', (data) => {
+      const output = data.toString();
+      stdout += output;
+      // Log non-JSON output for debugging
+      if (!output.trim().startsWith('{')) {
+        app.log.info(`Python stdout: ${output.trim()}`);
+      }
+    });
+
+    python.stderr.on('data', (data) => {
+      const error = data.toString();
+      stderr += error;
+      app.log.warn(`Python stderr: ${error.trim()}`);
+    });
+
+    python.on('close', (code) => {
+      app.log.info(`Python script finished with code: ${code}`);
+
+      if (code === 0) {
+        try {
+          // Try to find and parse the JSON output
+          const lines = stdout.trim().split('\n');
+          let jsonStart = -1;
+
+          // Find the start of JSON output
+          for (let i = 0; i < lines.length; i++) {
+            if (lines[i].trim().startsWith('{')) {
+              jsonStart = i;
+              break;
+            }
+          }
+
+          if (jsonStart >= 0) {
+            // Combine all lines from JSON start to end
+            const jsonLines = lines.slice(jsonStart);
+            const jsonString = jsonLines.join('\n');
+            const result = JSON.parse(jsonString);
+            app.log.info(`Python script success: ${result.success ? 'true' : 'false'}`);
+            if (result.csv_file) {
+              app.log.info(`CSV file generated: ${result.csv_file}`);
+            }
+            resolve(result);
+          } else {
+            app.log.warn('No JSON found in Python output');
+            resolve({ success: false, error: 'No JSON output from Python script' });
+          }
+        } catch (e) {
+          app.log.warn(`Failed to parse Python output as JSON: ${e instanceof Error ? e.message : String(e)}`);
+          resolve({ success: false, error: 'Failed to parse Python script output' });
+        }
+      } else {
+        app.log.error(`Python script failed with code ${code}: ${stderr}`);
+        resolve({ success: false, error: stderr || `Process exited with code ${code}` });
+      }
+    });
+
+    python.on('error', (error) => {
+      app.log.error(`Python script error: ${error.message}`);
+      resolve({ success: false, error: error.message });
+    });
+  });
+}
+
 async function runPythonScript(scriptName: string, args: string[]): Promise<any> {
   return new Promise((resolve, reject) => {
     const scriptPath = path.join(process.cwd(), '../../', scriptName);
@@ -512,29 +845,36 @@ app.post('/profiles/import', async (req, reply) => {
 });
 
 app.post('/search/run', async (req, reply) => {
-  const { prompt } = (req.body as any) || {};
-  
+  const { prompt, sessionId } = (req.body as any) || {};
+
+  // Check if user is authenticated
+  if (!sessionId || !userSessions.has(sessionId)) {
+    return reply.code(401).send({
+      error: 'LinkedIn authentication required. Please connect your LinkedIn account first.'
+    });
+  }
+
+  const userSession = userSessions.get(sessionId);
+  if (!userSession?.authenticated) {
+    return reply.code(401).send({
+      error: 'LinkedIn session invalid. Please reconnect your LinkedIn account.'
+    });
+  }
+
   try {
     // Parse the user prompt to extract search parameters
     const searchParams = parseSearchPrompt(prompt);
-    
+
     // Always generate fresh data for each search - don't reuse existing CSVs
     if (searchParams.company && searchParams.role) {
       // Clean up old CSV files first to save space
       await cleanupOldCSVFiles();
-      
+
       // Generate fresh data for each search
-      app.log.info(`Running StaffSpy for: ${searchParams.role} at ${searchParams.company}`);
-      
-      // Use real LinkedIn credentials for StaffSpy
-      const result = await runPythonScript('staff_functions.py', [
-        'wcpersonal296@gmail.com', // Your LinkedIn email
-        'JobInternet786',          // Your LinkedIn password
-        searchParams.company,
-        searchParams.role,
-        searchParams.location,
-        '10' // max results - reduced for faster execution
-      ]);
+      app.log.info(`Running StaffSpy for: ${searchParams.role} at ${searchParams.company} using session ${sessionId}`);
+
+      // Use scrape_company_staff directly with session
+      const result = await runSimpleLinkedInScrape(userSession.sessionFile, searchParams);
 
       if (result.success && result.csv_file) {
         // Load the newly generated CSV (ensure correct path)

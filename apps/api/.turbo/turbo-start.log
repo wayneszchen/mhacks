@@ -1,0 +1,14 @@
+
+
+> api@0.1.0 start
+> node dist/main.js
+
+[1G[0K{"level":50,"time":1759027777868,"pid":203352,"hostname":"DESKTOP-PMK73LQ","err":{"type":"Error","message":"listen EADDRINUSE: address already in use 127.0.0.1:4000","stack":"Error: listen EADDRINUSE: address already in use 127.0.0.1:4000\n    at Server.setupListenHandle [as _listen2] (node:net:1939:16)\n    at listenInCluster (node:net:1996:12)\n    at GetAddrInfoReqWrap.callback (node:net:2205:7)\n    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:134:8)","code":"EADDRINUSE","errno":-98,"syscall":"listen","address":"127.0.0.1","port":4000},"msg":"listen EADDRINUSE: address already in use 127.0.0.1:4000"}
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m Lifecycle script `start` failed with error:
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m [94mcode[39m [33m1[39m
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m [94mpath[39m /home/linusaw/mhacks/apps/api
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m [94mworkspace[39m api@0.1.0
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m [94mlocation[39m /home/linusaw/mhacks/apps/api
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m command failed
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m [94mcommand[39m sh -c node dist/main.js
+[1G[0K⠙[1G[0K
