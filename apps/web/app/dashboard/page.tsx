@@ -31,7 +31,10 @@ type AuthState = {
 export default function DashboardPage() {
   const [prompt, setPrompt] = useState('Find SWE contacts at Amazon in Seattle');
   const [results, setResults] = useState<Candidate[]>([]);
+  const [displayedResults, setDisplayedResults] = useState<Candidate[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isPopulating, setIsPopulating] = useState(false);
+  const [expectedCount, setExpectedCount] = useState(0);
   const [draft, setDraft] = useState<string>('');
   const [selected, setSelected] = useState<Candidate | null>(null);
   const [dataSource, setDataSource] = useState<'csv' | 'csv-generated' | 'mock' | 'mock-fallback' | null>(null);
@@ -39,6 +42,9 @@ export default function DashboardPage() {
   // LinkedIn Authentication State
   const [auth, setAuth] = useState<AuthState>({ isAuthenticated: false });
   const [authLoading, setAuthLoading] = useState(false);
+
+  // Store timeout IDs for cleanup
+  const timeoutIds = React.useRef<NodeJS.Timeout[]>([]);
 
   // LinkedIn Browser Authentication using StaffSpy
   const authenticateLinkedIn = async () => {
@@ -98,6 +104,46 @@ export default function DashboardPage() {
     }
   }, [auth]);
 
+  // Cleanup timeouts on unmount
+  React.useEffect(() => {
+    return () => {
+      timeoutIds.current.forEach(id => clearTimeout(id));
+    };
+  }, []);
+
+  // Function to gradually populate results
+  const populateResultsGradually = React.useCallback((newResults: Candidate[]) => {
+    // Clear any existing timeouts
+    timeoutIds.current.forEach(id => clearTimeout(id));
+    timeoutIds.current = [];
+
+    setIsPopulating(true);
+    setDisplayedResults([]);
+    setExpectedCount(newResults.length);
+
+    // Sort results by relevance score (highest first)
+    const sortedResults = [...newResults].sort((a, b) => {
+      const scoreA = a.score || 0;
+      const scoreB = b.score || 0;
+      return scoreB - scoreA; // Descending order (highest score first)
+    });
+
+    // Add results one by one with delays, starting with most relevant
+    sortedResults.forEach((result, index) => {
+      const timeoutId = setTimeout(() => {
+        setDisplayedResults(prev => [...prev, result]);
+
+        // If this is the last result, stop populating
+        if (index === sortedResults.length - 1) {
+          const finalTimeoutId = setTimeout(() => setIsPopulating(false), 300);
+          timeoutIds.current.push(finalTimeoutId);
+        }
+      }, index * 800); // 800ms delay between each result
+
+      timeoutIds.current.push(timeoutId);
+    });
+  }, []);
+
   const runSearch = async () => {
     if (!auth.isAuthenticated || !auth.sessionId) {
       alert('Please connect your LinkedIn account first.');
@@ -106,7 +152,9 @@ export default function DashboardPage() {
 
     setLoading(true);
     setResults([]); // Clear previous results
+    setDisplayedResults([]); // Clear displayed results
     setDataSource(null); // Clear previous data source
+    setIsPopulating(false); // Reset populating state
     console.log(`🔍 Searching for: "${prompt}"`);
 
     try {
@@ -135,6 +183,9 @@ export default function DashboardPage() {
         
         if (data.results?.length === 0) {
           alert('No profiles found. This might be due to LinkedIn authentication issues or no matching profiles.');
+        } else {
+          // Start gradual population after API call completes
+          populateResultsGradually(data.results || []);
         }
       } else {
         const errorData = await res.json().catch(() => ({ error: 'Unknown error' }));
@@ -249,12 +300,17 @@ export default function DashboardPage() {
           <Button 
             onClick={runSearch} 
             className="h-10 min-w-[140px]"
-            disabled={loading}
+            disabled={loading || isPopulating}
           >
             {loading ? (
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                 Searching LinkedIn...
+              </div>
+            ) : isPopulating ? (
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                Loading Results...
               </div>
             ) : 'Search LinkedIn'}
           </Button>
@@ -271,6 +327,21 @@ export default function DashboardPage() {
                   Extracting fresh profiles for: "{prompt}"
                 </div>
                 <div className="text-blue-300/50 text-xs mt-1">This may take 30-60 seconds</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Populating Status */}
+        {isPopulating && !loading && (
+          <div className="mt-8 text-center">
+            <div className="inline-flex items-center gap-3 px-6 py-4 bg-green-500/20 border border-green-500/30 rounded-xl">
+              <div className="w-6 h-6 border-2 border-green-300/30 border-t-green-300 rounded-full animate-spin"></div>
+              <div>
+                <div className="text-green-200 font-medium">Loading profiles...</div>
+                <div className="text-green-300/70 text-sm mt-1">
+                  {displayedResults.length} of {expectedCount} profiles loaded
+                </div>
               </div>
             </div>
           </div>
@@ -300,7 +371,56 @@ export default function DashboardPage() {
 
         <div className="mt-8 grid md:grid-cols-2 gap-6">
           <AnimatePresence>
-            {results.map((r, idx) => {
+            {/* Loading placeholders */}
+            {isPopulating && Array.from({ length: expectedCount - displayedResults.length }).map((_, idx) => (
+              <motion.div
+                key={`placeholder-${idx}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ delay: (displayedResults.length + idx) * 0.1 }}
+                className="rounded-xl bg-white/5 border border-white/10 p-5"
+              >
+                <div className="flex items-start gap-3">
+                  {/* Loading avatar */}
+                  <div className="w-12 h-12 rounded-full bg-white/10 animate-pulse"></div>
+
+                  <div className="flex-1">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex-1">
+                        {/* Loading name */}
+                        <div className="h-5 bg-white/10 rounded animate-pulse mb-2"></div>
+                        {/* Loading title */}
+                        <div className="h-4 bg-white/10 rounded animate-pulse w-3/4 mb-2"></div>
+                        {/* Loading details */}
+                        <div className="h-3 bg-white/10 rounded animate-pulse w-1/2 mb-1"></div>
+                        <div className="h-3 bg-white/10 rounded animate-pulse w-2/3"></div>
+                      </div>
+                      <div className="text-right">
+                        <div className="h-3 bg-white/10 rounded animate-pulse w-12 mb-1"></div>
+                        <div className="h-4 bg-white/10 rounded animate-pulse w-8"></div>
+                      </div>
+                    </div>
+
+                    {/* Loading summary */}
+                    <div className="mt-2">
+                      <div className="h-3 bg-white/10 rounded animate-pulse mb-1"></div>
+                      <div className="h-3 bg-white/10 rounded animate-pulse w-4/5"></div>
+                    </div>
+
+                    {/* Loading buttons */}
+                    <div className="mt-3 flex gap-2">
+                      <div className="h-6 bg-white/10 rounded animate-pulse w-20"></div>
+                      <div className="h-6 bg-white/10 rounded animate-pulse w-16"></div>
+                      <div className="h-6 bg-white/10 rounded animate-pulse w-20"></div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+
+            {/* Actual results */}
+            {displayedResults.map((r) => {
               // Parse schools data if it's JSON string
               let schoolInfo = '';
               try {
@@ -317,10 +437,15 @@ export default function DashboardPage() {
               return (
                 <motion.div
                   key={r.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  transition={{ delay: idx * 0.1 }}
+                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  transition={{
+                    duration: 0.5,
+                    ease: "easeOut",
+                    type: "spring",
+                    stiffness: 100
+                  }}
                   className="rounded-xl bg-white/5 border border-white/10 p-5 hover:bg-white/10 transition-colors"
                 >
                   <div className="flex items-start gap-3">

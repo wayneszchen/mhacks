@@ -338,7 +338,7 @@ try:
         company_name='${searchParams.company}',
         search_term='${searchParams.role}',
         location='${searchParams.location}',
-        max_results=10
+        max_results=50
     )
 
     print(json.dumps({
