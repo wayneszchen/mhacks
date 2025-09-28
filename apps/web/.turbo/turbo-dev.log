@@ -7,12 +7,7 @@
   - Local:        http://localhost:3000
 
  [32m[1m✓[22m[39m Starting...
- [32m[1m✓[22m[39m Ready in 2.5s
- [37m[1m○[22m[39m Compiling / ...
- [32m[1m✓[22m[39m Compiled / in 1799ms (1095 modules)
- GET / [32m200[39m in 2521ms
+ [32m[1m✓[22m[39m Ready in 3.9s
  [37m[1m○[22m[39m Compiling /dashboard ...
- [32m[1m✓[22m[39m Compiled /dashboard in 1006ms (1104 modules)
- [37m[1m○[22m[39m Compiling /about ...
- [32m[1m✓[22m[39m Compiled /about in 1160ms (1110 modules)
-[?25h
+ [32m[1m✓[22m[39m Compiled /dashboard in 4.5s (1098 modules)
+ GET /dashboard [32m200[39m in 5121ms
