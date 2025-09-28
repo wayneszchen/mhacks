@@ -3,16 +3,18 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  Profile   Profile?
+  id                  String                 @id @default(cuid())
+  email               String                 @unique
+  name                String?
+  createdAt           DateTime               @default(now())
+  Profile             Profile?
+  emailProviderAccounts EmailProviderAccount[]
+  emailThreads        EmailThread[]
 }
 
 model Profile {
@@ -20,9 +22,9 @@ model Profile {
   userId      String   @unique
   user        User     @relation(fields: [userId], references: [id])
   summary     String?
-  schools     Json?
-  companies   Json?
-  skills      Json?
+  schools     String?  // JSON stored as string for SQLite
+  companies   String?  // JSON stored as string for SQLite
+  skills      String?  // JSON stored as string for SQLite
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -67,6 +69,87 @@ model Event {
   provider  String
   type      String
   messageId String?
-  payload   Json?
+  payload   String?  // JSON stored as string for SQLite
   createdAt DateTime @default(now())
 }
+
+// AgentMail Email Automation Models
+model EmailProviderAccount {
+  id                String        @id @default(cuid())
+  userId            String
+  user              User          @relation(fields: [userId], references: [id])
+  provider          String        @default("agentmail") // 'agentmail', 'sendgrid', etc.
+  externalInboxId   String        // AgentMail inbox ID
+  address           String        // email@inbox.agentmail.to
+  displayName       String?
+  isActive          Boolean       @default(true)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  // Relations
+  emailThreads      EmailThread[]
+
+  @@unique([userId, provider])
+  @@map("email_provider_accounts")
+}
+
+model EmailThread {
+  id                  String                @id @default(cuid())
+  userId              String
+  user                User                  @relation(fields: [userId], references: [id])
+  leadId              String?               // Reference to candidate/lead
+  providerAccountId   String
+  providerAccount     EmailProviderAccount  @relation(fields: [providerAccountId], references: [id])
+  providerThreadId    String                // AgentMail thread ID
+  subject             String
+  recipientEmail      String
+  recipientName       String?
+  lastMessageAt       DateTime?
+  state               String                @default("OUTBOUND_SENT")
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+
+  // Relations
+  messages            EmailMessage[]
+
+  @@unique([providerAccountId, providerThreadId])
+  @@map("email_threads")
+}
+
+model EmailMessage {
+  id                  String          @id @default(cuid())
+  threadId            String
+  thread              EmailThread     @relation(fields: [threadId], references: [id])
+  direction           String
+  providerMessageId   String          // AgentMail message ID
+  fromEmail           String
+  toEmail             String
+  subject             String?
+  snippet             String?         // Brief preview/summary
+  bodyHtml            String?
+  bodyText            String?
+  rawJson             String?         // JSON stored as string for SQLite
+  occurredAt          DateTime        @default(now())
+  createdAt           DateTime        @default(now())
+
+  @@unique([threadId, providerMessageId])
+  @@map("email_messages")
+}
+
+model WebhookEvent {
+  id          String   @id @default(cuid())
+  provider    String   // 'agentmail', etc.
+  type        String   // 'message.delivered', 'message.received', etc.
+  eventId     String?  // Provider's event ID if available
+  rawJson     String   // JSON stored as string for SQLite
+  processed   Boolean  @default(false)
+  receivedAt  DateTime @default(now())
+  processedAt DateTime?
+
+  @@unique([provider, eventId])
+  @@map("webhook_events")
+}
+
+// Note: SQLite doesn't support enums, so we use strings instead
+// EmailThreadState: "OUTBOUND_SENT" | "AWAITING_REPLY" | "SCHEDULING" | "CONFIRMED" | "CLOSED" | "PAUSED" | "ERROR"
+// MessageDirection: "OUTBOUND" | "INBOUND"

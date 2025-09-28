@@ -8,6 +8,12 @@ export type Candidate = {
   location?: string;
   summary?: string;
   source?: string;
+  emailStatus?: 'found' | 'not_found' | 'searching' | 'error' | 'mock_generated';
+  score?: number;
+  schools?: string;
+  skills?: string;
+  experience?: string;
+  profilePhoto?: string;
 };
 
 export type SearchFilters = {

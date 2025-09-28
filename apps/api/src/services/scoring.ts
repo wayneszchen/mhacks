@@ -35,136 +35,14 @@ function tokenOverlap(a: string[] = [], b: string[] = []): number {
   return inter / denom; // Jaccard-like
 }
 
-// Enhanced LLM scoring with Google AI integration
-async function scoreWithLLM(
-  user: UserProfile,
-  intent: string,
-  candidates: Candidate[]
-): Promise<Candidate[]> {
-  const apiKey = process.env.GOOGLE_AI_API_KEY;
+// LLM scoring removed - using only fallback scoring for speed and reliability
 
-  if (!apiKey || candidates.length === 0) {
-    console.warn('No Google AI API key found or no candidates, falling back to enhanced scoring');
-    return await fallbackScoring(user, intent, candidates);
-  }
-
-  try {
-    // Prepare the prompt for LLM scoring
-    const userContext = `User Profile:
-- Schools: ${user.schools?.join(', ') || 'Not specified'}
-- Companies: ${user.companies?.join(', ') || 'Not specified'}
-- Skills: ${user.skills?.join(', ') || 'Not specified'}
-- Summary: ${user.summary || 'Not specified'}
-
-Search Intent: ${intent}`;
-
-    // Process candidates in batches of 5 for efficiency
-    const batchSize = 5;
-    const scoredCandidates: Candidate[] = [];
-
-    for (let i = 0; i < candidates.length; i += batchSize) {
-      const batch = candidates.slice(i, i + batchSize);
-
-      const candidatesText = batch.map((c, idx) =>
-        `Candidate ${idx + 1}:
-- Name: ${c.name}
-- Title: ${c.title || 'Not specified'}
-- Company: ${c.company || 'Not specified'}
-- Location: ${c.location || 'Not specified'}
-- Summary: ${c.summary?.substring(0, 300) || 'Not specified'}
-- Schools: ${c.schools || 'Not specified'}
-- Skills: ${c.skills || 'Not specified'}`
-      ).join('\n\n');
-
-      const prompt = `${userContext}
-
-Please score the following candidates from 0.0 to 1.0 based on how well they match the user's profile and search intent. Consider factors like:
-1. Alumni connections (same schools)
-2. Role/title relevance
-3. Company matching or similar companies
-4. Skills overlap
-5. Career progression alignment
-6. Overall networking value
-
-Candidates:
-${candidatesText}
-
-Respond with ONLY a JSON array of scores in this format:
-[0.85, 0.72, 0.61, ...]`;
-
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: prompt
-                }
-              ]
-            }
-          ]
-        })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-        if (text) {
-          try {
-            // Extract JSON from the response
-            const jsonMatch = text.match(/\[[\s\S]*\]/);
-            if (jsonMatch) {
-              const scores = JSON.parse(jsonMatch[0]);
-
-              // Apply scores to batch
-              batch.forEach((candidate, idx) => {
-                if (scores[idx] !== undefined) {
-                  candidate.score = Math.max(0, Math.min(1, scores[idx] || 0));
-                } else {
-                  candidate.score = 0.1; // Default low score if LLM didn't provide one
-                }
-              });
-            } else {
-              throw new Error('No JSON found in LLM response');
-            }
-          } catch (parseError) {
-            console.warn('Failed to parse LLM response, using fallback scoring for batch');
-            // Fall back to enhanced scoring for this batch
-            const fallbackBatch = await fallbackScoring(user, intent, batch);
-            batch.forEach((candidate, idx) => {
-              candidate.score = fallbackBatch[idx]?.score || 0.1;
-            });
-          }
-        } else {
-          throw new Error('Empty response from LLM');
-        }
-      } else {
-        throw new Error(`LLM API error: ${response.status}`);
-      }
-
-      scoredCandidates.push(...batch);
-
-      // Add small delay between batches to avoid rate limiting
-      if (i + batchSize < candidates.length) {
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
-    }
-
-    // Sort by score and return
-    return scoredCandidates.sort((a, b) => (b.score || 0) - (a.score || 0));
-
-  } catch (error) {
-    console.warn('LLM scoring failed, falling back to enhanced scoring:', error);
-    return await fallbackScoring(user, intent, candidates);
-  }
-}
-
-// Enhanced fallback scoring algorithm
+// Enhanced fallback scoring algorithm with HEAVILY WEIGHTED alumni connections
+// Alumni scoring (keeps percentages reasonable while prioritizing alumni):
+// - University of Michigan alumni: +0.8 base + 0.2 bonus = 1.0 total boost (100%+ scores)
+// - Other alumni connections: +0.6 base + 0.2 bonus = 0.8 total boost (80%+ scores)
+// - All other factors combined typically add up to ~0.5-0.7 max
+// This ensures alumni are ALWAYS ranked at the top with reasonable percentages
 async function fallbackScoring(
   user: UserProfile,
   intent: string,
@@ -183,17 +61,99 @@ async function fallbackScoring(
   return candidates.map((c) => {
     let score = 0;
 
-    // Alumni affinity (special priority for University of Michigan)
-    const schoolsText = c.schools || c.summary || '';
-    if (textContains(schoolsText, 'University of Michigan') || textContains(schoolsText, 'Michigan')) {
-      score += 0.4; // High priority for Michigan alumni
+    // Alumni affinity - HEAVILY WEIGHTED (top priority)
+    const schoolsText = (c.schools || c.summary || '').toLowerCase();
+    let isAlumni = false;
+    let alumniScore = 0;
+
+    // Enhanced school matching function with precise matching
+    const matchesSchool = (candidateText: string, schoolName: string): boolean => {
+      const school = schoolName.toLowerCase().trim();
+      const text = candidateText.toLowerCase();
+
+      // Exact match
+      if (text.includes(school)) return true;
+
+      // Handle common abbreviations and variations with precise matching
+      const schoolVariations: { [key: string]: string[] } = {
+        'university of michigan': ['u of m', 'umich', 'michigan ann arbor'],
+        'stanford university': ['stanford'],
+        'massachusetts institute of technology': ['mit'],
+        'university of california berkeley': ['uc berkeley', 'cal berkeley'],
+        'harvard university': ['harvard'],
+        'princeton university': ['princeton'],
+        'yale university': ['yale'],
+        'columbia university': ['columbia'],
+        'university of pennsylvania': ['upenn'],
+        'cornell university': ['cornell'],
+        'dartmouth college': ['dartmouth'],
+        'brown university': ['brown']
+      };
+
+      // Check variations for exact school
+      if (schoolVariations[school]) {
+        return schoolVariations[school].some(variation => text.includes(variation));
+      }
+
+      // Check if this is a reverse lookup (user provided abbreviation)
+      for (const [fullName, variations] of Object.entries(schoolVariations)) {
+        if (variations.includes(school) && text.includes(fullName)) return true;
+      }
+
+      return false;
+    };
+
+    // Special precise matching for University of Michigan to avoid Michigan State false positives
+    const isMichiganAlumni = () => {
+      const text = schoolsText;
+
+      // Positive indicators for University of Michigan
+      const umichiIndicators = [
+        'university of michigan',
+        'u of m',
+        'umich',
+        'michigan ann arbor',
+        'ann arbor'
+      ];
+
+      // Negative indicators (should exclude)
+      const excludeIndicators = [
+        'michigan state',
+        'michigan tech',
+        'western michigan',
+        'eastern michigan',
+        'central michigan'
+      ];
+
+      // First check if any exclusion indicators are present
+      if (excludeIndicators.some(exclude => text.includes(exclude))) {
+        return false;
+      }
+
+      // Then check for positive indicators
+      return umichiIndicators.some(indicator => text.includes(indicator));
+    };
+
+    // Apply alumni scoring with reasonable percentages
+    if (isMichiganAlumni()) {
+      score += 0.8; // High boost for Michigan alumni that keeps percentage reasonable
+      isAlumni = true;
+      console.log(`🎓 MICHIGAN ALUMNI: ${c.name} - Score boost: +0.8`);
     } else if (user.schools && user.schools.length > 0) {
-      for (const s of user.schools) {
-        if (textContains(schoolsText, s)) {
-          score += 0.3;
+      // Check for any other school matches
+      for (const userSchool of user.schools) {
+        if (matchesSchool(schoolsText, userSchool) && !schoolsText.includes('michigan state')) {
+          score += 0.6; // High boost for any alumni connection
+          isAlumni = true;
+          console.log(`🎓 ALUMNI MATCH: ${c.name} (${userSchool}) - Score boost: +0.6`);
           break;
         }
       }
+    }
+
+    // Additional alumni network bonus
+    if (isAlumni) {
+      score += 0.2; // Extra bonus for alumni connections
     }
 
     // Role/title similarity (enhanced)
@@ -294,8 +254,8 @@ async function fallbackScoring(
       score += completenessBonus;
     }
 
-    // Clamp score between 0 and 1
-    score = Math.max(0, Math.min(1, score));
+    // Clamp score to keep percentages reasonable (max 100%)
+    score = Math.max(0, Math.min(1.0, score)); // Cap at 100% maximum
 
     return {
       ...c,
@@ -312,16 +272,9 @@ export async function scoreCandidates(args: {
 }): Promise<Candidate[]> {
   const { user, intent, candidates } = args;
 
-  // Try LLM scoring first, fallback to enhanced scoring if it fails
-  const apiKey = process.env.GOOGLE_AI_API_KEY;
-
-  if (apiKey && candidates.length > 0) {
-    console.log('Using LLM-powered scoring with Google AI');
-    return await scoreWithLLM(user, intent, candidates);
-  } else {
-    console.log('Using enhanced fallback scoring');
-    return await fallbackScoring(user, intent, candidates);
-  }
+  // Skip LLM scoring and use fast fallback scoring directly
+  console.log('✅ UPDATED: Using enhanced fallback scoring (LLM completely disabled)');
+  return await fallbackScoring(user, intent, candidates);
 }
 
 // Legacy synchronous version for backwards compatibility
@@ -364,11 +317,25 @@ export function scoreCandidatesSync(args: {
       score += Math.min(0.15, skillsOverlap * 0.15);
     }
 
-    // Schools and companies affinity
-    if (user.schools && user.schools.length > 0) {
+    // Alumni affinity - HEAVILY WEIGHTED in sync version too (precise matching)
+    const schoolsText = (c.schools || c.summary || '').toLowerCase();
+
+    // Check for Michigan alumni with precise matching
+    const isMichiganAlumni = () => {
+      const text = schoolsText;
+      const excludeIndicators = ['michigan state', 'michigan tech', 'western michigan', 'eastern michigan', 'central michigan'];
+      const umichiIndicators = ['university of michigan', 'u of m', 'umich', 'michigan ann arbor', 'ann arbor'];
+
+      if (excludeIndicators.some(exclude => text.includes(exclude))) return false;
+      return umichiIndicators.some(indicator => text.includes(indicator));
+    };
+
+    if (isMichiganAlumni()) {
+      score += 0.8; // High boost for Michigan alumni
+    } else if (user.schools && user.schools.length > 0) {
       for (const s of user.schools) {
-        if (textContains(c.summary, s) || textContains(c.company, s)) {
-          score += 0.1;
+        if (textContains(schoolsText, s) && !schoolsText.includes('michigan state')) {
+          score += 0.6; // High boost for any alumni
           break;
         }
       }
@@ -383,8 +350,8 @@ export function scoreCandidatesSync(args: {
       }
     }
 
-    // Clamp
-    score = Math.max(0, Math.min(1, score));
+    // Clamp to keep percentages reasonable (max 100%)
+    score = Math.max(0, Math.min(1.0, score));
 
     return {
       ...c,

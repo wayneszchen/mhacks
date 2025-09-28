@@ -22,7 +22,7 @@ def init_account(username: str = "", password: str = "", session_file: str = "se
             username=username,
             password=password,
             session_file=session_file,
-            log_level=1,  # 0 for no logs
+            log_level=0,  # 0 for no logs
         )
 
         # Automatically parse and store user profile
@@ -502,6 +502,389 @@ def calculate_academic_status(schools_data) -> tuple[str, str]:
     except Exception as e:
         print(f"⚠️ Error calculating academic status: {e}")
         return "N/A", "N/A"
+
+
+def send_personalized_message_to_connection(
+    account: LinkedInAccount,
+    connection_profile_url: str,
+    personalized_message: str,
+    connect_if_not_connected: bool = True
+) -> Dict[str, Any]:
+    """
+    Send a personalized message to a specific LinkedIn connection using browser automation
+
+    Args:
+        account: Authenticated LinkedInAccount with browser session
+        connection_profile_url: LinkedIn profile URL (e.g., "https://linkedin.com/in/username")
+        personalized_message: The message to send
+        connect_if_not_connected: Whether to send connection request if not already connected
+
+    Returns:
+        Dictionary with success status and details
+    """
+    try:
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.common.exceptions import TimeoutException, NoSuchElementException
+        import time
+
+        # Extract username from LinkedIn URL
+        import re
+        username_match = re.search(r'linkedin\.com/in/([^/?]+)', connection_profile_url)
+        if not username_match:
+            return {
+                "success": False,
+                "error": "Invalid LinkedIn URL format",
+                "profile_url": connection_profile_url
+            }
+
+        username = username_match.group(1)
+        print(f"🎯 Targeting user: {username}")
+
+        # Check if we have a browser session (StaffSpy should have one)
+        if not hasattr(account, 'session') or not account.session:
+            return {
+                "success": False,
+                "error": "No active browser session found",
+                "profile_url": connection_profile_url
+            }
+
+        # First, let's try to get the user's profile data to check connection status
+        try:
+            user_profiles = account.scrape_users([username], extra_profile_data=True)
+            if user_profiles.empty:
+                return {
+                    "success": False,
+                    "error": "Could not find user profile",
+                    "profile_url": connection_profile_url
+                }
+
+            user_data = user_profiles.iloc[0].to_dict()
+            connection_status = user_data.get('is_connection', 'no')
+            print(f"📊 Connection status: {connection_status}")
+
+        except Exception as e:
+            print(f"⚠️ Could not check connection status: {e}")
+            connection_status = 'unknown'
+
+        # If not connected and we should connect first
+        if connection_status == 'no' and connect_if_not_connected:
+            print("🤝 Sending connection request first...")
+            try:
+                # Use StaffSpy's connect functionality
+                from staffspy.utils.models import Staff
+
+                # Create a Staff object for the connection
+                staff_obj = Staff()
+                staff_obj.id = username
+                staff_obj.urn = user_data.get('urn', username)
+                staff_obj.is_connection = 'no'
+                staff_obj.profile_link = connection_profile_url
+
+                # Use the LinkedIn scraper's connect method
+                linkedin_scraper = account._scraper if hasattr(account, '_scraper') else None
+                if linkedin_scraper:
+                    linkedin_scraper.connect_user(staff_obj)
+                    print("✅ Connection request sent")
+
+                    # Wait a bit before trying to message
+                    time.sleep(2)
+                else:
+                    print("⚠️ Could not access LinkedIn scraper for connection")
+
+            except Exception as e:
+                print(f"⚠️ Failed to send connection request: {e}")
+
+        # Now use browser automation to send the message
+        # We'll use LinkedIn's messaging API endpoint directly through the session
+        try:
+            # Get the member ID for messaging
+            member_id = user_data.get('urn', username)
+            if not member_id:
+                return {
+                    "success": False,
+                    "error": "Could not get member ID for messaging",
+                    "profile_url": connection_profile_url
+                }
+
+            # LinkedIn messaging endpoint
+            messaging_endpoint = "https://www.linkedin.com/voyager/api/messaging/conversations"
+
+            # Prepare message data
+            message_data = {
+                "keyVersion": "LEGACY_INBOX",
+                "conversationCreate": {
+                    "eventCreate": {
+                        "value": {
+                            "com.linkedin.voyager.messaging.create.MessageCreate": {
+                                "body": personalized_message,
+                                "attachments": [],
+                                "attributedBody": {
+                                    "text": personalized_message,
+                                    "attributes": []
+                                }
+                            }
+                        }
+                    },
+                    "recipients": [f"urn:li:member:{member_id}"],
+                    "subtype": "MEMBER_TO_MEMBER"
+                }
+            }
+
+            # Set appropriate headers
+            headers = {
+                "Content-Type": "application/json",
+                "csrf-token": account.session.cookies.get("JSESSIONID", ""),
+                "x-li-lang": "en_US",
+                "x-restli-protocol-version": "2.0.0"
+            }
+
+            # Send the message
+            response = account.session.post(
+                messaging_endpoint,
+                json=message_data,
+                headers=headers
+            )
+
+            if response.status_code == 201:
+                print("✅ Message sent successfully!")
+                return {
+                    "success": True,
+                    "message": "Message sent successfully",
+                    "profile_url": connection_profile_url,
+                    "username": username,
+                    "connection_status": connection_status,
+                    "message_preview": personalized_message[:100] + "..." if len(personalized_message) > 100 else personalized_message
+                }
+            else:
+                print(f"❌ Failed to send message. Status: {response.status_code}")
+                print(f"Response: {response.text[:200]}")
+
+                return {
+                    "success": False,
+                    "error": f"Failed to send message. Status: {response.status_code}",
+                    "profile_url": connection_profile_url,
+                    "response_code": response.status_code
+                }
+
+        except Exception as e:
+            print(f"❌ Error sending message: {e}")
+            return {
+                "success": False,
+                "error": f"Error sending message: {str(e)}",
+                "profile_url": connection_profile_url
+            }
+
+    except Exception as e:
+        print(f"❌ General error: {e}")
+        return {
+            "success": False,
+            "error": f"General error: {str(e)}",
+            "profile_url": connection_profile_url
+        }
+
+
+def generate_and_send_personalized_message(
+    username: str,
+    password: str,
+    target_profile_url: str,
+    tone: str = 'warm',
+    connect_if_needed: bool = True,
+    session_file: str = "session.pkl"
+) -> Dict[str, Any]:
+    """
+    Complete workflow: authenticate, generate personalized message, and send it
+
+    Args:
+        username: LinkedIn username/email
+        password: LinkedIn password
+        target_profile_url: Target's LinkedIn profile URL
+        tone: Message tone ('warm', 'concise', 'direct', 'curious')
+        connect_if_needed: Whether to send connection request if not connected
+        session_file: Session file for persistence
+
+    Returns:
+        Dictionary with results and metadata
+    """
+    try:
+        # Step 1: Initialize account
+        print("🔐 Initializing LinkedIn account...")
+        account = init_account(username, password, session_file)
+
+        if not account.user_profile:
+            return {
+                "success": False,
+                "error": "Could not load sender profile data",
+                "step": "profile_loading"
+            }
+
+        # Step 2: Get target profile data
+        print("🎯 Loading target profile...")
+        import re
+        username_match = re.search(r'linkedin\.com/in/([^/?]+)', target_profile_url)
+        if not username_match:
+            return {
+                "success": False,
+                "error": "Invalid LinkedIn URL format",
+                "target_url": target_profile_url
+            }
+
+        target_username = username_match.group(1)
+
+        try:
+            target_profiles = account.scrape_users([target_username], extra_profile_data=True)
+            if target_profiles.empty:
+                return {
+                    "success": False,
+                    "error": "Could not find target profile",
+                    "target_url": target_profile_url
+                }
+
+            target_data = target_profiles.iloc[0].to_dict()
+        except Exception as e:
+            return {
+                "success": False,
+                "error": f"Failed to load target profile: {str(e)}",
+                "target_url": target_profile_url
+            }
+
+        # Step 3: Generate personalized message using AI
+        print("🤖 Generating personalized message...")
+        try:
+            # Convert data to the format expected by the drafting service
+            sender_profile = {
+                "name": account.user_profile.get('name', ''),
+                "headline": account.user_profile.get('headline', ''),
+                "current_company": account.user_profile.get('current_company', ''),
+                "university": account.user_profile.get('university', ''),
+                "summary": account.user_profile.get('headline', ''),
+                "skills": account.user_profile.get('skills', []),
+                "experiences": account.user_profile.get('experience', []),
+                "schools": account.user_profile.get('education', [])
+            }
+
+            receiver_profile = {
+                "name": target_data.get('name', ''),
+                "title": target_data.get('current_position', ''),
+                "company": target_data.get('current_company', ''),
+                "location": target_data.get('location', ''),
+                "summary": target_data.get('bio', ''),
+                "skills": target_data.get('skills', ''),
+                "schools": target_data.get('schools', ''),
+                "experience": target_data.get('experiences', '')
+            }
+
+            # Use a simple template for now (could integrate with Gemini API later)
+            personalized_message = generate_simple_personalized_message(
+                sender_profile, receiver_profile, tone
+            )
+
+        except Exception as e:
+            print(f"⚠️ AI generation failed, using template: {e}")
+            personalized_message = f"""Hi {target_data.get('name', 'there')},
+
+I hope you're doing well! I came across your profile and was impressed by your background at {target_data.get('current_company', 'your company')}.
+
+As someone working in {account.user_profile.get('current_company', 'the field')}, I'd love to connect and learn more about your experience.
+
+Best regards,
+{account.user_profile.get('name', 'Your connection')}"""
+
+        print(f"📝 Generated message: {personalized_message[:100]}...")
+
+        # Step 4: Send the message
+        print("📤 Sending message...")
+        result = send_personalized_message_to_connection(
+            account=account,
+            connection_profile_url=target_profile_url,
+            personalized_message=personalized_message,
+            connect_if_not_connected=connect_if_needed
+        )
+
+        # Add metadata to result
+        result.update({
+            "sender_name": account.user_profile.get('name', ''),
+            "target_name": target_data.get('name', ''),
+            "message_tone": tone,
+            "full_message": personalized_message
+        })
+
+        return result
+
+    except Exception as e:
+        return {
+            "success": False,
+            "error": f"Workflow error: {str(e)}",
+            "target_url": target_profile_url
+        }
+
+
+def generate_simple_personalized_message(sender_profile: Dict, receiver_profile: Dict, tone: str = 'warm') -> str:
+    """
+    Generate a simple personalized message based on profiles
+    """
+    sender_name = sender_profile.get('name', 'Your connection')
+    receiver_name = receiver_profile.get('name', 'there')
+    receiver_company = receiver_profile.get('company', 'your company')
+    receiver_title = receiver_profile.get('title', 'your role')
+    sender_company = sender_profile.get('current_company', '')
+    sender_university = sender_profile.get('university', '')
+
+    # Find common ground
+    common_ground = []
+
+    # Check for same company
+    if sender_company and receiver_company and sender_company.lower() in receiver_company.lower():
+        common_ground.append(f"we both have connections to {receiver_company}")
+
+    # Check for same university
+    receiver_schools = receiver_profile.get('schools', '').lower()
+    if sender_university and sender_university.lower() in receiver_schools:
+        common_ground.append(f"we're both connected to {sender_university}")
+
+    # Generate message based on tone
+    if tone == 'concise':
+        message = f"""Hi {receiver_name},
+
+I noticed your background in {receiver_title} at {receiver_company}. Would love to connect!
+
+Best,
+{sender_name}"""
+
+    elif tone == 'direct':
+        message = f"""Hi {receiver_name},
+
+I'm reaching out regarding your role as {receiver_title} at {receiver_company}. I'm interested in connecting with professionals in your field.
+
+Best regards,
+{sender_name}"""
+
+    elif tone == 'curious':
+        message = f"""Hi {receiver_name},
+
+I came across your profile and was curious about your work as {receiver_title} at {receiver_company}. Your background looks really interesting!
+
+{f"I noticed {common_ground[0]} - small world!" if common_ground else ""}
+
+Would love to connect and learn more about your experience.
+
+Best,
+{sender_name}"""
+
+    else:  # warm (default)
+        message = f"""Hi {receiver_name},
+
+I hope you're doing well! I came across your profile and was impressed by your background as {receiver_title} at {receiver_company}.
+
+{f"I also noticed that {common_ground[0]} - it's a small world!" if common_ground else ""}
+
+I'd love to connect and potentially learn more about your experience in the field.
+
+Best regards,
+{sender_name}"""
+
+    return message
 
 
 if __name__ == "__main__":

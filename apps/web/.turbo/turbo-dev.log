@@ -7,71 +7,156 @@
   - Local:        http://localhost:3000
 
  [32m[1m✓[22m[39m Starting...
- [32m[1m✓[22m[39m Ready in 1404ms
- [37m[1m○[22m[39m Compiling /middleware ...
- [32m[1m✓[22m[39m Compiled /middleware in 532ms (447 modules)
-[next-auth][warn][NEXTAUTH_URL] 
-https://next-auth.js.org/warnings#nextauth_url
- GET /api/auth/session [32m200[39m in 891ms
+ [32m[1m✓[22m[39m Ready in 1312ms
+ [32m[1m✓[22m[39m Compiled /middleware in 182ms (178 modules)
  [37m[1m○[22m[39m Compiling /dashboard ...
- [32m[1m✓[22m[39m Compiled /dashboard in 996ms (1416 modules)
+ [32m[1m✓[22m[39m Compiled /dashboard in 1015ms (1174 modules)
+ GET /dashboard [32m200[39m in 1176ms
+ [32m[1m✓[22m[39m Compiled /api/auth/[...nextauth] in 383ms (829 modules)
 [next-auth][warn][NEXTAUTH_URL] 
 https://next-auth.js.org/warnings#nextauth_url
- GET /api/auth/session [32m200[39m in 994ms
- GET /dashboard [32m200[39m in 1240ms
- GET /api/auth/session [32m200[39m in 21ms
- GET /api/auth/session [32m200[39m in 14ms
- GET /api/auth/session [32m200[39m in 13ms
- [32m[1m✓[22m[39m Compiled / in 434ms (1422 modules)
- [32m[1m✓[22m[39m Compiled /_not-found in 298ms (1179 modules)
- GET /'endorsements':%200 [33m404[39m in 401ms
- GET /'duration':%20'2%20yrs%201%20mo' [33m404[39m in 18ms
- GET /United%20States' [33m404[39m in 23ms
- GET /where%20I%20can%20leverage%20my%20experience%20and%20values%20to%20drive%20impactful%20solutions.,[%7B'start_date':%20'2024-06-28' [33m404[39m in 24ms
- [32m[1m✓[22m[39m Compiled /api/auth/[...nextauth] in 105ms (830 modules)
-[next-auth][warn][NEXTAUTH_URL] 
-https://next-auth.js.org/warnings#nextauth_url
- GET /api/auth/session [32m200[39m in 228ms
- GET /api/auth/session [32m200[39m in 13ms
- GET /api/auth/session [32m200[39m in 14ms
- GET /api/auth/session [32m200[39m in 12ms
- GET /api/auth/session [32m200[39m in 24ms
- GET /api/auth/session [32m200[39m in 12ms
- GET /'title':%20'Software%20Engineer' [33m404[39m in 63ms
- GET /api/auth/session [32m200[39m in 24ms
- GET /api/auth/session [32m200[39m in 13ms
- GET /api/auth/session [32m200[39m in 17ms
- GET /api/auth/session [32m200[39m in 16ms
+ GET /api/auth/session [32m200[39m in 750ms
+ GET /api/auth/session [32m200[39m in 19ms
+ GET /api/auth/session [32m200[39m in 32ms
+ GET /api/auth/session [32m200[39m in 29ms
+ GET /api/auth/session [32m200[39m in 34ms
+ GET /api/auth/session [32m200[39m in 22ms
+ GET /dashboard [32m200[39m in 86ms
  GET /api/auth/session [32m200[39m in 20ms
- GET /BitBucket [33m404[39m in 26ms
+ GET /api/auth/session [32m200[39m in 14ms
  GET /api/auth/session [32m200[39m in 29ms
  GET /api/auth/session [32m200[39m in 11ms
- GET /api/auth/session [32m200[39m in 9ms
- GET /api/auth/session [32m200[39m in 8ms
- GET /api/auth/session [32m200[39m in 22ms
- GET /Spring%20MVC [33m404[39m in 29ms
- GET /api/auth/session [32m200[39m in 31ms
- GET /api/auth/session [32m200[39m in 14ms
- GET /api/auth/session [32m200[39m in 17ms
- GET /api/auth/session [32m200[39m in 16ms
- GET /api/auth/session [32m200[39m in 24ms
- GET /api/auth/session [32m200[39m in 13ms
- GET /api/auth/session [32m200[39m in 28ms
- GET /api/auth/session [32m200[39m in 16ms
- GET /api/auth/session [32m200[39m in 27ms
- GET /api/auth/session [32m200[39m in 18ms
- GET /%7B'start_date':%20'2022-08-28' [33m404[39m in 22ms
- GET /%7B'name':%20'Python%20(Programming%20Language)' [33m404[39m in 20ms
- GET /United%20States%20%C2%B7%20Hybrid' [33m404[39m in 19ms
+ [32m[1m✓[22m[39m Compiled /_not-found in 339ms (1419 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json [33m404[39m in 427ms
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session [32m200[39m in 64ms
  GET /api/auth/session [32m200[39m in 25ms
- GET /api/auth/session [32m200[39m in 16ms
- GET /api/auth/session [32m200[39m in 23ms
+ GET /api/auth/session [32m200[39m in 22ms
+ GET /dashboard [32m200[39m in 61ms
+ GET /.well-known/appspecific/com.chrome.devtools.json [33m404[39m in 32ms
+ GET /api/auth/session [32m200[39m in 17ms
  GET /api/auth/session [32m200[39m in 14ms
- GET /'cwilkinson@goo.gle' [33m404[39m in 23ms
- GET /'title':%20'Chief%20Executive%20Officer' [33m404[39m in 18ms
- GET /'end_date':%20'2024-05-28' [33m404[39m in 21ms
- GET /'location':%20None [33m404[39m in 18ms
- GET /%7B'start_date':%20'2022-05-28' [33m404[39m in 19ms
+ GET /api/auth/session [32m200[39m in 28ms
  GET /api/auth/session [32m200[39m in 19ms
- GET /api/auth/session [32m200[39m in 10ms
+ [37m[1m○[22m[39m Compiling / ...
+ [32m[1m✓[22m[39m Compiled / in 533ms (1422 modules)
+ GET / [32m200[39m in 627ms
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session [32m200[39m in 31ms
+ GET /api/auth/session [32m200[39m in 11ms
+ GET /api/auth/signin?callbackUrl=%2Fdashboard [32m200[39m in 10ms
+ POST /api/auth/callback/credentials [34m302[39m in 17ms
+ GET /dashboard [32m200[39m in 31ms
+ GET /api/auth/session [32m200[39m in 17ms
+ GET /api/auth/session [32m200[39m in 14ms
+ GET /api/auth/session [32m200[39m in 18ms
+ GET /api/auth/session [32m200[39m in 36ms
+ GET /api/auth/session [32m200[39m in 34ms
+ GET /api/auth/session [32m200[39m in 24ms
+ GET /api/auth/session [32m200[39m in 54ms
+ GET /api/auth/session [32m200[39m in 54ms
+ GET /api/auth/session [32m200[39m in 23ms
+ GET /api/auth/session [32m200[39m in 27ms
+ GET /api/auth/session [32m200[39m in 26ms
+ GET /api/auth/session [32m200[39m in 22ms
+ GET /api/auth/session [32m200[39m in 30ms
+ GET /api/auth/session [32m200[39m in 31ms
+ GET /api/auth/session [32m200[39m in 20ms
+ GET /api/auth/session [32m200[39m in 41ms
+ GET /api/auth/session [32m200[39m in 35ms
+ GET /api/auth/session [32m200[39m in 26ms
+ GET /api/auth/session [32m200[39m in 32ms
+ GET /api/auth/session [32m200[39m in 27ms
+ GET /api/auth/session [32m200[39m in 28ms
+ GET /api/auth/session [32m200[39m in 25ms
+ GET /api/auth/session [32m200[39m in 25ms
+ GET /api/auth/session [32m200[39m in 22ms
+ GET /api/auth/session [32m200[39m in 73ms
+ GET /api/auth/session [32m200[39m in 71ms
+ GET /api/auth/session [32m200[39m in 35ms
+ GET /api/auth/session [32m200[39m in 24ms
+ GET /api/auth/session [32m200[39m in 32ms
+ GET /api/auth/session [32m200[39m in 18ms
+ GET /api/auth/session [32m200[39m in 29ms
+ GET /api/auth/session [32m200[39m in 23ms
+ GET / [32m200[39m in 47ms
+ GET /api/auth/session [32m200[39m in 25ms
+ GET /api/auth/session [32m200[39m in 15ms
+ GET /api/auth/signin?callbackUrl=%2Fdashboard [32m200[39m in 13ms
+ POST /api/auth/callback/credentials [34m302[39m in 28ms
+ GET /dashboard [32m200[39m in 36ms
+ GET /api/auth/session [32m200[39m in 30ms
+ GET /api/auth/session [32m200[39m in 17ms
+ GET /api/auth/session [32m200[39m in 31ms
+ GET /api/auth/session [32m200[39m in 25ms
+ GET /api/auth/session [32m200[39m in 38ms
+ GET /api/auth/session [32m200[39m in 43ms
+ GET /api/auth/session [32m200[39m in 38ms
+ GET /api/auth/session [32m200[39m in 54ms
+ GET /api/auth/session [32m200[39m in 42ms
+ GET /api/auth/session [32m200[39m in 24ms
+ GET /api/auth/session [32m200[39m in 29ms
+ GET /api/auth/session [32m200[39m in 34ms
+ GET /api/auth/session [32m200[39m in 37ms
+ GET /api/auth/session [32m200[39m in 32ms
+ GET /api/auth/session [32m200[39m in 26ms
+ GET /api/auth/session [32m200[39m in 30ms
+ GET /api/auth/session [32m200[39m in 28ms
+ GET /api/auth/session [32m200[39m in 28ms
+ GET /api/auth/session [32m200[39m in 30ms
+ GET /api/auth/session [32m200[39m in 34ms
+ GET /api/auth/session [32m200[39m in 33ms
+ GET /api/auth/session [32m200[39m in 26ms
+ GET /api/auth/session [32m200[39m in 51ms
+ GET /api/auth/session [32m200[39m in 26ms
+ GET /api/auth/session [32m200[39m in 27ms
+ GET /api/auth/session [32m200[39m in 29ms
+ GET /api/auth/session [32m200[39m in 33ms
+ [32m[1m✓[22m[39m Compiled in 2s (1436 modules)
+ [33m[1m⚠[22m[39m Fast Refresh had to perform a full reload due to a runtime error.
+ [31m[1m⨯[22m[39m components/Navbar.tsx (20:37) @ useSession
+ [31m[1m⨯[22m[39m ReferenceError: useSession is not defined
+    at Navbar (./components/Navbar.tsx:29:39)
+digest: "2127366922"
+[0m [90m 18 |[39m[0m
+[0m [90m 19 |[39m [36mexport[39m [36mdefault[39m [36mfunction[39m [33mNavbar[39m() {[0m
+[0m[31m[1m>[22m[39m[90m 20 |[39m   [36mconst[39m { data[33m:[39m session[33m,[39m status } [33m=[39m useSession()[33m;[39m[0m
+[0m [90m    |[39m                                     [31m[1m^[22m[39m[0m
+[0m [90m 21 |[39m   [36mreturn[39m ([0m
+[0m [90m 22 |[39m     [33m<[39m[33mheader[39m className[33m=[39m[32m"sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-black/30 bg-black/20"[39m[33m>[39m[0m
+[0m [90m 23 |[39m       [33m<[39m[33mdiv[39m className[33m=[39m[32m"mx-auto max-w-6xl px-6 h-16 flex items-center justify-between"[39m[33m>[39m[0m
+ GET /dashboard [31m500[39m in 181ms
+ [32m[1m✓[22m[39m Compiled /_not-found in 450ms (1425 modules)
+ [31m[1m⨯[22m[39m components/Navbar.tsx (20:37) @ useSession
+ [31m[1m⨯[22m[39m ReferenceError: useSession is not defined
+    at Navbar (./components/Navbar.tsx:29:39)
+digest: "2127366922"
+[0m [90m 18 |[39m[0m
+[0m [90m 19 |[39m [36mexport[39m [36mdefault[39m [36mfunction[39m [33mNavbar[39m() {[0m
+[0m[31m[1m>[22m[39m[90m 20 |[39m   [36mconst[39m { data[33m:[39m session[33m,[39m status } [33m=[39m useSession()[33m;[39m[0m
+[0m [90m    |[39m                                     [31m[1m^[22m[39m[0m
+[0m [90m 21 |[39m   [36mreturn[39m ([0m
+[0m [90m 22 |[39m     [33m<[39m[33mheader[39m className[33m=[39m[32m"sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-black/30 bg-black/20"[39m[33m>[39m[0m
+[0m [90m 23 |[39m       [33m<[39m[33mdiv[39m className[33m=[39m[32m"mx-auto max-w-6xl px-6 h-16 flex items-center justify-between"[39m[33m>[39m[0m
+ GET /.well-known/appspecific/com.chrome.devtools.json [33m404[39m in 550ms
+ [32m[1m✓[22m[39m Compiled in 515ms (1439 modules)
+ [33m[1m⚠[22m[39m Fast Refresh had to perform a full reload due to a runtime error.
+ GET /dashboard [32m200[39m in 94ms
+ GET /.well-known/appspecific/com.chrome.devtools.json [33m404[39m in 38ms
+[next-auth][warn][NEXTAUTH_URL] 
+https://next-auth.js.org/warnings#nextauth_url
+ GET /api/auth/session [32m200[39m in 123ms
+ GET /api/auth/session [32m200[39m in 16ms
+ [32m[1m✓[22m[39m Compiled in 933ms (1439 modules)
+ [32m[1m✓[22m[39m Compiled in 875ms (1361 modules)
+ [32m[1m✓[22m[39m Compiled in 217ms (566 modules)
+ [32m[1m✓[22m[39m Compiled in 611ms (1361 modules)
+ [32m[1m✓[22m[39m Compiled in 75ms (73 modules)
+ [32m[1m✓[22m[39m Compiled in 595ms (1175 modules)
+ GET /dashboard [32m200[39m in 158ms
+ [32m[1m✓[22m[39m Compiled /_not-found in 381ms (1105 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json [33m404[39m in 572ms
+ GET / [32m200[39m in 90ms
 [?25h

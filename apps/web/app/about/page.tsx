@@ -21,7 +21,7 @@ export default function AboutPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, duration: 0.5 }}
         >
-          We believe the best connections start with context. linkedin-messager helps you find the warmest paths, explains why a contact is relevant, and drafts concise messages so you can focus on the conversation.
+          We believe the best connections start with context. Agora helps you find the warmest paths, explains why a contact is relevant, and drafts concise messages so you can focus on the conversation.
         </motion.p>
       </Container>
     </section>

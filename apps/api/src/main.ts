@@ -6,9 +6,10 @@ import * as dotenv from 'dotenv';
 import { spawn } from 'child_process';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { createApolloProvider } from './providers/apollo';
+import { createApolloProvider, EmailEnrichmentResult } from './providers/apollo';
+import { Candidate } from '../../../packages/shared/src';
 import { createAgentMailProvider } from './providers/agentmail';
-import { draftMessage } from './services/drafting';
+import { draftMessage, generatePersonalizedMessage } from './services/drafting';
 import { scoreCandidates } from './services/scoring';
 
 dotenv.config();
@@ -19,14 +20,78 @@ const app = Fastify({ logger: true });
 app.register(cors, { origin: true });
 app.register(formbody);
 
-// const apollo = createApolloProvider({ apiKey: process.env.APOLLO_API_KEY });
+const apollo = createApolloProvider({ apiKey: process.env.APOLLO_API_KEY });
 const agentMail = createAgentMailProvider({ apiKey: process.env.AGENTMAIL_API_KEY });
 
 app.get('/health', async () => ({ ok: true }));
 
+// Check authentication status without creating or reusing sessions
+app.get('/linkedin/status', async (req, reply) => {
+  try {
+    reply.send({
+      authenticated: false,
+      message: 'No active session - fresh authentication required',
+      requiresAuth: true
+    });
+  } catch (error) {
+    app.log.error('Error checking LinkedIn status:', error);
+    reply.code(500).send({
+      authenticated: false,
+      error: 'Failed to check authentication status'
+    });
+  }
+});
+
+
 // LinkedIn Authentication using StaffSpy init_account (browser-based)
 // Session storage for authenticated users
-const userSessions = new Map<string, { sessionFile: string; authenticated: boolean; email?: string }>();
+const userSessions = new Map<string, { sessionFile: string; authenticated: boolean; email?: string; profile?: any; createdAt: number }>();
+
+// Profile cache to avoid repeated file system operations
+const profileCache = new Map<string, { profile: any; timestamp: number }>();
+const PROFILE_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+// Session cleanup - remove old sessions
+const SESSION_TTL = 24 * 60 * 60 * 1000; // 24 hours
+async function cleanupOldSessions() {
+  const now = Date.now();
+  const projectRoot = path.join(process.cwd(), '../../');
+
+  try {
+    // Clean up in-memory sessions
+    for (const [sessionId, session] of userSessions.entries()) {
+      if (now - session.createdAt > SESSION_TTL) {
+        userSessions.delete(sessionId);
+        app.log.info(`🗑️ Cleaned up expired in-memory session: ${sessionId}`);
+      }
+    }
+
+    // Clean up file-based sessions
+    const files = await fs.readdir(projectRoot);
+    const sessionFiles = files.filter(file =>
+      file.startsWith('linkedin_session_') &&
+      (file.endsWith('.pkl') || file.endsWith('_profile.json'))
+    );
+
+    for (const file of sessionFiles) {
+      try {
+        const filePath = path.join(projectRoot, file);
+        const stats = await fs.stat(filePath);
+        if (now - stats.mtime.getTime() > SESSION_TTL) {
+          await fs.unlink(filePath);
+          app.log.info(`🗑️ Cleaned up old session file: ${file}`);
+        }
+      } catch (error) {
+        app.log.warn(`Failed to clean up session file ${file}:`, error);
+      }
+    }
+  } catch (error) {
+    app.log.warn('Session cleanup failed:', error);
+  }
+}
+
+// Run cleanup every hour
+setInterval(cleanupOldSessions, 60 * 60 * 1000);
 
 // Function to initialize LinkedIn account using StaffSpy (browser-based auth)
 async function initLinkedInAccount(sessionFile: string): Promise<{ success: boolean; error?: string; email?: string }> {
@@ -132,9 +197,13 @@ except Exception as e:
 
 app.post('/linkedin/auth', async (req, reply) => {
   try {
-    // Generate unique session ID and file path for this user
+    // Always create a fresh session for new authentication requests
+    // This ensures proper isolation between different browser contexts/users
     const sessionId = Math.random().toString(36).substring(7) + Date.now().toString(36);
     const sessionFile = `linkedin_session_${sessionId}.pkl`;
+    const usingExistingSession = false;
+
+    app.log.info(`🔐 Creating new LinkedIn authentication session: ${sessionFile}`);
 
     app.log.info('Starting LinkedIn browser authentication...');
 
@@ -142,19 +211,38 @@ app.post('/linkedin/auth', async (req, reply) => {
     const result = await initLinkedInAccount(sessionFile);
 
     if (result.success) {
-      // Store session info
+      // Load the user profile that was created during authentication
+      let userProfile = null;
+      try {
+        const projectRoot = path.join(process.cwd(), '../../');
+        const profileFile = sessionFile.replace('.pkl', '_profile.json');
+        const profilePath = path.join(projectRoot, profileFile);
+
+        const profileData = await fs.readFile(profilePath, 'utf-8');
+        userProfile = JSON.parse(profileData);
+        app.log.info(`✅ Loaded user profile: ${userProfile.name} (${userProfile.university})`);
+      } catch (profileError) {
+        app.log.warn('Could not load user profile after authentication:', profileError);
+      }
+
+      // Store session info with profile
       userSessions.set(sessionId, {
         sessionFile,
         authenticated: true,
-        email: result.email
+        email: result.email || userProfile?.email,
+        profile: userProfile,
+        createdAt: Date.now()
       });
 
-      // Store user in database if we have email
-      if (result.email) {
+      // Store user in database with real profile data
+      const userName = userProfile?.name || 'LinkedIn User';
+      const userEmail = result.email || userProfile?.email || 'linkedin@user.com';
+
+      if (userEmail !== 'linkedin@user.com') {
         await prisma.user.upsert({
-          where: { email: result.email },
-          update: { name: 'LinkedIn User' },
-          create: { email: result.email, name: 'LinkedIn User' }
+          where: { email: userEmail },
+          update: { name: userName },
+          create: { email: userEmail, name: userName }
         });
       }
 
@@ -163,8 +251,16 @@ app.post('/linkedin/auth', async (req, reply) => {
       reply.send({
         success: true,
         sessionId,
-        message: 'LinkedIn authentication successful',
-        user: { email: result.email || 'linkedin@user.com', name: 'LinkedIn User' }
+        message: usingExistingSession
+          ? 'LinkedIn authentication successful (reused existing session)'
+          : 'LinkedIn authentication successful',
+        usingExistingSession,
+        sessionFile,
+        user: {
+          email: userEmail,
+          name: userName,
+          profile: userProfile
+        }
       });
     } else {
       app.log.warn(`LinkedIn authentication failed: ${result.error}`);
@@ -181,6 +277,189 @@ app.post('/linkedin/auth', async (req, reply) => {
     });
   }
 1});
+
+// Force new LinkedIn authentication (don't reuse existing sessions)
+app.post('/linkedin/auth/new', async (req, reply) => {
+  try {
+    // Always generate new session ID and file path
+    const sessionId = Math.random().toString(36).substring(7) + Date.now().toString(36);
+    const sessionFile = `linkedin_session_${sessionId}.pkl`;
+
+    app.log.info(`Creating new LinkedIn session: ${sessionFile}`);
+
+    // Call init_account without credentials to trigger browser auth
+    const result = await initLinkedInAccount(sessionFile);
+
+    if (result.success) {
+      // Load the user profile that was created during authentication
+      let userProfile = null;
+      try {
+        const projectRoot = path.join(process.cwd(), '../../');
+        const profileFile = sessionFile.replace('.pkl', '_profile.json');
+        const profilePath = path.join(projectRoot, profileFile);
+
+        const profileData = await fs.readFile(profilePath, 'utf-8');
+        userProfile = JSON.parse(profileData);
+        app.log.info(`✅ Loaded new user profile: ${userProfile.name} (${userProfile.university})`);
+      } catch (profileError) {
+        app.log.warn('Could not load user profile after new authentication:', profileError);
+      }
+
+      // Store session info with profile
+      userSessions.set(sessionId, {
+        sessionFile,
+        authenticated: true,
+        email: result.email || userProfile?.email,
+        profile: userProfile,
+        createdAt: Date.now()
+      });
+
+      // Store user in database with real profile data
+      const userName = userProfile?.name || 'LinkedIn User';
+      const userEmail = result.email || userProfile?.email || 'linkedin@user.com';
+
+      if (userEmail !== 'linkedin@user.com') {
+        await prisma.user.upsert({
+          where: { email: userEmail },
+          update: { name: userName },
+          create: { email: userEmail, name: userName }
+        });
+      }
+
+      app.log.info('New LinkedIn authentication successful');
+
+      reply.send({
+        success: true,
+        sessionId,
+        message: 'New LinkedIn authentication successful',
+        usingExistingSession: false,
+        sessionFile,
+        user: {
+          email: userEmail,
+          name: userName,
+          profile: userProfile
+        }
+      });
+    } else {
+      app.log.warn(`LinkedIn authentication failed: ${result.error}`);
+      reply.code(401).send({
+        success: false,
+        error: result.error || 'LinkedIn authentication failed'
+      });
+    }
+  } catch (error) {
+    app.log.error('LinkedIn authentication error:', error);
+    reply.code(500).send({
+      success: false,
+      error: 'Authentication service unavailable'
+    });
+  }
+});
+
+// Clean up old session files
+app.delete('/linkedin/sessions/cleanup', async (req, reply) => {
+  try {
+    const projectRoot = path.join(process.cwd(), '../../');
+    const files = await fs.readdir(projectRoot);
+
+    // Find all LinkedIn session files
+    const sessionFiles = files.filter(file =>
+      file.startsWith('linkedin_session_') &&
+      (file.endsWith('.pkl') || file.endsWith('_profile.json'))
+    );
+
+    let deletedCount = 0;
+    for (const file of sessionFiles) {
+      try {
+        await fs.unlink(path.join(projectRoot, file));
+        deletedCount++;
+        app.log.info(`Deleted session file: ${file}`);
+      } catch (error) {
+        app.log.warn(`Failed to delete ${file}:`, error);
+      }
+    }
+
+    // Clear in-memory sessions
+    userSessions.clear();
+
+    reply.send({
+      success: true,
+      message: `Cleaned up ${deletedCount} session files`,
+      deletedFiles: deletedCount
+    });
+  } catch (error) {
+    app.log.error('Session cleanup error:', error);
+    reply.code(500).send({
+      error: 'Session cleanup failed'
+    });
+  }
+});
+
+// List current LinkedIn sessions
+app.get('/linkedin/sessions', async (req, reply) => {
+  try {
+    const projectRoot = path.join(process.cwd(), '../../');
+    const files = await fs.readdir(projectRoot);
+
+    // Find all LinkedIn session files
+    const sessionFiles = files.filter(file =>
+      file.startsWith('linkedin_session_') &&
+      file.endsWith('.pkl')
+    );
+
+    const sessions = [];
+    for (const file of sessionFiles) {
+      const sessionId = file.replace('linkedin_session_', '').replace('.pkl', '');
+      const filePath = path.join(projectRoot, file);
+
+      try {
+        const stats = await fs.stat(filePath);
+        const profileFile = file.replace('.pkl', '_profile.json');
+        const profilePath = path.join(projectRoot, profileFile);
+
+        let profileInfo = null;
+        try {
+          const profileData = await fs.readFile(profilePath, 'utf-8');
+          const profile = JSON.parse(profileData);
+          profileInfo = {
+            name: profile.name,
+            email: profile.email || 'N/A',
+            company: profile.current_company || 'N/A'
+          };
+        } catch (profileError) {
+          // Profile file doesn't exist or can't be read
+        }
+
+        sessions.push({
+          sessionId,
+          sessionFile: file,
+          createdAt: stats.birthtime,
+          modifiedAt: stats.mtime,
+          size: stats.size,
+          inMemory: userSessions.has(sessionId),
+          profile: profileInfo
+        });
+      } catch (error) {
+        app.log.warn(`Error reading session file stats for ${file}:`, error);
+      }
+    }
+
+    // Sort by modification time (most recent first)
+    sessions.sort((a, b) => b.modifiedAt.getTime() - a.modifiedAt.getTime());
+
+    reply.send({
+      success: true,
+      sessions,
+      inMemoryCount: userSessions.size,
+      totalFiles: sessionFiles.length
+    });
+  } catch (error) {
+    app.log.error('Error listing sessions:', error);
+    reply.code(500).send({
+      error: 'Failed to list sessions'
+    });
+  }
+});
 
 app.get('/linkedin/callback', async (req, reply) => {
   const { code, state } = req.query as any;
@@ -714,23 +993,73 @@ async function cleanupOldCSVFiles(): Promise<void> {
 async function loadCandidatesFromCSV(csvFilePath: string, searchParams: { company: string; role: string; location: string }): Promise<any[]> {
   try {
     const csvContent = await fs.readFile(csvFilePath, 'utf-8');
-    const lines = csvContent.split('\n').filter(line => line.trim());
-    
-    if (lines.length < 2) return [];
-    
-    const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+
+    // Use simple, reliable CSV parsing similar to Python's approach
+    const records = parseCSVSimple(csvContent);
+    if (records.length < 2) return [];
+
+    const headers = records[0];
     const candidates = [];
-    
-    for (let i = 1; i < lines.length && candidates.length < 20; i++) {
-      const values = parseCSVLine(lines[i]);
+
+    app.log.info(`CSV parsing: Found ${records.length - 1} records with ${headers.length} fields each`);
+
+    for (let i = 1; i < records.length && candidates.length < 20; i++) {
+      const values = records[i];
+
+      // Skip if field count doesn't match headers (malformed record)
+      if (values.length !== headers.length) {
+        app.log.warn(`Skipping malformed CSV record ${i + 1}: expected ${headers.length} fields, got ${values.length}. First few fields: ${JSON.stringify(values.slice(0, 6))}`);
+        continue;
+      }
+
       const candidate: any = {};
-      
       headers.forEach((header, index) => {
         candidate[header] = values[index] || '';
       });
-      
+
       // Skip empty or invalid entries
-      if (!candidate.name || candidate.name === 'LinkedIn Member' || candidate.name.trim() === '') continue;
+      if (!candidate.name || candidate.name === 'LinkedIn Member' || candidate.name.trim() === '') {
+        app.log.debug(`Skipping candidate with empty/invalid name: "${candidate.name}" (URL: ${candidate.profile_link})`);
+        continue;
+      }
+
+      // Skip entries where name contains obviously non-name content
+      const name = candidate.name.trim();
+
+      // Check if name starts with a non-letter character
+      if (name.length > 0 && !/^[A-Za-z]/.test(name)) {
+        app.log.warn(`Filtering out candidate with name starting with non-letter: "${name}" (URL: ${candidate.profile_link})`);
+        continue;
+      }
+
+      const invalidNamePatterns = [
+        /VSCode/i,
+        /Visual Studio/i,
+        /Programming Languages:/i,
+        /Frameworks:/i,
+        /Databases:/i,
+        /Tools:/i,
+        /Skills:/i,
+        /^[A-Z]{2,}$/,  // All caps words (likely technologies)
+        /\b(Java|Python|JavaScript|React|Node|HTML|CSS|SQL|AWS|Docker)\b/i,
+        /[{}[\]]/,  // Contains JSON-like brackets
+        /^\d+$/,  // Just numbers
+        /^[A-Za-z]\.$/, // Single letter with period (like "T.")
+        /\bGit\b/i,
+        /\bAPI\b/i,
+        /\bSDK\b/i,
+        /^'/,  // Starts with single quote (like "'location': None")
+        /^"/,  // Starts with double quote
+        /^[{[]/  // Starts with JSON bracket
+      ];
+
+      const isInvalidName = invalidNamePatterns.some(pattern => pattern.test(name));
+      if (isInvalidName) {
+        app.log.warn(`Filtering out candidate with invalid name: "${name}" (URL: ${candidate.profile_link})`);
+        continue;
+      }
+
+      app.log.debug(`Processing valid candidate: ${name}`);
       
       // Parse potential emails safely
       let primaryEmail = null;
@@ -806,26 +1135,75 @@ async function loadCandidatesFromCSV(csvFilePath: string, searchParams: { compan
   }
 }
 
-function parseCSVLine(line: string): string[] {
-  const result = [];
-  let current = '';
+function parseCSVSimple(csvContent: string): string[][] {
+  // Robust CSV parser that handles multiline records and malformed data
+  const records: string[][] = [];
+  let currentRecord: string[] = [];
+  let currentField = '';
   let inQuotes = false;
-  
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-    
+  let i = 0;
+
+  while (i < csvContent.length) {
+    const char = csvContent[i];
+
     if (char === '"') {
-      inQuotes = !inQuotes;
+      if (inQuotes && i + 1 < csvContent.length && csvContent[i + 1] === '"') {
+        // Escaped quote: "" becomes "
+        currentField += '"';
+        i += 2;
+      } else {
+        // Toggle quote state
+        inQuotes = !inQuotes;
+        i++;
+      }
     } else if (char === ',' && !inQuotes) {
-      result.push(current.trim());
-      current = '';
+      // Field delimiter outside quotes
+      currentRecord.push(cleanField(currentField));
+      currentField = '';
+      i++;
+    } else if ((char === '\n' || char === '\r') && !inQuotes) {
+      // Record delimiter outside quotes
+      currentRecord.push(cleanField(currentField));
+
+      // Only add non-empty records
+      if (currentRecord.some(field => field.trim())) {
+        records.push(currentRecord);
+      }
+
+      currentRecord = [];
+      currentField = '';
+
+      // Handle \r\n
+      if (char === '\r' && i + 1 < csvContent.length && csvContent[i + 1] === '\n') {
+        i++;
+      }
+      i++;
     } else {
-      current += char;
+      currentField += char;
+      i++;
     }
   }
-  
-  result.push(current.trim());
-  return result;
+
+  // Handle the last field/record
+  if (currentField || currentRecord.length > 0) {
+    currentRecord.push(cleanField(currentField));
+    if (currentRecord.some(field => field.trim())) {
+      records.push(currentRecord);
+    }
+  }
+
+  return records;
+}
+
+function cleanField(field: string): string {
+  field = field.trim();
+  // Remove surrounding quotes if they exist
+  if (field.startsWith('"') && field.endsWith('"')) {
+    field = field.slice(1, -1);
+  }
+  // Clean up common CSV escaping issues
+  field = field.replace(/""/g, '"'); // Fix escaped quotes
+  return field;
 }
 
 app.post('/profiles/import', async (req, reply) => {
@@ -848,16 +1226,65 @@ app.post('/search/run', async (req, reply) => {
   const { prompt, sessionId } = (req.body as any) || {};
 
   // Check if user is authenticated
-  if (!sessionId || !userSessions.has(sessionId)) {
-    return reply.code(401).send({
-      error: 'LinkedIn authentication required. Please connect your LinkedIn account first.'
-    });
+  let userSession;
+
+  if (sessionId && userSessions.has(sessionId)) {
+    // Use in-memory session if available
+    userSession = userSessions.get(sessionId);
+  } else if (sessionId) {
+    // Try to recover session from session file (for server restarts)
+    try {
+      const projectRoot = path.join(process.cwd(), '../../');
+      const files = await fs.readdir(projectRoot);
+
+      // Look for session files that match this sessionId
+      const sessionFiles = files.filter(file =>
+        file.startsWith('linkedin_session_') &&
+        file.endsWith('.pkl') &&
+        file.includes(sessionId)
+      );
+
+      if (sessionFiles.length > 0) {
+        const sessionFile = sessionFiles[0];
+        userSession = {
+          sessionFile,
+          authenticated: true,
+          email: undefined,
+          createdAt: Date.now()
+        };
+        userSessions.set(sessionId, userSession);
+        app.log.info(`Recovered session from file: ${sessionFile}`);
+      } else {
+        // Try to find any recent session file as fallback
+        const allSessionFiles = files.filter(file =>
+          file.startsWith('linkedin_session_') &&
+          file.endsWith('.pkl')
+        );
+
+        if (allSessionFiles.length > 0) {
+          // Use the most recent session file
+          const sessionFile = allSessionFiles[0];
+          userSession = {
+            sessionFile,
+            authenticated: true,
+            email: undefined,
+            createdAt: Date.now()
+          };
+          userSessions.set(sessionId, userSession);
+          app.log.info(`Using fallback session file: ${sessionFile}`);
+        } else {
+          userSession = null;
+        }
+      }
+    } catch (error) {
+      app.log.warn('Failed to recover session from files:', error);
+      userSession = null;
+    }
   }
 
-  const userSession = userSessions.get(sessionId);
-  if (!userSession?.authenticated) {
+  if (!sessionId || !userSession?.authenticated) {
     return reply.code(401).send({
-      error: 'LinkedIn session invalid. Please reconnect your LinkedIn account.'
+      error: 'LinkedIn authentication required. Please connect your LinkedIn account first.'
     });
   }
 
@@ -913,11 +1340,49 @@ app.post('/search/run', async (req, reply) => {
           candidates
         });
 
-        reply.send({ 
+        // Enrich emails for candidates who don't have them
+        const candidatesNeedingEmails = scored.filter(c => !c.email || c.email === '' || c.email === 'null');
+        app.log.info(`Found ${candidatesNeedingEmails.length} candidates needing email enrichment`);
+
+        if (candidatesNeedingEmails.length > 0) {
+          try {
+            const enrichmentResults = await apollo.bulkEnrichEmails(
+              candidatesNeedingEmails.map(c => ({
+                name: c.name,
+                company: c.company,
+                linkedinUrl: c.linkedinUrl,
+                domain: c.company ? `${c.company.toLowerCase().replace(/[^a-z]/g, '')}.com` : undefined
+              }))
+            );
+
+            // Update candidates with enriched emails
+            candidatesNeedingEmails.forEach((candidate, index) => {
+              const enrichment = enrichmentResults[index];
+              if (enrichment) {
+                candidate.email = enrichment.email || undefined;
+                candidate.emailStatus = enrichment.status;
+              }
+            });
+
+            app.log.info(`Email enrichment complete: ${enrichmentResults.filter(r => r.status === 'found').length} emails found`);
+          } catch (error) {
+            app.log.warn('Email enrichment failed:', error);
+            // Mark candidates as having email search errors
+            candidatesNeedingEmails.forEach((candidate: Candidate) => {
+              candidate.emailStatus = 'error';
+            });
+          }
+        }
+
+        reply.send({
           results: scored,
           source: 'csv-generated',
           csvFile: result.csv_file,
-          totalProfiles: result.total_profiles
+          totalProfiles: result.total_profiles,
+          emailEnrichment: {
+            attempted: candidatesNeedingEmails.length,
+            found: scored.filter(c => c.emailStatus === 'found').length
+          }
         });
       } else {
         // StaffSpy failed, return error instead of mock data
@@ -939,25 +1404,952 @@ app.post('/search/run', async (req, reply) => {
 });
 
 app.post('/messages/draft', async (req, reply) => {
-  const { candidate, tone } = (req.body as any) || {};
-  const bodyText = draftMessage({
-    user: { name: 'Demo User', summary: 'Software engineer exploring opportunities in cloud.' },
-    candidate,
-    tone: tone || 'warm'
-  });
-  reply.send({ body: bodyText });
+  const { candidate, tone, channel, sessionId } = (req.body as any) || {};
+
+  try {
+    // Try to load sender profile from session file
+    let senderProfile = {
+      name: 'Demo User',
+      headline: 'Software engineer exploring opportunities',
+      current_company: '',
+      university: '',
+      summary: 'Software engineer exploring opportunities in cloud.',
+      skills: [],
+      experiences: [],
+      schools: []
+    };
+
+    if (sessionId) {
+      // First check in-memory session storage
+      const sessionData = userSessions.get(sessionId);
+      if (sessionData && sessionData.profile) {
+        senderProfile = {
+          name: sessionData.profile.name || 'User',
+          headline: sessionData.profile.headline || '',
+          current_company: sessionData.profile.current_company || '',
+          university: sessionData.profile.university || '',
+          summary: sessionData.profile.bio || sessionData.profile.headline || '',
+          skills: sessionData.profile.skills || [],
+          experiences: sessionData.profile.experiences || [],
+          schools: sessionData.profile.schools || []
+        };
+        app.log.info(`🚀 Using in-memory profile for session ${sessionId}: ${senderProfile.name}`);
+      } else {
+        // Check cache next
+        const cacheKey = `profile_${sessionId}`;
+        const cached = profileCache.get(cacheKey);
+        const now = Date.now();
+
+        if (cached && (now - cached.timestamp < PROFILE_CACHE_TTL)) {
+          senderProfile = cached.profile;
+          app.log.info(`✅ Using cached profile for session ${sessionId}`);
+        } else {
+          try {
+            // Direct file path construction (faster than directory scanning)
+            const projectRoot = path.join(process.cwd(), '../../');
+            const profileFile = `linkedin_session_${sessionId}_profile.json`;
+          const profilePath = path.join(projectRoot, profileFile);
+
+          try {
+            const profileData = await fs.readFile(profilePath, 'utf-8');
+            const parsedProfile = JSON.parse(profileData);
+
+            senderProfile = {
+              name: parsedProfile.name || parsedProfile.headline || 'User',
+              headline: parsedProfile.headline || '',
+              current_company: parsedProfile.current_company || '',
+              university: parsedProfile.university || '',
+              summary: parsedProfile.bio || parsedProfile.headline || '',
+              skills: parsedProfile.skills || [],
+              experiences: parsedProfile.experiences || [],
+              schools: parsedProfile.schools || []
+            };
+
+            // Cache the profile
+            profileCache.set(cacheKey, { profile: senderProfile, timestamp: now });
+            app.log.info(`📁 Loaded and cached sender profile: ${senderProfile.name} from ${profileFile}`);
+            } catch (profileError) {
+              app.log.warn(`Could not load profile file: ${profileFile}`, profileError);
+            }
+          } catch (error) {
+            app.log.warn('Could not load session profile:', error);
+          }
+        }
+      }
+    }
+
+    // Generate personalized message using Gemini
+    const bodyText = await generatePersonalizedMessage({
+      senderProfile,
+      receiverProfile: {
+        name: candidate.name,
+        title: candidate.title,
+        company: candidate.company,
+        location: candidate.location,
+        summary: candidate.summary,
+        skills: candidate.skills,
+        schools: candidate.schools,
+        experience: candidate.experience
+      },
+      tone: tone || 'warm',
+      channel: channel || 'linkedin'
+    });
+
+    reply.send({
+      body: bodyText,
+      senderProfile: {
+        name: senderProfile.name,
+        headline: senderProfile.headline,
+        company: senderProfile.current_company
+      }
+    });
+  } catch (error) {
+    app.log.error('Error generating personalized message:', error);
+
+    // Fallback to basic template
+    const bodyText = draftMessage({
+      user: { name: 'Demo User', summary: 'Software engineer exploring opportunities in cloud.' },
+      candidate,
+      tone: tone || 'warm'
+    });
+
+    reply.send({ body: bodyText });
+  }
 });
 
+// Email enrichment endpoint
+app.post('/email/enrich', async (req, reply) => {
+  const { people } = (req.body as any) || {};
+
+  if (!people || !Array.isArray(people)) {
+    return reply.code(400).send({
+      error: 'Request must include a "people" array with person objects'
+    });
+  }
+
+  try {
+    app.log.info(`Enriching emails for ${people.length} people`);
+
+    // Use Apollo to enrich emails
+    const results = await apollo.bulkEnrichEmails(people);
+
+    const enrichedPeople = people.map((person, index) => ({
+      ...person,
+      emailEnrichment: results[index] || {
+        email: null,
+        status: 'error' as const,
+        error: 'No result returned'
+      }
+    }));
+
+    reply.send({
+      success: true,
+      results: enrichedPeople,
+      stats: {
+        total: people.length,
+        found: results.filter(r => r.status === 'found').length,
+        not_found: results.filter(r => r.status === 'not_found').length,
+        errors: results.filter(r => r.status === 'error').length
+      }
+    });
+  } catch (error) {
+    app.log.error('Email enrichment error:', error);
+    reply.code(500).send({
+      error: 'Email enrichment service unavailable'
+    });
+  }
+});
+
+// Single person email enrichment
+app.post('/email/enrich/single', async (req, reply) => {
+  const { name, company, linkedinUrl, domain } = (req.body as any) || {};
+
+  if (!name) {
+    return reply.code(400).send({
+      error: 'Name is required for email enrichment'
+    });
+  }
+
+  try {
+    app.log.info(`Enriching email for: ${name} at ${company || 'unknown company'}`);
+
+    const result = await apollo.enrichPersonEmail({
+      name,
+      company,
+      linkedinUrl,
+      domain
+    });
+
+    reply.send({
+      success: true,
+      person: { name, company, linkedinUrl, domain },
+      email: result.email,
+      status: result.status,
+      confidence: result.confidence,
+      source: result.source,
+      error: result.error
+    });
+  } catch (error) {
+    app.log.error('Single email enrichment error:', error);
+    reply.code(500).send({
+      success: false,
+      error: 'Email enrichment service unavailable'
+    });
+  }
+});
+
+// Complete Apollo pipeline: search by company/name + email enrichment + website post
+app.post('/apollo/pipeline', async (req, reply) => {
+  const { company, role, location, maxResults = 10 } = (req.body as any) || {};
+
+  if (!company || !role) {
+    return reply.code(400).send({
+      error: 'Company and role are required for Apollo search'
+    });
+  }
+
+  try {
+    app.log.info(`Starting Apollo pipeline: ${role} at ${company}`);
+
+    // Step 1: Search for people using Apollo API
+    const searchResults = await apollo.searchPeople({
+      company,
+      role,
+      location
+    });
+
+    if (searchResults.length === 0) {
+      return reply.send({
+        success: true,
+        message: 'No candidates found matching the criteria',
+        results: [],
+        stats: { searched: 0, enriched: 0, posted: 0 }
+      });
+    }
+
+    app.log.info(`Found ${searchResults.length} candidates from Apollo search`);
+
+    // Step 2: Filter for candidates without emails and enrich them
+    const candidatesNeedingEmails = searchResults
+      .filter(c => !c.email || c.email === '' || c.email === 'null')
+      .slice(0, maxResults);
+
+    let enrichedEmails: EmailEnrichmentResult[] = [];
+    if (candidatesNeedingEmails.length > 0) {
+      app.log.info(`Enriching emails for ${candidatesNeedingEmails.length} candidates`);
+
+      enrichedEmails = await apollo.bulkEnrichEmails(
+        candidatesNeedingEmails.map(c => ({
+          name: c.name,
+          company: c.company,
+          linkedinUrl: c.linkedinUrl,
+          domain: c.company ? `${c.company.toLowerCase().replace(/[^a-z]/g, '')}.com` : undefined
+        }))
+      );
+
+      // Update candidates with enriched emails
+      candidatesNeedingEmails.forEach((candidate, index) => {
+        const enrichment = enrichedEmails[index];
+        if (enrichment && enrichment.email) {
+          candidate.email = enrichment.email;
+          candidate.emailStatus = enrichment.status;
+        }
+      });
+    }
+
+    // Step 3: Get all candidates with emails
+    const candidatesWithEmails = searchResults.filter(c => c.email && c.email !== '' && c.email !== 'null');
+    const emailFoundCount = enrichedEmails.filter(r => r.status === 'found').length;
+
+    app.log.info(`Final results: ${candidatesWithEmails.length} candidates with emails`);
+
+    // Step 4: POST results to website (if configured)
+    let postResults = [];
+    if (process.env.WEBHOOK_URL && candidatesWithEmails.length > 0) {
+      try {
+        app.log.info(`Posting ${candidatesWithEmails.length} candidates to webhook`);
+
+        const postResponse = await fetch(process.env.WEBHOOK_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': process.env.WEBHOOK_AUTH || ''
+          },
+          body: JSON.stringify({
+            query: { company, role, location },
+            candidates: candidatesWithEmails.map(c => ({
+              name: c.name,
+              title: c.title,
+              company: c.company,
+              email: c.email,
+              linkedinUrl: c.linkedinUrl,
+              location: c.location,
+              source: c.source,
+              emailStatus: c.emailStatus
+            })),
+            timestamp: new Date().toISOString(),
+            source: 'apollo-pipeline'
+          })
+        });
+
+        if (postResponse.ok) {
+          postResults.push({ status: 'success', count: candidatesWithEmails.length });
+          app.log.info('Successfully posted candidates to webhook');
+        } else {
+          const errorText = await postResponse.text();
+          postResults.push({ status: 'error', error: `Webhook failed: ${postResponse.status} - ${errorText}` });
+        }
+      } catch (error) {
+        app.log.error('Webhook post error:', error);
+        postResults.push({
+          status: 'error',
+          error: error instanceof Error ? error.message : 'Unknown webhook error'
+        });
+      }
+    }
+
+    reply.send({
+      success: true,
+      results: candidatesWithEmails,
+      stats: {
+        searched: searchResults.length,
+        needingEnrichment: candidatesNeedingEmails.length,
+        enriched: emailFoundCount,
+        finalWithEmails: candidatesWithEmails.length,
+        posted: postResults.length > 0 ? (postResults[0].status === 'success' ? candidatesWithEmails.length : 0) : 0
+      },
+      enrichment: enrichedEmails.map(r => ({
+        status: r.status,
+        found: !!r.email,
+        source: r.source
+      })),
+      webhook: postResults.length > 0 ? postResults[0] : null
+    });
+  } catch (error) {
+    app.log.error('Apollo pipeline error:', error);
+    reply.code(500).send({
+      error: 'Apollo pipeline failed',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Enhanced email sending with AgentMail integration
+app.post('/email/send', async (req, reply) => {
+  const {
+    candidateId,
+    candidateName,
+    candidateEmail,
+    subject,
+    message,
+    userId = 'demo-user', // TODO: Get from auth
+    tone = 'warm',
+    sessionId
+  } = (req.body as any) || {};
+
+  if (!candidateEmail || !message) {
+    return reply.code(400).send({
+      error: 'Candidate email and message are required'
+    });
+  }
+
+  try {
+    // Check if development email routing is enabled
+    const isDevMode = process.env.DEV_EMAIL_ROUTING === 'true';
+    const devEmail = process.env.DEV_EMAIL_ADDRESS || 'linusaw@umich.edu';
+
+    const actualRecipientEmail = isDevMode ? devEmail : candidateEmail;
+    const originalCandidateEmail = candidateEmail;
+
+    app.log.info(`📧 Starting email send to ${actualRecipientEmail} (originally for ${originalCandidateEmail}) for user ${userId}`);
+
+    // 1. Ensure user has an AgentMail inbox
+    let providerAccount = await prisma.emailProviderAccount.findFirst({
+      where: {
+        userId,
+        provider: 'agentmail',
+        isActive: true
+      }
+    });
+
+    if (!providerAccount) {
+      app.log.info('Creating new AgentMail inbox for user');
+
+      // Create user if doesn't exist
+      const user = await prisma.user.upsert({
+        where: { email: `${userId}@demo.com` }, // Replace with actual user email from auth
+        create: {
+          email: `${userId}@demo.com`,
+          name: 'Demo User'
+        },
+        update: {}
+      });
+
+      // Create or get existing AgentMail inbox
+      const { agentMail } = await import('./lib/agentmail');
+      let inbox;
+      try {
+        inbox = await agentMail.createInbox(
+          `user-${userId.substring(0, 8)}`,
+          'Automated Outreach Agent'
+        );
+      } catch (error: any) {
+        // If inbox already exists, try to get the existing one
+        if (error.message && error.message.includes('AlreadyExistsError')) {
+          app.log.info('Inbox already exists, fetching existing inbox list');
+          const inboxes = await agentMail.getInboxes();
+          app.log.info('Retrieved inboxes:', { inboxes, type: typeof inboxes, isArray: Array.isArray(inboxes) });
+          const targetInboxId = `user-${userId.substring(0, 8)}@agentmail.to`;
+          inbox = inboxes.find((i: any) => i.inbox_id === targetInboxId);
+
+          if (!inbox) {
+            throw new Error(`Could not find existing inbox with ID: ${targetInboxId}`);
+          }
+          app.log.info(`✅ Using existing AgentMail inbox: ${inbox.inbox_id}`);
+        } else {
+          throw error;
+        }
+      }
+
+      // Store in database (upsert to handle existing accounts)
+      providerAccount = await prisma.emailProviderAccount.upsert({
+        where: {
+          userId_provider: {
+            userId: user.id,
+            provider: 'agentmail'
+          }
+        },
+        create: {
+          userId: user.id,
+          provider: 'agentmail',
+          externalInboxId: inbox.inbox_id,
+          address: inbox.inbox_id, // The inbox_id IS the email address
+          displayName: inbox.display_name || 'Automated Outreach Agent'
+        },
+        update: {
+          externalInboxId: inbox.inbox_id,
+          address: inbox.inbox_id,
+          displayName: inbox.display_name || 'Automated Outreach Agent',
+          isActive: true
+        }
+      });
+
+      app.log.info(`✅ Created AgentMail inbox: ${inbox.inbox_id}`);
+    }
+
+    // 2. Generate personalized email content
+    let emailHtml = message;
+    let emailSubject = subject || 'Quick Connect';
+
+    // Try to generate personalized content if we have session data
+    if (sessionId && candidateName) {
+      try {
+        const personalizedMessage = await generatePersonalizedMessage({
+          senderProfile: {
+            name: 'Demo User', // TODO: Get from user profile
+            headline: 'Looking to connect',
+            current_company: '',
+            university: '',
+            summary: '',
+            skills: [],
+            experiences: [],
+            schools: []
+          },
+          receiverProfile: {
+            name: candidateName,
+            title: '',
+            company: '',
+            location: '',
+            summary: '',
+            skills: '',
+            schools: '',
+            experience: ''
+          },
+          tone: tone as any,
+          channel: 'email'
+        });
+
+        emailHtml = personalizedMessage;
+        emailSubject = subject || `Quick connect - ${candidateName}`;
+      } catch (error) {
+        app.log.warn('Failed to generate personalized message, using provided message');
+      }
+    }
+
+    // 3. Enhance email content to show original recipient information (dev mode only)
+    let enhancedEmailHtml = emailHtml;
+
+    if (isDevMode) {
+      const developmentNote = `
+        <div style="background: #f0f8ff; border: 1px solid #0066cc; padding: 15px; margin: 20px 0; border-radius: 5px;">
+          <h4 style="color: #0066cc; margin: 0 0 10px 0;">🔧 Development Mode - Email Routing Info</h4>
+          <p style="margin: 5px 0;"><strong>Original Recipient:</strong> ${candidateName} (${originalCandidateEmail})</p>
+          <p style="margin: 5px 0;"><strong>Candidate ID:</strong> ${candidateId}</p>
+          <p style="margin: 5px 0;"><strong>Subject:</strong> ${emailSubject}</p>
+          <hr style="margin: 10px 0;">
+          <p style="margin: 5px 0; font-size: 12px; color: #666;">This email was originally intended for ${candidateName} but routed to you for testing purposes.</p>
+        </div>
+      `;
+      enhancedEmailHtml = developmentNote + emailHtml;
+    }
+
+    // 4. Format email with proper HTML and compliance
+    const { agentMail } = await import('./lib/agentmail');
+    const recipientName = isDevMode ? 'Linus (Developer)' : candidateName;
+    const finalSubject = isDevMode ? `[DEV] ${emailSubject} (for ${candidateName})` : emailSubject;
+
+    const formattedHtml = agentMail.formatEmailHtml(
+      enhancedEmailHtml,
+      recipientName,
+      providerAccount.displayName,
+      true, // include unsubscribe
+      actualRecipientEmail
+    );
+
+    // 5. Send via AgentMail
+    const sentMessage = await agentMail.sendEmail(
+      providerAccount.externalInboxId,
+      actualRecipientEmail,
+      finalSubject,
+      formattedHtml
+    );
+
+    // 5. Create email thread record
+    // TODO: Fix foreign key constraint issue - for now just log the successful email send
+    app.log.info(`📧 Email sent successfully to ${actualRecipientEmail} via AgentMail thread: ${sentMessage.thread_id}`);
+
+    // Skip database recording for now since email sending is working
+    const emailThread = {
+      id: sentMessage.thread_id,
+      providerThreadId: sentMessage.thread_id
+    };
+
+    // 6. Skip email message record creation for now - database recording can be fixed later
+    // TODO: Fix database constraints and re-enable message recording
+
+    app.log.info(`✅ Email sent successfully: ${sentMessage.id}`);
+
+    reply.send({
+      success: true,
+      messageId: sentMessage.id,
+      threadId: emailThread.id,
+      providerThreadId: sentMessage.thread_id,
+      fromAddress: providerAccount.address,
+      status: 'sent',
+      sentAt: new Date().toISOString()
+    });
+
+  } catch (error) {
+    app.log.error('Email sending error:', error);
+    reply.code(500).send({
+      success: false,
+      error: 'Failed to send email',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Legacy endpoint for backwards compatibility
 app.post('/send/email', async (req, reply) => {
   const { to, subject, text } = (req.body as any) || {};
-  const res = await agentMail.sendEmail({ to, from: 'demo@linkedin-messager.dev', subject: subject || 'Hello', text: text || 'Hi there' });
-  reply.send(res);
+
+  // Redirect to new endpoint
+  return req.routeConfig = {
+    method: 'POST',
+    url: '/email/send',
+    body: {
+      candidateEmail: to,
+      subject: subject || 'Hello',
+      message: text || 'Hi there'
+    }
+  };
 });
 
+// Enhanced AgentMail webhook handler
 app.post('/webhooks/agentmail', async (req, reply) => {
   const event = req.body as any;
-  await prisma.event.create({ data: { provider: 'agentmail', type: event.type || 'unknown', messageId: event.messageId || null, payload: event } });
-  reply.send({ ok: true });
+
+  try {
+    app.log.info(`📬 AgentMail webhook received: ${event.type}`, {
+      type: event.type,
+      messageId: event.data?.message_id,
+      threadId: event.data?.thread_id
+    });
+
+    // Store webhook event for audit
+    const webhookEvent = await prisma.webhookEvent.create({
+      data: {
+        provider: 'agentmail',
+        type: event.type || 'unknown',
+        eventId: event.id || event.event_id,
+        rawJson: event,
+        processed: false,
+        receivedAt: new Date()
+      }
+    });
+
+    // Process different event types
+    switch (event.type) {
+      case 'message.delivered':
+      case 'message.opened':
+      case 'message.bounced':
+      case 'message.failed':
+        await handleDeliveryEvent(event, webhookEvent.id);
+        break;
+
+      case 'message.received':
+        await handleInboundMessage(event, webhookEvent.id);
+        break;
+
+      default:
+        app.log.warn(`Unknown AgentMail event type: ${event.type}`);
+    }
+
+    // Mark as processed
+    await prisma.webhookEvent.update({
+      where: { id: webhookEvent.id },
+      data: {
+        processed: true,
+        processedAt: new Date()
+      }
+    });
+
+    reply.send({ ok: true });
+
+  } catch (error) {
+    app.log.error('AgentMail webhook processing error:', error);
+    reply.code(500).send({
+      error: 'Webhook processing failed',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Handle delivery/status events
+async function handleDeliveryEvent(event: any, webhookEventId: string) {
+  const { message_id, thread_id, inbox_id } = event.data || {};
+
+  if (!message_id) {
+    app.log.warn('No message_id in delivery event');
+    return;
+  }
+
+  try {
+    // Find the email thread
+    const thread = await prisma.emailThread.findFirst({
+      where: {
+        providerThreadId: thread_id
+      }
+    });
+
+    if (!thread) {
+      app.log.warn(`Thread not found for delivery event: ${thread_id}`);
+      return;
+    }
+
+    // Update thread state based on event type
+    let newState = thread.state;
+    if (event.type === 'message.delivered') {
+      newState = 'AWAITING_REPLY';
+    } else if (event.type === 'message.bounced' || event.type === 'message.failed') {
+      newState = 'ERROR';
+    }
+
+    // Update thread if state changed
+    if (newState !== thread.state) {
+      await prisma.emailThread.update({
+        where: { id: thread.id },
+        data: { state: newState }
+      });
+
+      app.log.info(`📊 Updated thread ${thread.id} state: ${thread.state} → ${newState}`);
+    }
+
+    app.log.info(`✅ Processed delivery event: ${event.type} for message ${message_id}`);
+
+  } catch (error) {
+    app.log.error('Error handling delivery event:', error);
+  }
+}
+
+// Handle inbound messages (replies)
+async function handleInboundMessage(event: any, webhookEventId: string) {
+  const { message_id, thread_id, inbox_id } = event.data || {};
+
+  if (!message_id || !thread_id || !inbox_id) {
+    app.log.warn('Missing required fields in inbound message event');
+    return;
+  }
+
+  try {
+    app.log.info(`📨 Processing inbound message: ${message_id} in thread ${thread_id}`);
+
+    // 1. Find the email thread
+    const thread = await prisma.emailThread.findFirst({
+      where: {
+        providerThreadId: thread_id
+      },
+      include: {
+        providerAccount: true,
+        user: true
+      }
+    });
+
+    if (!thread) {
+      app.log.warn(`Thread not found for inbound message: ${thread_id}`);
+      return;
+    }
+
+    // 2. Fetch raw message from AgentMail
+    const { agentMail } = await import('./lib/agentmail');
+    let rawMessage = '';
+    let messageData = null;
+
+    try {
+      rawMessage = await agentMail.getMessageRaw(inbox_id, message_id);
+      messageData = await agentMail.getMessage(inbox_id, message_id);
+    } catch (error) {
+      app.log.error('Failed to fetch message from AgentMail:', error);
+      return;
+    }
+
+    // 3. Store inbound message
+    const emailMessage = await prisma.emailMessage.create({
+      data: {
+        threadId: thread.id,
+        direction: 'INBOUND',
+        providerMessageId: message_id,
+        fromEmail: messageData.from || '',
+        toEmail: thread.providerAccount.address,
+        subject: messageData.subject,
+        snippet: messageData.text?.substring(0, 150) || messageData.html?.substring(0, 150) || '',
+        bodyHtml: messageData.html,
+        bodyText: messageData.text,
+        rawJson: { ...messageData, rawMessage },
+        occurredAt: new Date()
+      }
+    });
+
+    // 4. Update thread
+    await prisma.emailThread.update({
+      where: { id: thread.id },
+      data: {
+        lastMessageAt: new Date(),
+        state: 'AWAITING_REPLY' // Will be updated by LLM processing
+      }
+    });
+
+    // 5. Queue for LLM processing (async)
+    await processInboundWithLLM(thread.id, emailMessage.id, rawMessage);
+
+    app.log.info(`✅ Processed inbound message: ${message_id}`);
+
+  } catch (error) {
+    app.log.error('Error handling inbound message:', error);
+  }
+}
+
+// Process inbound message with LLM and potentially send automated reply
+async function processInboundWithLLM(threadId: string, messageId: string, rawMessage: string) {
+  try {
+    app.log.info(`🤖 Processing message ${messageId} with LLM`);
+
+    const thread = await prisma.emailThread.findUnique({
+      where: { id: threadId },
+      include: {
+        providerAccount: true,
+        messages: {
+          orderBy: { occurredAt: 'desc' },
+          take: 5 // Get recent conversation context
+        }
+      }
+    });
+
+    if (!thread) {
+      app.log.error(`Thread ${threadId} not found for LLM processing`);
+      return;
+    }
+
+    // Skip processing if thread is in certain states
+    if (['CLOSED', 'CONFIRMED', 'PAUSED'].includes(thread.state)) {
+      app.log.info(`Skipping LLM processing for thread in state: ${thread.state}`);
+      return;
+    }
+
+    // Analyze the inbound message with Gemini
+    const { GoogleGenerativeAI } = await import('@google/generative-ai');
+    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY!);
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+
+    const analysisPrompt = `
+      Analyze this email reply and classify the sender's intent. Respond with JSON only.
+
+      Email context:
+      - Original subject: ${thread.subject}
+      - Recipient: ${thread.recipientEmail}
+
+      Recent conversation:
+      ${thread.messages.map(m => `${m.direction}: ${m.snippet}`).join('\n')}
+
+      Latest inbound message:
+      ${rawMessage}
+
+      Classify the intent and determine next action. Return JSON:
+      {
+        "intent": "interested" | "scheduling" | "not_interested" | "out_of_office" | "question" | "confirmed",
+        "sentiment": "positive" | "neutral" | "negative",
+        "mentions_meeting": boolean,
+        "mentions_specific_times": boolean,
+        "proposed_times": ["time1", "time2"], // if any
+        "auto_reply_needed": boolean,
+        "suggested_response": "response text if auto_reply_needed is true",
+        "thread_state": "AWAITING_REPLY" | "SCHEDULING" | "CONFIRMED" | "CLOSED"
+      }
+    `;
+
+    const analysisResult = await model.generateContent(analysisPrompt);
+    const analysis = JSON.parse(analysisResult.response.text());
+
+    app.log.info(`🧠 LLM Analysis: intent=${analysis.intent}, auto_reply=${analysis.auto_reply_needed}`);
+
+    // Update thread state based on analysis
+    await prisma.emailThread.update({
+      where: { id: threadId },
+      data: { state: analysis.thread_state }
+    });
+
+    // Send automated reply if needed
+    if (analysis.auto_reply_needed && analysis.suggested_response) {
+      const { agentMail } = await import('./lib/agentmail');
+
+      const replyHtml = agentMail.formatEmailHtml(
+        analysis.suggested_response,
+        thread.recipientName,
+        thread.providerAccount.displayName,
+        true,
+        thread.recipientEmail
+      );
+
+      // Send reply via AgentMail
+      const sentReply = await agentMail.sendReply(
+        thread.providerAccount.externalInboxId,
+        thread.providerThreadId,
+        replyHtml
+      );
+
+      // Store outbound reply
+      await prisma.emailMessage.create({
+        data: {
+          threadId: thread.id,
+          direction: 'OUTBOUND',
+          providerMessageId: sentReply.id,
+          fromEmail: thread.providerAccount.address,
+          toEmail: thread.recipientEmail,
+          subject: `Re: ${thread.subject}`,
+          snippet: analysis.suggested_response.substring(0, 150),
+          bodyHtml: replyHtml,
+          bodyText: analysis.suggested_response,
+          rawJson: sentReply,
+          occurredAt: new Date()
+        }
+      });
+
+      app.log.info(`🤖 Sent automated reply: ${sentReply.id}`);
+    }
+
+  } catch (error) {
+    app.log.error('LLM processing error:', error);
+
+    // Mark thread as needing manual attention
+    await prisma.emailThread.update({
+      where: { id: threadId },
+      data: { state: 'PAUSED' }
+    }).catch(() => {});
+  }
+}
+
+// Email thread management endpoints
+app.get('/email/threads/:userId', async (req, reply) => {
+  const { userId } = req.params as any;
+
+  try {
+    const threads = await prisma.emailThread.findMany({
+      where: { userId },
+      include: {
+        providerAccount: true,
+        messages: {
+          orderBy: { occurredAt: 'desc' },
+          take: 1
+        },
+        _count: {
+          select: { messages: true }
+        }
+      },
+      orderBy: { lastMessageAt: 'desc' }
+    });
+
+    const threadsWithStatus = threads.map(thread => ({
+      id: thread.id,
+      recipientEmail: thread.recipientEmail,
+      recipientName: thread.recipientName,
+      subject: thread.subject,
+      state: thread.state,
+      lastMessageAt: thread.lastMessageAt,
+      messageCount: thread._count.messages,
+      lastMessage: thread.messages[0] || null,
+      fromAddress: thread.providerAccount.address
+    }));
+
+    reply.send({ threads: threadsWithStatus });
+
+  } catch (error) {
+    app.log.error('Error fetching email threads:', error);
+    reply.code(500).send({
+      error: 'Failed to fetch email threads'
+    });
+  }
+});
+
+app.get('/email/threads/:threadId/messages', async (req, reply) => {
+  const { threadId } = req.params as any;
+
+  try {
+    const messages = await prisma.emailMessage.findMany({
+      where: { threadId },
+      orderBy: { occurredAt: 'asc' }
+    });
+
+    reply.send({ messages });
+
+  } catch (error) {
+    app.log.error('Error fetching thread messages:', error);
+    reply.code(500).send({
+      error: 'Failed to fetch thread messages'
+    });
+  }
+});
+
+app.post('/email/threads/:threadId/pause', async (req, reply) => {
+  const { threadId } = req.params as any;
+
+  try {
+    const thread = await prisma.emailThread.update({
+      where: { id: threadId },
+      data: { state: 'PAUSED' }
+    });
+
+    reply.send({
+      success: true,
+      threadId: thread.id,
+      state: thread.state
+    });
+
+  } catch (error) {
+    app.log.error('Error pausing thread:', error);
+    reply.code(500).send({
+      error: 'Failed to pause thread'
+    });
+  }
 });
 
 const port = Number(process.env.PORT || 4000);

@@ -9,7 +9,7 @@ const sans = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-sans' });
 const display = Space_Grotesk({ subsets: ['latin'], variable: '--font-display' });
 
 export const metadata = {
-  title: 'linkedin-messager',
+  title: 'Agora',
   description: 'Find and message relevant contacts via LinkedIn or email',
 };
 
