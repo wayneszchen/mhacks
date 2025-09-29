@@ -1,7 +1,11 @@
-# linkedin-messager
+# Agora
 
-A full-stack outreach tool to find relevant people, score warmth, and send personalized messages via LinkedIn or email. Minimal, YC-style UI with sleek animations. LinkedIn-only authentication with popup OAuth.
+A full-stack outreach tool to find relevant people, score warmth, and send personalized messages via LinkedIn or email. LinkedIn-only authentication with popup OAuth.
 
+- **Web App**: TBD
+- **Live Demo**: [https://www.youtube.com/watch?v=u1dxeJqMdF8](https://www.youtube.com/watch?v=iJrxSz1KqAA&t)
+- **HackMIT Project**: [https://plume.hackmit.org/project/smoyj-isteg-lvkpn-nldyh](https://plume.hackmit.org/project/smoyj-isteg-lvkpn-nldyh)
+  
 ## Stack
 - Next.js 14 (App Router) + Tailwind CSS (apps/web)
 - Fastify + Prisma (apps/api)
